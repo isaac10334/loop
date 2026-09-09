@@ -1,0 +1,1 @@
+{"compilerOptions":{"target":"ES2022","module":"NodeNext","moduleResolution":"NodeNext","strict":true,"outDir":"out","skipLibCheck":true,"paths":{"loopkit:app/notes@0.1.0":["./bindings/interfaces/loopkit-app-notes.d.ts"]}},"include":["app.ts","bindings/**/*.d.ts"]}

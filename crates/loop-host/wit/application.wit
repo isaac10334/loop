@@ -1,0 +1,40 @@
+package loopkit:app@0.1.0;
+
+interface notes {
+    enum access-error { denied, revoked }
+    // Host chooses scope and rights. Acquiring again never elevates authority.
+    resource store {
+        read: func() -> result<string, access-error>;
+        write: func(value: string) -> result<_, access-error>;
+    }
+    acquire: func() -> store;
+}
+
+interface ui {
+    enum action { refresh, increment, delayed-increment, read-note, write-note }
+    enum kind { column, row, text, button }
+    enum alignment { start, center, end, stretch }
+    // Flat preorder tree; parent is an earlier node index, absent only on root.
+    record node {
+        parent: option<u32>,
+        kind: kind,
+        text: string,
+        action: option<action>,
+        gap: u16,
+        align: alignment,
+    }
+    record view { count: u32, status: string, nodes: list<node> }
+}
+
+world application {
+    import notes;
+    use ui.{action, view};
+    export dispatch: async func(input: action) -> view;
+}
+
+// Compatibility contract: no Component Model async claim for JS guests.
+world application-sync {
+    import notes;
+    use ui.{action, view};
+    export dispatch: func(input: action) -> view;
+}

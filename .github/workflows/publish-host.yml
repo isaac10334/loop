@@ -1,0 +1,29 @@
+name: Publish host crate
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: publish-host
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+      - name: Verify package
+        run: |
+          cargo test --locked --workspace --all-features
+          if ($LASTEXITCODE) { throw 'Tests failed.' }
+          cargo publish --locked -p loop-host --dry-run
+          if ($LASTEXITCODE) { throw 'Package verification failed.' }
+      - name: Publish
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: |
+          if (!$env:CARGO_REGISTRY_TOKEN) { throw 'Set the CARGO_REGISTRY_TOKEN repository secret.' }
+          cargo publish --locked -p loop-host
+          if ($LASTEXITCODE) { throw 'Crate publication failed.' }

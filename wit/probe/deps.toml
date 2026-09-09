@@ -1,0 +1,4 @@
+signals = { path = "../signals" }
+[random]
+url = "https://github.com/WebAssembly/wasi-random/archive/refs/tags/v0.2.0.tar.gz"
+sha256 = "7371d03c037d924caba2587fb2e7c5773a0d3c5fcecbf7971e0e0ba57973c53d"

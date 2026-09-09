@@ -1,0 +1,26 @@
+[package]
+name = "loop-host"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "An experimental WebAssembly component host for Loop applications"
+repository = "https://github.com/isaac10334/loop"
+readme = "README.md"
+include = ["src/**", "wit/**", "examples/**", "README.md", "LICENSE-MIT", "LICENSE-APACHE"]
+
+[dependencies]
+anyhow = "1"
+wasmtime = { version = "=48.0.0", default-features = false, features = ["anyhow", "std", "runtime", "cranelift", "component-model", "component-model-async", "async", "wat"] }
+wasmtime-wasi = { version = "=48.0.0", default-features = false, features = ["p2", "p3"] }
+tokio = { version = "1", features = ["rt-multi-thread", "time", "sync", "macros", "signal"] }
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[features]
+desktop = ["dep:wry", "dep:tao"]
+
+[target.'cfg(windows)'.dependencies]
+wry = { version = "=0.56.1", optional = true }
+tao = { version = "=0.37.0", optional = true }

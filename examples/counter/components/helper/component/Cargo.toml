@@ -1,0 +1,10 @@
+[package]
+name = "helper"
+version = "0.1.0"
+edition = "2024"
+[workspace]
+[lib]
+crate-type = ["cdylib"]
+[dependencies]
+wit-bindgen = "=0.61.1"
+wasip3 = "=0.8.0"

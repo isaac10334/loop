@@ -1,0 +1,5 @@
+package loopkit:signals@0.1.0;
+/// A small locally editable package shared by async provider examples.
+interface types {
+    type measurement = u32;
+}

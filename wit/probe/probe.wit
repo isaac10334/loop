@@ -1,0 +1,11 @@
+package loop:probe@0.1.0;
+
+world probe {
+    use loopkit:signals/types@0.1.0.{measurement};
+    import wasi:random/random@0.2.0;
+    import wait-event: async func() -> u32;
+    import feed: func() -> tuple<future<measurement>, stream<measurement>>;
+    export run: async func() -> u32;
+    export wasi-clock: async func() -> u64;
+    export consume: async func() -> u32;
+}

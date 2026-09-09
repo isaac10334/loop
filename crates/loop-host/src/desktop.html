@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'none'">
+<title>loop — a little progress</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f4ee;color:#20352c;font:16px 'Segoe UI',sans-serif}header{display:flex;justify-content:space-between;align-items:center;padding:28px 38px;border-bottom:1px solid #dcded4}.brand{font-size:28px;font-weight:750;letter-spacing:-2px}.badge{font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:#627165}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#739564;margin-right:8px}main{max-width:720px;margin:44px auto;padding:0 30px}.eyebrow{font-size:11px;font-weight:650;letter-spacing:2px;color:#71816b;margin-bottom:20px}#view{padding:30px;background:#fffef9;border:1px solid #dfe3d7;border-radius:18px;box-shadow:0 10px 35px #34472e08}.container{display:flex;min-width:0}.row{flex-direction:row;flex-wrap:wrap}.column{flex-direction:column}.text{white-space:pre-wrap;overflow-wrap:anywhere}.column>.text:first-child{font-size:24px;font-weight:600;letter-spacing:-.7px}.column>.text:nth-child(2){font-size:76px;line-height:1.1;font-weight:350;letter-spacing:-4px;color:#496744}button{font:inherit;font-size:13px;font-weight:600;border:1px solid #ccd5c4;background:#f6f8ef;color:#344a31;border-radius:8px;padding:12px 17px;cursor:pointer;transition:background .15s,transform .15s}button:hover{background:#e7eddc;transform:translateY(-1px)}button:focus-visible{outline:3px solid #b4c59a;outline-offset:3px}button:disabled{opacity:.5;cursor:wait;transform:none}.row:first-of-type button:first-child{background:#496744;color:white;border-color:#496744}#status{margin-top:20px;min-height:44px;color:#6b7966;font-size:13px;line-height:1.6}footer{display:flex;justify-content:space-between;margin-top:25px;padding-top:16px;border-top:1px solid #dde1d3;color:#85907b;font-size:11px}#busy{display:none}body.busy #busy{display:inline-block;animation:pulse .7s infinite alternate}@keyframes pulse{to{opacity:.25}}
+</style></head><body>
+<header><span class="brand">loop</span><span class="badge"><i class="dot"></i>your local workspace</span></header>
+<main><div class="eyebrow">01 / A LITTLE PROGRESS</div><section id="view" aria-label="Component application">Loading your component…</section>
+<div id="status" role="status" aria-live="polite">Starting…</div><footer><span>Small actions. Real state.</span><span id="busy">Working…</span><span>Made with loop ↗</span></footer></main>
+<script>
+const root=document.getElementById('view'),status=document.getElementById('status');
+function busy(value){document.body.classList.toggle('busy',value);document.querySelectorAll('button').forEach(b=>b.disabled=value)}
+window.showError=message=>{busy(false);status.textContent=message;};
+window.render=view=>{
+ const elements=[];root.replaceChildren();
+ for(const n of view.nodes){
+  const kind=n.kind.toLowerCase(),el=document.createElement(kind==='button'?'button':'div');
+  if(kind==='row'||kind==='column'){el.className='container '+kind;el.style.gap=n.gap+'px';el.style.alignItems=({Start:'flex-start',Center:'center',End:'flex-end',Stretch:'stretch'})[n.align];}
+  else {el.className=kind;el.textContent=n.text;}
+  if(n.action){el.onclick=()=>{busy(true);status.textContent='A moment to breathe…';window.ipc.postMessage(JSON.stringify(n.action));};}
+  (n.parent===null?root:elements[n.parent]).append(el);elements.push(el);
+ }
+ status.textContent=view.status;busy(false);
+};
+window.ipc.postMessage('ready');
+</script></body></html>
