@@ -42,6 +42,8 @@ jobs:
         run: |
           ./scripts/package-release.ps1
           ./scripts/test-install.ps1 -ArchivePath target/release-assets/loop-windows-x64.zip
+          powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-bootstrap.ps1
+          if ($LASTEXITCODE) { throw 'Clean Rust bootstrap failed.' }
       - name: Verify published host and application
         run: |
           ./scripts/test-release.ps1 -Binary target/release/loop.exe

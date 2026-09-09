@@ -45,7 +45,7 @@ if ($ParentPid -gt 0) {
     }
 }
 if ($Action -eq 'Uninstall') {
-    if (!$state) { Write-Host 'Loop is already uninstalled.'; return }
+    if (!$state) { Write-Output 'Loop is already uninstalled.'; return }
     # Only remove files owned by this installer. Preserve projects and unknown files.
     foreach ($name in @('loop.exe', 'loop.previous.exe')) {
         $file = Join-Path $bin $name
@@ -64,7 +64,7 @@ if ($Action -eq 'Uninstall') {
     }
     Remove-EmptyDirectory $bin
     Remove-EmptyDirectory $root
-    Write-Host 'Loop uninstalled. Your projects and Rust toolchains were kept. Open a new terminal to refresh PATH.'
+    Write-Output 'Loop uninstalled. Your projects and Rust toolchains were kept. Open a new terminal to refresh PATH.'
     return
 }
 if ($Action -eq 'Upgrade' -and !$state) { throw 'No managed Loop installation found. Run the installer first.' }
@@ -110,17 +110,18 @@ try {
         if (!(Test-Path -LiteralPath $rustup)) {
             $found = Get-Command rustup -ErrorAction SilentlyContinue
             if ($found) { $rustup = $found.Source } else {
-                Write-Host 'Installing rustup from rust-lang.org (user account only).'
+                Write-Output 'Installing rustup from rust-lang.org (user account only).'
                 $init = Join-Path $stage 'rustup-init.exe'
                 $url = 'https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe'
                 Invoke-WebRequest $url -UseBasicParsing -OutFile $init
-                $hash = ((Invoke-WebRequest "$url.sha256" -UseBasicParsing).Content.Trim() -split '\s+')[0]
+                Invoke-WebRequest "$url.sha256" -UseBasicParsing -OutFile "$init.sha256"
+                $hash = ((Get-Content -LiteralPath "$init.sha256" -Raw).Trim() -split '\s+')[0]
                 if ((Get-FileHash -LiteralPath $init -Algorithm SHA256).Hash -ine $hash) { throw 'rustup checksum verification failed.' }
                 & $init -y --profile minimal --default-toolchain none --no-modify-path
                 if ($LASTEXITCODE) { throw 'rustup installation failed.' }
             }
         }
-        Write-Host "Installing/checking Rust $($release.rust) and wasm32-wasip2. Existing default toolchain stays unchanged."
+        Write-Output "Installing/checking Rust $($release.rust) and wasm32-wasip2. Existing default toolchain stays unchanged."
         & $rustup toolchain install $release.rust --profile minimal --target wasm32-wasip2
         if ($LASTEXITCODE) { throw 'Rust toolchain installation failed. Rerun the installer to retry.' }
         $cargoBin = Split-Path $rustup -Parent
@@ -153,8 +154,8 @@ try {
         }
     }
     if (Test-Path -LiteralPath $backup) { Remove-Item -LiteralPath $backup -Force }
-    Write-Host "Loop $($release.version) installed. Open a new terminal, then run: loop doctor"
-    Write-Host 'Upgrade: loop upgrade | Remove: loop uninstall (or Windows Settings > Apps > Loop CLI)'
+    Write-Output "Loop $($release.version) installed. Open a new terminal, then run: loop doctor"
+    Write-Output 'Upgrade: loop upgrade | Remove: loop uninstall (or Windows Settings > Apps > Loop CLI)'
 } finally {
     # The randomly named staging directory was created by this invocation under root.
     $resolvedStage = [IO.Path]::GetFullPath($stage)
