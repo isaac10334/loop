@@ -28,11 +28,12 @@ Assert $failed 'Unmanaged directory was accepted.'
 & "$install/bin/loop.exe" uninstall
 if ($LASTEXITCODE) { throw 'CLI uninstall command failed.' }
 $deadline = (Get-Date).AddSeconds(30)
-while ((Test-Path "$install/installation.json") -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 100 }
+while (((Test-Path "$install/installation.json") -or (Test-Path "$install/bin")) -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 100 }
 Assert (!(Test-Path "$install/bin/loop.exe")) 'CLI uninstall left executable.'
+Assert (!(Test-Path "$install/bin")) 'CLI uninstall did not finish directory cleanup.'
 Assert (Test-Path "$install/my-project.txt") 'Uninstall removed a user file.'
 Assert (Test-Path "$unmanaged/keep.txt") 'Unmanaged file was removed.'
-# Remove test-only marker-free user file, then verify repeated uninstall.
-Remove-Item -LiteralPath "$install/my-project.txt"
-& $manager -Action Uninstall -InstallDir $install -NoPath -NoRegistry
+# Keep the user's file in place; an unrelated nonempty directory must stay protected.
+# Verify repeated uninstall on an absent installation without racing the manager.
+& $manager -Action Uninstall -InstallDir (Join-Path $testRoot 'absent') -NoPath -NoRegistry
 Write-Host "PASS: install, repeat upgrade, checksum rejection, unmanaged-directory refusal, CLI uninstall, project preservation. Evidence: $testRoot"
