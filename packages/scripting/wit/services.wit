@@ -1,0 +1,9 @@
+package loopkit:scripting@0.1.0;
+interface services {
+  invoke: async func(binding: string, input: string) -> string;
+  resource subscription {
+    next: async func() -> option<string>;
+    cancel: func();
+  }
+  subscribe: async func(binding: string, input: string) -> own<subscription>;
+}

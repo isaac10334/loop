@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "id": "example:custom-provider",
+  "sourcePaths": [
+    "package.json",
+    "package-lock.json",
+    "bun.lock",
+    "loop.config.ts",
+    "official.config.ts",
+    "counter-kit.ts",
+    "counter-runtime.ts",
+    "counter.ts",
+    "counter-provider.ts",
+    "app.ts"
+  ]
+}

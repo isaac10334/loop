@@ -1,0 +1,16 @@
+{
+  "name": "loop-example-custom-provider",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare:fixture": "bun ./prepare-fixture.ts"
+  },
+  "dependencies": {
+    "@loop-kit/capabilities": "0.1.0",
+    "@loop-kit/host": "0.1.0",
+    "@loop-kit/host-browser": "0.1.0",
+    "@loop-kit/renderer-dom": "0.1.0",
+    "@loop-kit/ui": "0.1.0"
+  }
+}

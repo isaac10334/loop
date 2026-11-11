@@ -16,7 +16,7 @@ pub fn start(action: &str) -> Result<()> {
         .prefix("loop-manage-")
         .suffix(".ps1")
         .tempfile()?;
-    fs::write(script.path(), include_str!("../../../scripts/manage.ps1"))?;
+    fs::write(script.path(), include_str!("../assets/manage.ps1"))?;
     let (_, path) = script.keep()?;
     // Encode the wrapper to preserve spaces and apostrophes in Windows paths.
     let quote = |s: &str| s.replace('\'', "''");

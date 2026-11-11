@@ -1,0 +1,78 @@
+/** Headless acceptance; uses an existing Playwright install and an isolated browser profile. */
+import { mkdir, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+if (!process.env.PLAYWRIGHT_MODULE) throw Error('Set PLAYWRIGHT_MODULE to an existing Playwright ESM module');
+const { chromium } = await import(process.env.PLAYWRIGHT_MODULE);
+const root = resolve('target/docs-browser-check/' + Date.now());
+await mkdir(root + '/temp', { recursive: true });
+process.env.TEMP = root + '/temp'; process.env.TMP = root + '/temp';
+const context = await chromium.launchPersistentContext(root + '/profile', { executablePath: process.env.CHROME_PATH ?? 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true, args: ['--no-first-run', '--no-default-browser-check', '--disable-background-networking'] });
+const origin = process.env.DOCS_ORIGIN ?? 'http://127.0.0.1:3098';
+const receipt = { origin, checkedAt: new Date().toISOString(), contentSha256: null, checks: [], consoleErrors: [], pageErrors: [], failedRequests: [] };
+try {
+  const page = await context.newPage();
+  page.on('console', message => { if (message.type() === 'error') receipt.consoleErrors.push(message.text()); });
+  page.on('pageerror', error => receipt.pageErrors.push(String(error)));
+  page.on('requestfailed', request => receipt.failedRequests.push(request.url()));
+  const assert = (condition, message) => { if (!condition) throw Error(message); receipt.checks.push(message); };
+  await page.goto(origin + '/', { waitUntil: 'networkidle' });
+  receipt.contentSha256 = (await (await page.request.get(origin + '/docs/build-receipt.json')).json()).contentSha256;
+  assert(await page.getByRole('heading', { level: 1 }).textContent() === 'Small contracts.Real applications.', 'landing headline preserved');
+  assert(await page.getByRole('link', { name: 'Windows ZIP', exact: true }).getAttribute('href') === 'https://github.com/isaac10334/loop/releases/latest/download/loop-windows-x64.zip', 'real release ZIP preserved');
+  assert(await page.getByRole('link', { name: 'Read the installer', exact: true }).getAttribute('href') === 'install.ps1', 'installer route preserved');
+  await page.keyboard.press('Tab'); assert(await page.locator('.skip-link').evaluate(e => e === document.activeElement), 'first keyboard focus is skip link');
+  const demo = page.frameLocator('iframe');
+  await demo.getByRole('button', { name: 'Increment counter', exact: true }).click();
+  assert((await demo.locator('#app').textContent()).includes('Count: 1'), 'real kit demo changes provider state');
+  await demo.getByRole('textbox').fill('5'); await demo.getByRole('textbox').press('Tab');
+  await demo.getByRole('button', { name: 'Increment counter', exact: true }).press('Enter');
+  assert((await demo.locator('#app').textContent()).includes('Count: 6'), 'semantic input and keyboard activation work');
+  await demo.getByRole('button', { name: 'Stop application', exact: true }).click();
+  assert(await demo.locator('#app').textContent() === '', 'demo stop clears owned surface');
+  assert((await demo.getByRole('status').textContent()).includes('Disposed'), 'demo awaited disposal acknowledged');
+  await demo.getByRole('button', { name: 'Start a fresh application', exact: true }).click();
+  assert((await demo.locator('#app').textContent()).includes('Count: 0'), 'demo restart has fresh provider state');
+  await page.evaluate(() => { document.activeElement?.blur(); window.scrollTo({ top: 0, behavior: 'instant' }); });
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  await page.screenshot({ path: root + '/home-desktop.png', fullPage: true });
+  await page.getByRole('link', { name: 'Read the documentation', exact: true }).click();
+  await page.waitForURL('**/docs/index.html');
+  assert(await page.locator('.sidebar [aria-current="page"]').textContent() === 'Overview', 'current page marker');
+  await page.locator('.sidebar').getByRole('link', { name: 'Concepts', exact: true }).click();
+  await page.locator('.toc').getByRole('link', { name: 'Resources, scopes and disposal', exact: true }).click();
+  assert(new URL(page.url()).hash === '#resources-scopes-and-disposal', 'TOC resolves real heading');
+  await page.getByRole('button', { name: 'Search documentation', exact: true }).click();
+  assert(await page.getByRole('searchbox').evaluate(e => e === document.activeElement), 'search focuses input');
+  await page.getByRole('searchbox').fill('Capability support');
+  await page.locator('.search-results a').first().waitFor();
+  assert((await page.locator('.search-results a').first().textContent()).includes('Capability support'), 'search finds catalog');
+  await page.keyboard.press('Escape');
+  assert(await page.getByRole('button', { name: 'Search documentation', exact: true }).evaluate(e => e === document.activeElement), 'search close restores focus');
+  const theme = await page.locator('html').getAttribute('data-theme');
+  await page.locator('.theme-toggle').click(); assert(await page.locator('html').getAttribute('data-theme') !== theme, 'theme switches');
+  for (const route of ['installation', 'quickstart', 'guides/providers', 'guides/composition', 'guides/native', 'reference/cli', 'reference/compatibility', 'reference/support', 'examples', 'roadmap']) {
+    await page.goto(origin + '/docs/' + route + '.html', { waitUntil: 'networkidle' });
+    assert(await page.locator('article h1').count() === 1, 'canonical heading ' + route);
+    const markdown = await page.request.get(new URL(await page.locator('.page-meta a').getAttribute('href'), page.url()).href);
+    assert(markdown.ok() && (await markdown.text()).includes('Loop Kit developer preview'), 'Markdown alternative ' + route);
+  }
+  const search = await (await page.request.get(origin + '/docs/search-index.json')).json();
+  const llms = await (await page.request.get(origin + '/llms.txt')).text();
+  assert(!/development-alpha|ENGINEERING_PLAN|agent-prompts|execution-plan|TickTick/.test(JSON.stringify(search) + llms), 'internal material absent from search and agent router');
+  for (const path of ['/docs/design/agent-prompts.html', '/docs/architecture/evidence.html', '/README.md', '/content.ts']) assert((await page.request.get(origin + path)).status() === 404, 'nonpublic path absent ' + path);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole('button', { name: 'Menu', exact: true }).click();
+  assert(await page.locator('.sidebar').evaluate(e => e.classList.contains('open')), 'mobile menu opens');
+  await page.keyboard.press('Escape'); assert(await page.locator('.menu-toggle').getAttribute('aria-expanded') === 'false', 'mobile Escape closes menu');
+  assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'mobile documentation has no page-level horizontal overflow');
+  await page.screenshot({ path: root + '/docs-mobile.png', fullPage: true });
+  await page.goto(origin + '/', { waitUntil: 'networkidle' });
+  assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'mobile landing has no horizontal overflow');
+  await page.screenshot({ path: root + '/home-mobile.png', fullPage: true });
+  assert(receipt.consoleErrors.length === 0, 'no console errors'); assert(receipt.pageErrors.length === 0, 'no page errors'); assert(receipt.failedRequests.length === 0, 'no failed requests');
+  await writeFile(root + '/receipt.json', JSON.stringify(receipt, null, 2));
+  console.log(JSON.stringify({ ...receipt, artifacts: root }, null, 2));
+} catch (error) {
+  await writeFile(root + '/receipt.json', JSON.stringify({ ...receipt, failure: String(error) }, null, 2));
+  throw error;
+} finally { await context.close(); }

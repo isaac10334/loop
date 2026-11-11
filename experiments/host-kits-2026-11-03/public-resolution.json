@@ -1,0 +1,21 @@
+{
+  "note": "LOCAL UNSHIPPABLE resolution; UI checkout public export, NOT packed-consumer proof",
+  "mappings": {
+    "@polyengine/runtime/shim": {
+      "path": "C:\\Users\\ijhar\\.bun\\install\\cache\\@polyengine\\runtime@0.6.7@@@1\\esm\\shim\\mod.js",
+      "sha256": "ab7beb44febed9d03e2048619dda54fadc0ee9a14822b43ed06c4e3ebf46b7b2"
+    },
+    "@polyengine/runtime/embedder": {
+      "path": "C:\\Users\\ijhar\\.bun\\install\\cache\\@polyengine\\runtime@0.6.7@@@1\\esm\\embedder\\mod.js",
+      "sha256": "8ab58e04fbbeb533ef012fdd1ad2e839c810b7fc135d1a0de14a4e767abe4fa3"
+    },
+    "@polyengine/protocol": {
+      "path": "C:\\Users\\ijhar\\.bun\\install\\cache\\@polyengine\\protocol@0.3.1@@@1\\esm\\mod.js",
+      "sha256": "8ecb048801ec80582e036f6c859f332ee1b26514095efcfa570c79fe888f4e4c"
+    },
+    "@loop-kit/ui": {
+      "path": "C:\\src\\ilt\\loop\\packages\\ui\\dist\\index.js",
+      "sha256": "97cd0b12353355e66902094a63e157ab0b9f2c0753feaba34239d6b5ef90e7b7"
+    }
+  }
+}

@@ -1,58 +1,40 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Build desktop applications from WebAssembly components with Loop. Windows x64 preview.">
-<title>Loop — Desktop applications from WebAssembly components</title>
-<style>
-:root{color-scheme:light;--ink:#17211c;--muted:#58635b;--line:#dce2dd;--accent:#286747;--paper:#fff}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
-.wrap{width:min(920px,100% - 48px);margin:auto}header{display:flex;align-items:center;justify-content:space-between;padding:30px 0;border-bottom:1px solid var(--line)}
-.brand{font-size:26px;font-weight:750;letter-spacing:-1.5px;text-decoration:none;color:var(--ink)}nav{display:flex;gap:25px}a{color:var(--accent);text-underline-offset:4px}nav a{font-size:14px;color:var(--muted);text-decoration:none}a:hover{text-decoration:underline}
-main{padding:76px 0 64px}h1{max-width:800px;font-size:clamp(38px,6.5vw,66px);line-height:1.08;letter-spacing:-.055em;font-weight:650;margin:0 0 25px}
-.intro{max-width:630px;font-size:20px;color:var(--muted);margin:0 0 42px}h2{font-size:20px;letter-spacing:-.02em;margin:0 0 12px}p{margin:0 0 20px}
-.install{background:#15241c;color:#e8f1eb;padding:23px 24px;border-radius:7px}.install-top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:15px}.install-top span{font-size:13px;color:#a9c0b2}
-button{font:600 13px system-ui;cursor:pointer;color:#e8f1eb;background:#294335;border:1px solid #486351;border-radius:4px;padding:8px 14px;min-width:78px}button:hover{background:#375542}button:focus-visible,a:focus-visible{outline:3px solid #70b990;outline-offset:4px}
-pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;font-size:14px}code{font-family:Consolas,"SFMono-Regular",monospace}
-.detail{font-size:14px;color:var(--muted);margin:15px 0 0}.downloads{margin-top:18px;font-size:14px;display:flex;gap:22px;flex-wrap:wrap}
-.next{display:grid;grid-template-columns:1fr 1fr;gap:55px;margin-top:58px;padding-top:32px;border-top:1px solid var(--line)}.next pre{background:#f4f7f4;padding:18px 20px;border-radius:5px}.next p{font-size:15px;color:var(--muted);margin-top:14px}
-.note{border-left:3px solid #bac9bd;padding-left:17px;margin-top:35px;font-size:14px;color:var(--muted)}.note strong{color:var(--ink)}
-footer{border-top:1px solid var(--line);padding:23px 0 35px;display:flex;justify-content:space-between;gap:15px;font-size:13px;color:var(--muted)}
-@media(max-width:600px){.wrap{width:calc(100% - 36px)}header{padding:23px 0}main{padding-top:49px}.intro{font-size:18px}.install{padding:18px}.next{grid-template-columns:1fr;gap:26px;margin-top:38px}nav{gap:17px}footer{flex-wrap:wrap}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Loop Kit: typed capabilities, explicit resource ownership and portable application tools.">
+  <title>Loop Kit — Small contracts. Real applications.</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="docs/_assets/docs.css">
+  <script type="module" src="docs/_assets/docs.js"></script>
 </head>
-<body>
-<div class="wrap">
-<header><a class="brand" href="./" aria-label="Loop home">loop</a><nav aria-label="Main"><a href="https://github.com/isaac10334/loop/blob/main/docs/windows.md">Docs</a><a href="https://github.com/isaac10334/loop">GitHub</a></nav></header>
-<main>
-<h1>Desktop applications.<br>WebAssembly components.</h1>
-<p class="intro">Write your application in Rust. Run it in a native host with explicit access to capabilities. Create, run, and package it with Loop.</p>
-<section aria-labelledby="install-heading">
-<h2 id="install-heading">Install Loop</h2>
-<div class="install"><div class="install-top"><span>Windows x64 · PowerShell</span><button id="copy" type="button" aria-label="Copy install command">Copy</button></div><pre><code id="command">powershell -c "irm https://isaac10334.github.io/loop/install.ps1 | iex"</code></pre></div>
-<p id="copy-status" class="detail" role="status" aria-live="polite">Installs the CLI and its Rust toolchain for your user account.</p>
-<p class="detail">Keep your existing Rust default. Open a new terminal after installation.</p>
-<div class="downloads"><a href="https://github.com/isaac10334/loop/releases/latest/download/loop-windows-x64.zip">Download ZIP</a><a href="install.ps1">Read the installer</a><a href="https://github.com/isaac10334/loop/releases">Release notes</a></div>
-</section>
-<div class="next">
-<section><h2>Make something</h2><pre><code>loop create hello
-loop run hello
-loop build hello</code></pre><p>Share the generated application directory. Recipients don't need Loop or Rust.</p></section>
-<section><h2>Keep it simple</h2><pre><code>loop upgrade
-loop uninstall</code></pre><p>Wait for the manager's completion message. Uninstall keeps your projects and Rust tools. Windows Settings also lists Loop CLI.</p></section>
-</div>
-<aside class="note"><strong>Early preview.</strong> Windows 11 x64. Building apps requires Microsoft C++ Build Tools and the Windows SDK. Desktop windows require WebView2. <a href="https://github.com/isaac10334/loop/blob/main/docs/windows.md">Setup instructions</a>.</aside>
-</main>
-<footer><span>Built with Rust and Wasmtime.</span><a href="https://github.com/isaac10334/loop">Source · MIT / Apache-2.0</a></footer>
-</div>
-<script>
-const button=document.querySelector('#copy');
-button.addEventListener('click',async()=>{
-  const text=document.querySelector('#command').textContent;
-  try{await navigator.clipboard.writeText(text);button.textContent='Copied';document.querySelector('#copy-status').textContent='Copied. Paste into PowerShell to install Loop.'}
-  catch{document.querySelector('#copy-status').textContent='Select the command above and copy it with Ctrl+C.'}
+<body data-docs-root="./docs/">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Loop home"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M17.5 6H8a4 4 0 0 0 0 8h8a4 4 0 0 1 0 8H6.5M6.5 18H16a4 4 0 0 0 0-8H8a4 4 0 0 1 0-8h9.5" stroke="currentColor" stroke-width="2" transform="translate(0 -1)"/></svg>loop</a>
+    <nav aria-label="Main"><a href="docs/index.html">Docs</a><a href="https://github.com/isaac10334/loop" rel="noreferrer">GitHub ↗</a><button class="search-trigger" type="button" aria-label="Search documentation">Search docs <kbd>Ctrl K</kbd></button><button class="theme-toggle" type="button" aria-label="Switch to dark theme">☾</button></nav>
+  </header>
+  <main class="home" id="main">
+    <h1>Small contracts.<br>Real applications.</h1>
+    <p class="home-intro">Build an application from typed services and semantic UI. Choose the providers and host; make every running resource someone’s responsibility.</p>
+    <div class="home-actions"><a class="button-link" href="docs/quickstart.html">Build a browser application <span aria-hidden="true">→</span></a><a class="button-link secondary" href="docs/index.html">Read the documentation</a></div>
+    <p class="home-status"><strong>Developer preview.</strong> The browser and Windows host-kit implementation uses source builds and reviewed package artifacts. npm publication is pending; the public Windows v0.1.0 CLI is older. <a href="docs/installation.html">Choose an installation route →</a></p>
+    <section class="live-example" aria-labelledby="demo-title"><div><p class="eyebrow">Running, not simulated</p><h2 id="demo-title">An application, a provider, one owned lifetime.</h2><p>This is the counter example running through the official browser kit and semantic DOM renderer. Change the amount, use the button with pointer or keyboard, then stop the application. Restart creates fresh provider state.</p><p>The application has no renderer-specific controls. Its provider owns the count; the kit owns the surface and cleanup.</p><a href="docs/quickstart.html">Build and change this example →</a></div><iframe title="Live Loop Kit browser counter" src="docs/_demo/index.html" loading="lazy"></iframe></section>
+    <div class="home-grid">
+      <section><h2>Keep the service; replace the implementation.</h2><p>Use typed providers for storage, commands or application state. Composition chooses the implementation; scopes own acquisitions and cleanup.</p><pre><code>const clock = defineCapability&lt;Clock&gt;({
+  id: "loop:time/clock",
+  version: "1.0.0",
 });
-</script>
+
+const handle = await scope.acquire(clock);
+console.log(handle.value.now());
+await handle.release();</code></pre><a href="docs/reference/host.html">Understand the host →</a></section>
+      <section><h2>Choose where the application runs.</h2><p>The browser kit composes TypeScript services and DOM presentation. The native kit uses Rust, Wasmtime and Tao/Wry on Windows. Components use specific reviewed worlds and grants—not arbitrary host access.</p><div class="composition-map" aria-label="Composition: application uses capabilities, host selects providers and renderer"><span>Application</span><span>Typed capabilities + semantic UI</span><span>Host kit → providers + renderer</span></div><p>Guest languages, trusted provider languages and native SDKs have different support. <a href="docs/reference/compatibility.html">Check runtime and language limits →</a></p></section>
+    </div>
+    <div class="home-foot"><a href="docs/examples.html">Runnable examples</a><a href="docs/guides/composition.html">Extend a host kit</a><a href="docs/reference/support.html">Capability support</a><a href="docs/roadmap.html">Roadmap &amp; limits</a><a href="llms.txt">llms.txt</a><a href="https://github.com/isaac10334/loop/releases/latest/download/loop-windows-x64.zip">Windows ZIP</a><a href="install.ps1">Read the installer</a></div>
+    <footer>Loop Kit · MIT / Apache-2.0 · Built in the open.</footer>
+  </main>
+  <dialog class="search-dialog" aria-label="Search documentation"><div class="search-head"><input type="search" aria-label="Search documentation pages" placeholder="Search guides, contracts, packages…"><button class="search-close" type="button">Close</button></div><div class="search-results" aria-live="polite"></div><div class="search-footer">Local search · guide and reference content · Escape to close</div></dialog>
 </body>
 </html>

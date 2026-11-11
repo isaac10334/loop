@@ -1,0 +1,22 @@
+{
+  "name": "loop-lifecycle-monitor-example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "bun setup.ts",
+    "start": "bun cli.ts",
+    "serve": "bun serve.ts",
+    "test": "bun test monitor.test.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "overrides": {
+    "@loop-kit/capabilities": "file:./.packages/loop-kit-capabilities-f0ab94930d29a91138c7ef1986dad527eed78e5eaf9f01023667ab32be320b4c.tgz",
+    "@loop-kit/host": "file:./.packages/loop-kit-host-8bb8f711714d0e08535c95e358d5033b6e77a4a002bcf41acaf8235d43b5d5b3.tgz",
+    "@loop-kit/ui": "file:./.packages/loop-kit-ui-f1ef3b7cc2bb148b00a1fa67190f966ef499c783fae5c923cf37b49da7b0238a.tgz"
+  },
+  "dependencies": {
+    "@loop-kit/capabilities": "file:./.packages/loop-kit-capabilities-f0ab94930d29a91138c7ef1986dad527eed78e5eaf9f01023667ab32be320b4c.tgz",
+    "@loop-kit/host": "file:./.packages/loop-kit-host-8bb8f711714d0e08535c95e358d5033b6e77a4a002bcf41acaf8235d43b5d5b3.tgz",
+    "@loop-kit/ui": "file:./.packages/loop-kit-ui-f1ef3b7cc2bb148b00a1fa67190f966ef499c783fae5c923cf37b49da7b0238a.tgz"
+  }
+}

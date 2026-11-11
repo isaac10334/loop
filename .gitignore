@@ -6,14 +6,11 @@
 **/dist/
 **/.loop/
 /.vscode/
-/docs/*-evidence.txt
-/docs/ui-*.txt
-/docs/relocated-bundle.txt
-/docs/continuation.md
-/docs/handoff.md
 .env
 .env.*
 *token*.txt
 *.log
 **/out/
 /site/install.ps1
+
+/site/docs/

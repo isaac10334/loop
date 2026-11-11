@@ -1,0 +1,9 @@
+package loopkit:script-engine@0.1.0;
+world engine {
+  import loopkit:scripting/services@0.1.0;
+  import loopkit:ui/surfaces@0.1.0;
+  export evaluate: async func(source: string, input: string) -> string;
+  export start: async func(source: string, input: string) -> string;
+  export dispatch: async func(input: string) -> string;
+  export stop: func();
+}

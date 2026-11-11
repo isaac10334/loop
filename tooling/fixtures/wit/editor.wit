@@ -1,0 +1,21 @@
+package loop:svg-editor@0.1.0;
+
+/// A host-issued document is authority over one opened source, not a path lookup.
+interface documents {
+  record snapshot {
+    revision: string,
+    source: string,
+  }
+  enum edit-error { denied, revoked, conflict, invalid-source }
+  resource document {
+    read: func() -> result<snapshot, edit-error>;
+    write: func(expected-revision: string, source: string) -> result<snapshot, edit-error>;
+  }
+}
+
+/// The host supplies an existing document; knowing its interface grants nothing.
+world svg-editor {
+  import documents;
+  use documents.{document};
+  export set-fill: func(document: borrow<document>, color: string) -> result<string, string>;
+}

@@ -1,0 +1,143 @@
+{
+  "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+  "componentSha256": "4f93cbd53f2303634b1fdd62f8d1d2bad50c0bac7a5226bc89b4810a4458c9a1",
+  "worldDigest": "sha256:9d978bf670230e8d972ba5c359a5be6227b9b313c037e298318422eeadc72e0c",
+  "jspi": {
+    "Suspending": "function",
+    "promising": "function"
+  },
+  "setupMs": 140.40000000596046,
+  "instantiateMs": 5,
+  "tests": [
+    {
+      "name": "real-browser-input-granted-async",
+      "output": "fresh-v2;revision=1;source=browser world",
+      "callMs": 76.89999997615814,
+      "events": [
+        "read-enter",
+        "read-resume",
+        "write-enter",
+        "write-resume",
+        "commit"
+      ]
+    },
+    {
+      "name": "retained-resource-revoked",
+      "error": {
+        "kind": "revoked"
+      }
+    },
+    {
+      "name": "viewer-denied",
+      "error": {
+        "kind": "denied"
+      }
+    },
+    {
+      "name": "wrong-principal-denied",
+      "error": {
+        "kind": "denied"
+      }
+    },
+    {
+      "name": "forged-resource-trap",
+      "error": {
+        "message": "Trap: import 'loop:document-tool/documents@0.1.0/[method]document.read' threw TypeError: Cannot read private member #policy from an object whose class did not declare it. An unbranded throw from a host import is a host bug and becomes a trap: signal a WIT error with `throw new ComponentException(payload)`.",
+        "stack": "Trap: import 'loop:document-tool/documents@0.1.0/[method]document.read' threw TypeError: Cannot read private member #policy from an object whose class did not declare it. An unbranded throw from a host import is a host bug and becomes a trap: signal a WIT error with `throw new ComponentException(payload)`.\n    at fail (C:\\src\\ilt\\loop\\experiments\\host-kits-2026-11-03/browser.bundle.js:9981:13)\n    at C:\\src\\ilt\\loop\\experiments\\host-kits-2026-11-03/browser.bundle.js:10005:18\n    at async driveAsync (C:\\src\\ilt\\loop\\experiments\\host-kits-2026-11-03/browser.bundle.js:4763:20)\n    at async Object.wrapper [as replaceText] (C:\\src\\ilt\\loop\\experiments\\host-kits-2026-11-03/browser.bundle.js:10184:17)\n    at async result (C:\\src\\ilt\\loop\\experiments\\host-kits-2026-11-03/browser.bundle.js:10429:20)\n    at async HTMLButtonElement.<anonymous> (C:\\src\\ilt\\loop\\experiments\\host-kits-2026-11-03/browser.bundle.js:10467:53)"
+      }
+    },
+    {
+      "name": "two-instance-cas-race",
+      "results": [
+        {
+          "ok": "fresh-v2;revision=1;source=A world"
+        },
+        {
+          "error": {
+            "kind": "conflict",
+            "value": {
+              "revision": "1",
+              "source": "A world"
+            }
+          }
+        }
+      ],
+      "draftsUnchanged": [
+        "A",
+        "B"
+      ],
+      "events": [
+        "read-enter",
+        "read-enter",
+        "read-resume",
+        "write-enter",
+        "read-resume",
+        "write-enter",
+        "write-resume",
+        "commit",
+        "write-resume"
+      ]
+    },
+    {
+      "name": "before-read",
+      "error": {
+        "kind": "revoked"
+      },
+      "revision": 0,
+      "events": [
+        "read-enter",
+        "read-resume"
+      ]
+    },
+    {
+      "name": "during-write",
+      "error": {
+        "kind": "revoked"
+      },
+      "revision": 0,
+      "events": [
+        "read-enter",
+        "read-resume",
+        "write-enter",
+        "write-resume"
+      ]
+    },
+    {
+      "name": "cancel-before-commit",
+      "error": {
+        "kind": "cancelled"
+      },
+      "revision": 0,
+      "events": [
+        "read-enter",
+        "read-resume",
+        "write-enter",
+        "write-resume"
+      ]
+    },
+    {
+      "name": "after-commit",
+      "ok": "fresh-v2;revision=1;source=race world",
+      "revision": 1,
+      "events": [
+        "read-enter",
+        "read-resume",
+        "write-enter",
+        "write-resume",
+        "commit"
+      ]
+    }
+  ],
+  "deniedRuntimeCalls": [],
+  "cleanup": {
+    "liveHostDocuments": 0,
+    "pendingHostCalls": 0,
+    "borrowedOnly": true,
+    "guestOwnedDrop": "not exercised",
+    "instanceDispose": "no public disposal API; isolated browser process closed by supervisor"
+  },
+  "done": true,
+  "pageErrors": [],
+  "console": [],
+  "renderedOutput": "fresh-v2;revision=1;source=browser world"
+}

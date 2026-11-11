@@ -1,0 +1,11 @@
+{
+  "adapter": "Actual Tao/Wry WebView2 native window + Wasmtime48; NOT Electrobun/desktop Polyengine",
+  "browser": "156.0.4314.58",
+  "origin": "http://loop-probe.localhost/",
+  "componentSha256": "e8a5aa7730b6060d6b00cbbffade98e68588b76619365ba220567ae048b3af3d",
+  "action": "Playwright real pointer click on rendered semantic button",
+  "renderedOutput": "semantic world",
+  "pageErrors": [],
+  "profile": "C:\\src\\ilt\\loop\\experiments\\host-kits-2026-11-03/desktop-webview-profile-1793776229294",
+  "debugPort": 50384
+}

@@ -1,0 +1,6 @@
+**/target/
+browser-profile/
+semantic-browser-profile/
+desktop-webview-profile*/
+browser-tmp/
+js-guest/tmp/

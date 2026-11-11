@@ -1,0 +1,22 @@
+package loop:document-tool@0.1.0;
+
+interface documents {
+  record snapshot { revision: string, source: string }
+  variant failure {
+    denied, revoked, conflict(snapshot), invalid-source(string),
+    cancelled, unavailable,
+  }
+  resource document {
+    read: async func() -> result<snapshot, failure>;
+    write: async func(expected-revision: string, source: string)
+      -> result<snapshot, failure>;
+  }
+}
+
+world tool {
+  import documents;
+  use documents.{document, failure};
+  export replace-text: async func(
+    document: borrow<document>, %from: string, to: string
+  ) -> result<string, failure>;
+}

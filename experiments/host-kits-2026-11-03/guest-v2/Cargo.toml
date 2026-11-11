@@ -1,0 +1,13 @@
+[package]
+name = "async-document-guest-v2"
+version = "0.1.0"
+edition = "2024"
+[lib]
+crate-type = ["cdylib"]
+[dependencies]
+wit-bindgen = "=0.61.1"
+[workspace]
+[profile.release]
+opt-level = "s"
+panic = "abort"
+strip = "debuginfo"

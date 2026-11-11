@@ -1,0 +1,11 @@
+package loop:document-semantic-probe@0.1.0;
+
+// SEPARATE experiment profile. Does not change loop:document-tool/tool.
+world semantic-tool {
+  import loop:document-tool/documents@0.1.0;
+  import loopkit:ui/surfaces@0.1.0;
+  use loop:document-tool/documents@0.1.0.{document, failure};
+  use loopkit:ui/surfaces@0.1.0.{surface};
+  export run: async func(document: borrow<document>, surface: borrow<surface>)
+    -> result<string, failure>;
+}

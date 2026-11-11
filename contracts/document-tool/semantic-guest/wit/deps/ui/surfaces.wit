@@ -1,0 +1,8 @@
+package loopkit:ui@0.1.0;
+interface surfaces {
+  resource surface {
+    render: func(document: string);
+    next-event: async func() -> option<string>;
+  }
+  open: async func() -> own<surface>;
+}

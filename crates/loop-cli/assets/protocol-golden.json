@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": 1,
+  "framing": "u32-le-length-prefixed-utf8-json",
+  "cases": [
+    {"id":"empty-object","payload":"{}","accept":true},
+    {"id":"hello","payload":"{\"type\":\"hello\",\"protocol\":1,\"nonce\":\"golden-v1\",\"supportedPlanSchemas\":[1]}","accept":true},
+    {"id":"unicode","payload":"{\"message\":\"λ文\"}","accept":true},
+    {"id":"duplicate-key","payload":"{\"protocol\":1,\"protocol\":2}","accept":false},
+    {"id":"nested-duplicate-key","payload":"{\"payload\":{\"value\":1,\"value\":2}}","accept":false},
+    {"id":"array-root","payload":"[]","accept":false},
+    {"id":"null-root","payload":"null","accept":false},
+    {"id":"scalar-root","payload":"1","accept":false},
+    {"id":"trailing-object","payload":"{}{}","accept":false},
+    {"id":"non-finite","payload":"{\"number\":1e999}","accept":false},
+    {"id":"sparse-array","payload":"{\"options\":[,1]}","accept":false},
+    {"id":"truncated-object","payload":"{\"value\":","accept":false}
+  ],
+  "lengthCases": [
+    {"id":"zero-frame","length":0,"accept":false},
+    {"id":"over-frame-budget","length":1048577,"accept":false}
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "markdown": {
+    "files": 19,
+    "localLinks": 188,
+    "syntaxSnippets": 15,
+    "scope": "local targets/fragments, TS parse + JSON parse only; no API typecheck or HTTP check"
+  },
+  "catalog": {
+    "entries": 1,
+    "payloadDigest": "af251bd2e3a9cb75bce2600ef8425b7c8f48eb8efa91562b7ce5f63a9b95798b",
+    "installed": false
+  },
+  "preservation": {
+    "loop": {
+      "checked": 260,
+      "changed": [
+        "AGENTS.md",
+        "ARCHITECTURE.md",
+        "ENGINEERING_PLAN.md",
+        "QUESTIONS.md",
+        "docs/README.md",
+        "docs/development-alpha/README.md",
+        "docs/development-alpha/execution-plan.md",
+        "docs/development-alpha/prompts.md",
+        "docs/reference/agent-workflow.md",
+        "docs/reference/runtime.md",
+        "specs/README.md",
+        "specs/async-document-runtime.md",
+        "specs/foreground-development.md",
+        "specs/station-adoption.md"
+      ],
+      "unexpected": []
+    },
+    "station": {
+      "checked": 948,
+      "changed": [],
+      "unexpected": []
+    }
+  },
+  "errors": [],
+  "passed": true
+}

@@ -1,0 +1,12 @@
+{
+  "adapter": "Tao0.37/Wry0.56/WebView2+Wasmtime48; NOT Electrobun/Polyengine desktop",
+  "closed": true,
+  "componentResult": "Ok(\"revision=1;source=semantic world\"); document_events=[\"read-enter\", \"read-resume\", \"write-enter\", \"write-resume\", \"commit\"]; pending=0; store/resources dropped",
+  "frames": [
+    "{\"revision\":0,\"root\":{\"type\":\"button\",\"key\":\"replace\",\"label\":\"Replace document\",\"text\":\"Replace document\"}}",
+    "{\"revision\":1,\"root\":{\"key\":\"result\",\"text\":\"semantic world\",\"type\":\"text\"}}"
+  ],
+  "pendingEventReads": 0,
+  "ready": true,
+  "workerJoined": true
+}

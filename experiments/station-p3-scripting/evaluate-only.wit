@@ -1,0 +1,5 @@
+package loopkit:eval-probe@0.1.0;
+
+world evaluate-only {
+    export evaluate: async func(source: string, input: string) -> string;
+}

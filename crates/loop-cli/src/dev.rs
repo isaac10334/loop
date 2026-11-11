@@ -12,6 +12,10 @@ use std::{
 };
 
 static CANCELLED: AtomicBool = AtomicBool::new(false);
+/// Shared invocation cancellation; preserves the existing legacy signal handler.
+pub fn cancellation_requested() -> bool {
+    CANCELLED.load(Ordering::SeqCst)
+}
 pub fn install_cancellation() -> Result<()> {
     ctrlc::set_handler(|| CANCELLED.store(true, Ordering::SeqCst))?;
     Ok(())
@@ -263,7 +267,7 @@ fn scaffold(dir: &Path, m: &Manifest) -> Result<()> {
     write(dir.join("loop.toml"), toml::to_string_pretty(m)?)?;
     write(
         dir.join("rust-toolchain.toml"),
-        include_str!("../../../rust-toolchain.toml"),
+        include_str!("../assets/rust-toolchain.toml"),
     )?;
     write(
         dir.join(".gitignore"),
@@ -271,7 +275,7 @@ fn scaffold(dir: &Path, m: &Manifest) -> Result<()> {
     )?;
     write(
         dir.join("component/wit/application.wit"),
-        include_str!("../../loop-host/wit/application.wit"),
+        include_str!("../assets/application.wit"),
     )?;
     match m.language {
         Language::Rust => {
@@ -284,7 +288,7 @@ fn scaffold(dir: &Path, m: &Manifest) -> Result<()> {
             )?;
             write(
                 dir.join("component/src/lib.rs"),
-                include_str!("../../../templates/rust/lib.rs"),
+                include_str!("../templates/rust/lib.rs"),
             )?;
         }
         Language::Typescript => {
@@ -294,11 +298,11 @@ fn scaffold(dir: &Path, m: &Manifest) -> Result<()> {
             )?;
             write(
                 dir.join("component/app.ts"),
-                include_str!("../../../templates/typescript/app.ts"),
+                include_str!("../templates/typescript/app.ts"),
             )?;
             write(
                 dir.join("component/build.mjs"),
-                include_str!("../../../templates/typescript/build.mjs"),
+                include_str!("../templates/typescript/build.mjs"),
             )?;
             write(
                 dir.join("component/tsconfig.json"),
@@ -563,12 +567,17 @@ fn main() -> anyhow::Result<()> {{
     )?;
     Ok(())
 }
-pub fn doctor() -> Result<()> {
-    println!(
-        "loop 0.1.0 | execution: {}-{} | host: Wasmtime 48.0.0",
+fn doctor_header() -> String {
+    format!(
+        "loop {} | execution: {}-{} | host: Wasmtime 48.0.0",
+        env!("CARGO_PKG_VERSION"),
         std::env::consts::OS,
         std::env::consts::ARCH
-    );
+    )
+}
+
+pub fn doctor() -> Result<()> {
+    println!("{}", doctor_header());
     for (program, args) in [
         ("rustc", vec!["+1.98.0", "--version"]),
         ("cargo", vec!["+1.98.0", "--version"]),
@@ -579,7 +588,7 @@ pub fn doctor() -> Result<()> {
             Ok(o) if o.status.success() => {
                 println!("{program}: {}", String::from_utf8_lossy(&o.stdout).trim())
             }
-            _ => println!("MISSING: {program}; see docs/windows.md"),
+            _ => println!("MISSING: {program}; see crates/loop-cli/WINDOWS.md"),
         }
     }
     let out = Command::new("rustup")
@@ -629,6 +638,18 @@ fn wry_version() -> Result<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn doctor_reports_compiled_package_version() {
+        assert_eq!(
+            doctor_header(),
+            format!(
+                "loop {} | execution: {}-{} | host: Wasmtime 48.0.0",
+                env!("CARGO_PKG_VERSION"),
+                std::env::consts::OS,
+                std::env::consts::ARCH
+            )
+        );
+    }
     #[test]
     fn registry_host_is_portable_and_pinned() -> Result<()> {
         let stage = tempfile::tempdir()?;

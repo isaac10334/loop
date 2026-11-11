@@ -1,0 +1,52 @@
+{
+  "name": "@loop-kit/scripting",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT OR Apache-2.0",
+  "description": "Bounded scripting execution contracts and guest SDK",
+  "files": [
+    "dist",
+    "src",
+    "engine",
+    "wit",
+    "README.md",
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+    "build-engine.ps1"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@loop-kit/capabilities": "workspace:^",
+    "@loop-kit/ui": "workspace:^"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "prepack": "bun run build",
+    "test": "bun test ./test",
+    "clean": "bun ../../tooling/clean.ts",
+    "pack:check": "bun ../../scripts/check-typescript-packages.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isaac10334/loop.git",
+    "directory": "packages/scripting"
+  },
+  "homepage": "https://isaac10334.github.io/loop/docs/",
+  "bugs": {
+    "url": "https://github.com/isaac10334/loop/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

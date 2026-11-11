@@ -1,29 +1,56 @@
 name: Publish host crate
 on:
   workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish the verified host crate (false performs checks and a dry run)
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
   group: publish-host
   cancel-in-progress: false
 jobs:
-  publish:
+  verify:
     runs-on: windows-latest
     defaults:
       run:
         shell: pwsh
     steps:
       - uses: actions/checkout@v6
-      - name: Verify package
+        with:
+          ref: ${{ github.sha }}
+      - name: Verify package (artifact-dependent runtime tests may skip)
         run: |
           cargo test --locked --workspace --all-features
           if ($LASTEXITCODE) { throw 'Tests failed.' }
-          cargo publish --locked -p loop-host --dry-run
+          cargo publish --locked -p loop-host --dry-run --registry crates-io
           if ($LASTEXITCODE) { throw 'Package verification failed.' }
-      - name: Publish
+  publish:
+    if: ${{ inputs.publish }}
+    needs: verify
+    runs-on: windows-latest
+    environment: crates
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - name: Authenticate to crates.io with OIDC
+        id: auth
+        uses: rust-lang/crates-io-auth-action@v1
+      - name: Publish verified source
         env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+        # Verification already compiled this exact revision. Avoid rebuilding after
+        # exchanging the 30-minute token; no local/long-lived credential fallback.
         run: |
-          if (!$env:CARGO_REGISTRY_TOKEN) { throw 'Set the CARGO_REGISTRY_TOKEN repository secret.' }
-          cargo publish --locked -p loop-host
+          if (!$env:CARGO_REGISTRY_TOKEN) { throw 'Trusted publishing returned no token.' }
+          cargo publish --locked -p loop-host --no-verify --registry crates-io
           if ($LASTEXITCODE) { throw 'Crate publication failed.' }

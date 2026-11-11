@@ -1,63 +1,70 @@
-# Loop
+# loop-kit
 
-Build desktop applications from WebAssembly components. Write your application
-logic in Rust, describe its interface, and run it in a native host with explicit
-access to capabilities.
+Loop-kit is becoming a TypeScript-first SDK for typed capabilities and local providers. Ordinary JavaScript can define a contract, register an implementation, acquire it in a scope, and clean it up. WebAssembly is optional.
 
-Loop includes a CLI to create, run, and package applications, plus an embeddable
-Rust host built on Wasmtime.
+The current TypeScript runtime is deliberately in-process. The existing Rust CLI and Wasmtime host remain available for native/component applications, but are a separate implementation path.
 
-> [!WARNING]
-> Early preview for Windows x64. APIs and project formats may change. Start with
-> Rust; TypeScript support is experimental and uses a synchronous component ABI.
+Start with the [browser application quick start](docs/public/quickstart.md),
+[installation and release status](docs/public/installation.md), and
+[runnable examples](docs/public/examples.md). The current host-kit implementation
+is a source-build/reviewed-pack preview; npm publication is pending. Contributor
+plans live separately under `specs/` and `docs/development-alpha/`.
 
-## Install
-
-Run in PowerShell:
+## Start
 
 ```powershell
-powershell -c "irm https://isaac10334.github.io/loop/install.ps1 | iex"
+bun install
+bun run build
+bun run typecheck
+bun test
 ```
 
-The installer downloads the CLI, verifies its checksum, and sets up Rust 1.98.0
-with the WebAssembly target. It installs for your user account and keeps your
-existing default Rust toolchain. Open a new terminal after installation.
+```ts
+import { defineCapability } from "@loop-kit/capabilities";
+import { createHost } from "@loop-kit/host";
 
-> [!IMPORTANT]
-> Building applications also requires **Microsoft C++ Build Tools** with the
-> **Desktop development with C++** workload and Windows SDK. Desktop windows
-> require **WebView2 Runtime**. See [Windows setup](docs/windows.md).
-
-```powershell
-loop create hello
-loop run hello
-loop build hello
+interface Greeting { greet(name: string): string }
+const greeting = defineCapability<Greeting>({ id: "unit:hello/greeting", version: "1.0.0" });
+const host = createHost();
+host.provide(greeting, { create: () => ({ greet: name => `Hello, ${name}` }) });
+const scope = host.scope();
+const handle = await scope.acquire(greeting);
+console.log(handle.value.greet("world"));
+await handle.release();
+await scope.revoke();
+await host.dispose();
 ```
 
-Share the resulting `hello/dist/hello` directory. Your friend can run the packaged
-application without installing Loop or Rust; desktop apps still need WebView2.
-
-## Upgrade or uninstall
-
-```powershell
-loop upgrade
-loop uninstall
-```
-
-Wait for the install manager's completion message. You can also uninstall **Loop
-CLI** from Windows Settings → Apps. Uninstall keeps your projects and Rust tools.
-
-[Website](https://isaac10334.github.io/loop/) ·
-[Downloads](https://github.com/isaac10334/loop/releases) ·
-[Windows setup](docs/windows.md) · [Design](docs/design.md)
-
-## In this repository
+## Repository
 
 | Path | Purpose |
 | --- | --- |
-| `crates/loop-cli` | Create, run, and package applications |
-| `crates/loop-host` | Embeddable runtime, desktop host, and application WIT contract |
-| `templates` | Rust and experimental TypeScript starters |
-| `examples` | Sample components and applications |
+| `packages/capabilities` | Contract identities and TypeScript service association |
+| `packages/host` | In-process provider registration, scopes, handles and lifecycle |
+| `packages/ui` | Portable semantic surfaces and event contracts |
+| `packages/scripting` | Authored execution contracts and explicitly injected guest bindings |
+| `packages/workspace` | Immutable source snapshots, build receipts and checked Git change requests |
+| `crates/loop-host` | Existing Wasmtime Component Model and desktop/headless host |
+| `crates/loop-cli` | Existing Windows component application authoring CLI |
+| `experiments/wasip3` | Isolated async Component Model probe and its current JS limitation |
+| `site`, `scripts`, `.github/workflows` | Existing Windows release, installer and Pages assets |
+
+See [release and canary instructions](RELEASING.md), the generated [SDK documentation](https://isaac10334.github.io/loop/docs/), [ARCHITECTURE.md](ARCHITECTURE.md), [DECISIONS.md](DECISIONS.md), and each package README. Rust CLI users: [Windows setup](crates/loop-cli/WINDOWS.md).
+
+Portable authoring: `bun run workspace snapshot <directory> <output.json>` reads
+an explicit `loop.package.json` file list without executing it. See
+[workspace contracts](packages/workspace/README.md), [WIT/content mapper proof](contracts/svg-editor/README.md)
+and [the development proof](docs/portable-development.md). Cloud hosting is optional;
+the initial GitHub adapter prepares draft pull requests, never merges them.
+
+## Local cross-repository development
+
+Build once with `bun run build`, then run `bun run watch` while editing. Root package exports resolve to generated `dist` JavaScript and declarations; source-only edits need a successful rebuild before a consumer sees them. Station owns an optional reversible link command in its own repository. That command should link the required package dependency closure together and restore the prior installed paths when finished. Avoid saving `link:` or machine-specific paths in publishable manifests.
+
+For manual Bun links, register each `packages/<name>` with `bun link` and run `bun link @loop-kit/<name>` in the consumer with `--no-save`. Registration alone is not source propagation: watch builds are still required. Production and CI use frozen installs and packed artifacts, never the global link registry. See [ARCHITECTURE.md](ARCHITECTURE.md) for the canonical graph and repository CLI and [ENGINEERING_PLAN.md](ENGINEERING_PLAN.md) for the active gate.
+
+## Rust status
+
+The prepared Rust host and CLI are 0.1.1; published host/Windows CLI 0.1.0 do not provide the new native-kit APIs. Release the host first, then verify the matching CLI against the registry without a local patch; see [release instructions](RELEASING.md). They implement component hosting, scoped notes grants, desktop/headless execution, and Windows release/install workflows. They are not yet adapters for the TypeScript host. Validate them with `cargo fmt --all --check`, `cargo test --locked --workspace --all-features`, and `cargo clippy --locked --workspace --all-features --all-targets -- -D warnings`.
 
 Licensed under [MIT](LICENSE-MIT) OR [Apache-2.0](LICENSE-APACHE).

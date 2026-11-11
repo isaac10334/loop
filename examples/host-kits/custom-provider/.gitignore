@@ -1,0 +1,7 @@
+.artifacts/
+.history/
+node_modules/
+dist/
+.loop/
+package-lock.json
+bun.lock

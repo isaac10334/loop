@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": 1,
+  "status": "implementation-contract-not-acceptance",
+  "owner": "lead",
+  "planContract": "specs/host-kits.md#resolved-plan-data-only-boundary",
+  "factoryContract": "specs/host-kits.md#3-typed-factories-and-one-resolved-contract",
+  "officialKits": ["loop:kit/browser@0.1.0", "loop:kit/native@0.1.0"],
+  "profiles": ["loop:profile/browser-ts@0.1.0", "loop:profile/native-ts@0.1.0", "loop:profile/browser-components@0.1.0", "loop:profile/native-components@0.1.0"],
+  "component": {
+    "documentInterface": "loop:document-tool/documents@0.1.0",
+    "documentWorld": "loop:document-tool/tool@0.1.0",
+    "semanticImport": "loopkit:ui/surfaces@0.1.0",
+    "bootstrap": "rust-wit-bindgen-0.61.1",
+    "errors": ["denied", "revoked", "conflict", "invalid-source", "cancelled", "unavailable"],
+    "sourceByteBudget": 1048576,
+    "canonicalLiftEncodedByteBudget": 2097664,
+    "canonicalLiftBudgetScope": "aggregate encoded bytes per hostcall or exported result; distinct from per-field UTF-8 limits",
+    "serializedEntry": true
+  },
+  "framing": {
+    "encoding": "u32-le-length-prefixed-utf8-json",
+    "maxFrameBytes": 1048576,
+    "maxInflight": 16,
+    "maxQueuedBytes": 8388608,
+    "handshakeMs": 5000,
+    "evaluateMs": 30000,
+    "shutdownMs": 5000,
+    "operations": ["evaluate", "prepare", "start", "inspectLive", "cancel", "stop", "shutdown"]
+  },
+  "lifecycle": {
+    "abortBeforeJoin": ["registration-activation", "surface-event-reads", "bridge-pending-requests"],
+    "cleanup": "reverse-dependency",
+    "restart": "fresh-process-hosts-and-epoch"
+  },
+  "compatibility": {
+    "legacyFormatsUnchanged": true,
+    "configRequiresExplicitTrust": true,
+    "staticInspectExecutesConfig": false,
+    "capabilityVersions": "opaque-exact",
+    "runtimeClosures": "forbidden-use-pinned-module-export",
+    "externalFrameworks": "optional-isolated-examples-only"
+  }
+}

@@ -5,6 +5,7 @@ edition.workspace = true
 license.workspace = true
 rust-version.workspace = true
 publish = false
+include = ["src/**", "templates/**", "host-tools/dist/worker.js", "assets/**", "WINDOWS.md", "LICENSE-MIT", "LICENSE-APACHE"]
 
 [[bin]]
 name = "loop"
@@ -13,10 +14,11 @@ path = "src/main.rs"
 [dependencies]
 anyhow = "1"
 clap = { version = "4", features = ["derive"] }
-loop-host = { path = "../loop-host", version = "=0.1.0", features = ["desktop"] }
+loop-host = { path = "../loop-host", version = "=0.1.1", features = ["desktop"] }
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+sha2 = "0.10"
 toml = "0.8"
 dialoguer = { version = "=0.12.0", default-features = false }
 minijinja = "2"

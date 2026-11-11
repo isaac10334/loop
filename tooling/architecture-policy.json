@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "exceptionLimit": 0,
+  "exceptions": [],
+  "packages": {
+    "@loop-kit/capabilities": {"path":"packages/capabilities","owner":"Loop Kit runtime","role":"contracts","allows":[]},
+    "@loop-kit/host": {"path":"packages/host","owner":"Loop Kit runtime","role":"providers","allows":["@loop-kit/capabilities"]},
+    "@loop-kit/ui": {"path":"packages/ui","owner":"UI interaction","role":"contracts","allows":[]},
+    "@loop-kit/scripting": {"path":"packages/scripting","owner":"Loop Kit runtime","role":"application","allows":["@loop-kit/capabilities","@loop-kit/ui"]},
+    "@loop-kit/workspace": {"path":"packages/workspace","owner":"Loop Kit authoring","role":"application","allows":[]},
+    "@loop-kit/host-browser": {"path":"packages/host-browser","owner":"Browser runtime","role":"composition","allows":["@loop-kit/host","@loop-kit/ui"]},
+    "@loop-kit/renderer-dom": {"path":"packages/renderer-dom","owner":"UI interaction","role":"presentation","allows":["@loop-kit/host","@loop-kit/ui"]},
+    "@loop-kit/host-native": {"path":"packages/host-native","owner":"Native runtime","role":"composition","allows":["@loop-kit/host","@loop-kit/ui"]},
+    "@loop-kit/component-polyengine": {"path":"packages/component-polyengine","owner":"Component runtime","role":"providers","allows":["@loop-kit/ui"]}
+  },
+  "layers": {
+    "contracts":[], "domain":["contracts"], "application":["contracts","domain"],
+    "providers":["contracts","domain","application"], "presentation":["contracts","domain","application"],
+    "composition":["contracts","domain","application","providers","presentation"]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "id": "loop-host-kits",
+      "version": "0.1.0",
+      "description": "Design or implement Loop typed host configuration, kits/plugins, renderer adapters and portable/trust boundaries.",
+      "status": "proposed",
+      "discoveryStatus": "not-yet-verified",
+      "compatibility": {
+        "managerSchema": 1,
+        "catalogSchema": 1,
+        "loopApi": {
+          "@loop-kit/host": "0.1.x",
+          "@loop-kit/ui": "0.1.x",
+          "@loop-kit/scripting": "0.1.x",
+          "@loop-kit/workspace": "0.1.x"
+        },
+        "adapters": {
+          "codex-v1": 1
+        }
+      },
+      "source": {
+        "kind": "bundled",
+        "relativeRoot": "loop-host-kits"
+      },
+      "digest": {
+        "algorithm": "sha256",
+        "value": "05f7f1be23d33b4e19f3521bf724627c44e1116d5f002a12d7e7f8c59ee485a7"
+      },
+      "inventory": [
+        {
+          "path": "SKILL.md",
+          "bytes": 4808,
+          "sha256": "bd3e22b5dc5a962cea6061c28fa525c04351c27aa7a171dc01ea02f1e032b38f"
+        },
+        {
+          "path": "references/renderers.md",
+          "bytes": 2142,
+          "sha256": "f56c0167a68722225408c20ee2f3ad46ca61c19c2afe128bc332437ab286ff07"
+        }
+      ],
+      "destinations": [
+        "codex-v1"
+      ]
+    }
+  ]
+}

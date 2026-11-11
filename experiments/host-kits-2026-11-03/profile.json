@@ -1,0 +1,1478 @@
+{
+  "componentSha256": "9b459aba2977774a5c119898bee6a82884f61e9299ca44d43141468aeaffe88b",
+  "worldDigest": "sha256:9d978bf670230e8d972ba5c359a5be6227b9b313c037e298318422eeadc72e0c",
+  "imports": [
+    {
+      "interfaceId": "loop:document-tool/documents@0.1.0",
+      "path": [
+        "document"
+      ],
+      "leaf": "document",
+      "kind": "resource",
+      "member": {
+        "form": "plain",
+        "name": "document"
+      },
+      "jsName": "Document"
+    },
+    {
+      "interfaceId": "wasi:io/poll@0.2.9",
+      "path": [
+        "pollable"
+      ],
+      "leaf": "pollable",
+      "kind": "resource",
+      "member": {
+        "form": "plain",
+        "name": "pollable"
+      },
+      "jsName": "Pollable"
+    },
+    {
+      "interfaceId": "wasi:io/error@0.2.9",
+      "path": [
+        "error"
+      ],
+      "leaf": "error",
+      "kind": "resource",
+      "member": {
+        "form": "plain",
+        "name": "error"
+      },
+      "jsName": "Error"
+    },
+    {
+      "interfaceId": "wasi:io/streams@0.2.9",
+      "path": [
+        "input-stream"
+      ],
+      "leaf": "input-stream",
+      "kind": "resource",
+      "member": {
+        "form": "plain",
+        "name": "input-stream"
+      },
+      "jsName": "InputStream"
+    },
+    {
+      "interfaceId": "wasi:io/streams@0.2.9",
+      "path": [
+        "output-stream"
+      ],
+      "leaf": "output-stream",
+      "kind": "resource",
+      "member": {
+        "form": "plain",
+        "name": "output-stream"
+      },
+      "jsName": "OutputStream"
+    },
+    {
+      "interfaceId": "wasi:cli/terminal-input@0.2.9",
+      "path": [
+        "terminal-input"
+      ],
+      "leaf": "terminal-input",
+      "kind": "resource",
+      "member": {
+        "form": "plain",
+        "name": "terminal-input"
+      },
+      "jsName": "TerminalInput"
+    },
+    {
+      "interfaceId": "wasi:cli/terminal-output@0.2.9",
+      "path": [
+        "terminal-output"
+      ],
+      "leaf": "terminal-output",
+      "kind": "resource",
+      "member": {
+        "form": "plain",
+        "name": "terminal-output"
+      },
+      "jsName": "TerminalOutput"
+    },
+    {
+      "interfaceId": "wasi:io/poll@0.2.9",
+      "path": [
+        "[method]pollable.block"
+      ],
+      "leaf": "[method]pollable.block",
+      "kind": "func",
+      "member": {
+        "form": "method",
+        "resource": "pollable",
+        "member": "block"
+      },
+      "jsName": "block",
+      "jsClass": "Pollable",
+      "type": {
+        "params": [
+          {
+            "name": "self",
+            "type": {
+              "kind": "borrow",
+              "rt": {
+                "impl": null,
+                "dtor": null,
+                "dtorHost": null
+              }
+            }
+          }
+        ],
+        "results": [],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:io/streams@0.2.9",
+      "path": [
+        "[method]output-stream.subscribe"
+      ],
+      "leaf": "[method]output-stream.subscribe",
+      "kind": "func",
+      "member": {
+        "form": "method",
+        "resource": "output-stream",
+        "member": "subscribe"
+      },
+      "jsName": "subscribe",
+      "jsClass": "OutputStream",
+      "type": {
+        "params": [
+          {
+            "name": "self",
+            "type": {
+              "kind": "borrow",
+              "rt": {
+                "impl": null,
+                "dtor": null,
+                "dtorHost": null
+              }
+            }
+          }
+        ],
+        "results": [
+          {
+            "kind": "own",
+            "rt": {
+              "impl": null,
+              "dtor": null,
+              "dtorHost": null
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:cli/exit@0.2.9",
+      "path": [
+        "exit"
+      ],
+      "leaf": "exit",
+      "kind": "func",
+      "member": {
+        "form": "plain",
+        "name": "exit"
+      },
+      "jsName": "exit",
+      "type": {
+        "params": [
+          {
+            "name": "status",
+            "type": {
+              "kind": "result",
+              "ok": null,
+              "error": null
+            }
+          }
+        ],
+        "results": [],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:cli/stdin@0.2.9",
+      "path": [
+        "get-stdin"
+      ],
+      "leaf": "get-stdin",
+      "kind": "func",
+      "member": {
+        "form": "plain",
+        "name": "get-stdin"
+      },
+      "jsName": "getStdin",
+      "type": {
+        "params": [],
+        "results": [
+          {
+            "kind": "own",
+            "rt": {
+              "impl": null,
+              "dtor": null,
+              "dtorHost": null
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:cli/stdout@0.2.9",
+      "path": [
+        "get-stdout"
+      ],
+      "leaf": "get-stdout",
+      "kind": "func",
+      "member": {
+        "form": "plain",
+        "name": "get-stdout"
+      },
+      "jsName": "getStdout",
+      "type": {
+        "params": [],
+        "results": [
+          {
+            "kind": "own",
+            "rt": {
+              "impl": null,
+              "dtor": null,
+              "dtorHost": null
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:cli/stderr@0.2.9",
+      "path": [
+        "get-stderr"
+      ],
+      "leaf": "get-stderr",
+      "kind": "func",
+      "member": {
+        "form": "plain",
+        "name": "get-stderr"
+      },
+      "jsName": "getStderr",
+      "type": {
+        "params": [],
+        "results": [
+          {
+            "kind": "own",
+            "rt": {
+              "impl": null,
+              "dtor": null,
+              "dtorHost": null
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:clocks/monotonic-clock@0.2.9",
+      "path": [
+        "subscribe-duration"
+      ],
+      "leaf": "subscribe-duration",
+      "kind": "func",
+      "member": {
+        "form": "plain",
+        "name": "subscribe-duration"
+      },
+      "jsName": "subscribeDuration",
+      "type": {
+        "params": [
+          {
+            "name": "when",
+            "type": {
+              "kind": "u64"
+            }
+          }
+        ],
+        "results": [
+          {
+            "kind": "own",
+            "rt": {
+              "impl": null,
+              "dtor": null,
+              "dtorHost": null
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "loop:document-tool/documents@0.1.0",
+      "path": [
+        "[method]document.read"
+      ],
+      "leaf": "[method]document.read",
+      "kind": "func",
+      "member": {
+        "form": "method",
+        "resource": "document",
+        "member": "read"
+      },
+      "jsName": "read",
+      "jsClass": "Document",
+      "type": {
+        "params": [
+          {
+            "name": "self",
+            "type": {
+              "kind": "borrow",
+              "rt": {
+                "impl": null,
+                "dtor": null,
+                "dtorHost": null
+              }
+            }
+          }
+        ],
+        "results": [
+          {
+            "kind": "result",
+            "ok": {
+              "kind": "record",
+              "fields": [
+                {
+                  "label": "revision",
+                  "type": {
+                    "kind": "string"
+                  }
+                },
+                {
+                  "label": "source",
+                  "type": {
+                    "kind": "string"
+                  }
+                }
+              ]
+            },
+            "error": {
+              "kind": "variant",
+              "cases": [
+                {
+                  "label": "denied",
+                  "type": null
+                },
+                {
+                  "label": "revoked",
+                  "type": null
+                },
+                {
+                  "label": "conflict",
+                  "type": {
+                    "kind": "record",
+                    "fields": [
+                      {
+                        "label": "revision",
+                        "type": {
+                          "kind": "string"
+                        }
+                      },
+                      {
+                        "label": "source",
+                        "type": {
+                          "kind": "string"
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "invalid-source",
+                  "type": {
+                    "kind": "string"
+                  }
+                },
+                {
+                  "label": "cancelled",
+                  "type": null
+                },
+                {
+                  "label": "unavailable",
+                  "type": null
+                }
+              ]
+            }
+          }
+        ],
+        "async": true
+      }
+    },
+    {
+      "interfaceId": "loop:document-tool/documents@0.1.0",
+      "path": [
+        "[method]document.write"
+      ],
+      "leaf": "[method]document.write",
+      "kind": "func",
+      "member": {
+        "form": "method",
+        "resource": "document",
+        "member": "write"
+      },
+      "jsName": "write",
+      "jsClass": "Document",
+      "type": {
+        "params": [
+          {
+            "name": "self",
+            "type": {
+              "kind": "borrow",
+              "rt": {
+                "impl": null,
+                "dtor": null,
+                "dtorHost": null
+              }
+            }
+          },
+          {
+            "name": "expected-revision",
+            "type": {
+              "kind": "string"
+            }
+          },
+          {
+            "name": "source",
+            "type": {
+              "kind": "string"
+            }
+          }
+        ],
+        "results": [
+          {
+            "kind": "result",
+            "ok": {
+              "kind": "record",
+              "fields": [
+                {
+                  "label": "revision",
+                  "type": {
+                    "kind": "string"
+                  }
+                },
+                {
+                  "label": "source",
+                  "type": {
+                    "kind": "string"
+                  }
+                }
+              ]
+            },
+            "error": {
+              "kind": "variant",
+              "cases": [
+                {
+                  "label": "denied",
+                  "type": null
+                },
+                {
+                  "label": "revoked",
+                  "type": null
+                },
+                {
+                  "label": "conflict",
+                  "type": {
+                    "kind": "record",
+                    "fields": [
+                      {
+                        "label": "revision",
+                        "type": {
+                          "kind": "string"
+                        }
+                      },
+                      {
+                        "label": "source",
+                        "type": {
+                          "kind": "string"
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "label": "invalid-source",
+                  "type": {
+                    "kind": "string"
+                  }
+                },
+                {
+                  "label": "cancelled",
+                  "type": null
+                },
+                {
+                  "label": "unavailable",
+                  "type": null
+                }
+              ]
+            }
+          }
+        ],
+        "async": true
+      }
+    },
+    {
+      "interfaceId": "wasi:io/poll@0.2.9",
+      "path": [
+        "poll"
+      ],
+      "leaf": "poll",
+      "kind": "func",
+      "member": {
+        "form": "plain",
+        "name": "poll"
+      },
+      "jsName": "poll",
+      "type": {
+        "params": [
+          {
+            "name": "in",
+            "type": {
+              "kind": "list",
+              "element": {
+                "kind": "borrow",
+                "rt": {
+                  "impl": null,
+                  "dtor": null,
+                  "dtorHost": null
+                }
+              }
+            }
+          }
+        ],
+        "results": [
+          {
+            "kind": "list",
+            "element": {
+              "kind": "u32"
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:io/streams@0.2.9",
+      "path": [
+        "[method]output-stream.check-write"
+      ],
+      "leaf": "[method]output-stream.check-write",
+      "kind": "func",
+      "member": {
+        "form": "method",
+        "resource": "output-stream",
+        "member": "check-write"
+      },
+      "jsName": "checkWrite",
+      "jsClass": "OutputStream",
+      "type": {
+        "params": [
+          {
+            "name": "self",
+            "type": {
+              "kind": "borrow",
+              "rt": {
+                "impl": null,
+                "dtor": null,
+                "dtorHost": null
+              }
+            }
+          }
+        ],
+        "results": [
+          {
+            "kind": "result",
+            "ok": {
+              "kind": "u64"
+            },
+            "error": {
+              "kind": "variant",
+              "cases": [
+                {
+                  "label": "last-operation-failed",
+                  "type": {
+                    "kind": "own",
+                    "rt": {
+                      "impl": null,
+                      "dtor": null,
+                      "dtorHost": null
+                    }
+                  }
+                },
+                {
+                  "label": "closed",
+                  "type": null
+                }
+              ]
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:io/streams@0.2.9",
+      "path": [
+        "[method]output-stream.write"
+      ],
+      "leaf": "[method]output-stream.write",
+      "kind": "func",
+      "member": {
+        "form": "method",
+        "resource": "output-stream",
+        "member": "write"
+      },
+      "jsName": "write",
+      "jsClass": "OutputStream",
+      "type": {
+        "params": [
+          {
+            "name": "self",
+            "type": {
+              "kind": "borrow",
+              "rt": {
+                "impl": null,
+                "dtor": null,
+                "dtorHost": null
+              }
+            }
+          },
+          {
+            "name": "contents",
+            "type": {
+              "kind": "list",
+              "element": {
+                "kind": "u8"
+              }
+            }
+          }
+        ],
+        "results": [
+          {
+            "kind": "result",
+            "ok": null,
+            "error": {
+              "kind": "variant",
+              "cases": [
+                {
+                  "label": "last-operation-failed",
+                  "type": {
+                    "kind": "own",
+                    "rt": {
+                      "impl": null,
+                      "dtor": null,
+                      "dtorHost": null
+                    }
+                  }
+                },
+                {
+                  "label": "closed",
+                  "type": null
+                }
+              ]
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:io/streams@0.2.9",
+      "path": [
+        "[method]output-stream.blocking-flush"
+      ],
+      "leaf": "[method]output-stream.blocking-flush",
+      "kind": "func",
+      "member": {
+        "form": "method",
+        "resource": "output-stream",
+        "member": "blocking-flush"
+      },
+      "jsName": "blockingFlush",
+      "jsClass": "OutputStream",
+      "type": {
+        "params": [
+          {
+            "name": "self",
+            "type": {
+              "kind": "borrow",
+              "rt": {
+                "impl": null,
+                "dtor": null,
+                "dtorHost": null
+              }
+            }
+          }
+        ],
+        "results": [
+          {
+            "kind": "result",
+            "ok": null,
+            "error": {
+              "kind": "variant",
+              "cases": [
+                {
+                  "label": "last-operation-failed",
+                  "type": {
+                    "kind": "own",
+                    "rt": {
+                      "impl": null,
+                      "dtor": null,
+                      "dtorHost": null
+                    }
+                  }
+                },
+                {
+                  "label": "closed",
+                  "type": null
+                }
+              ]
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:cli/environment@0.2.9",
+      "path": [
+        "get-environment"
+      ],
+      "leaf": "get-environment",
+      "kind": "func",
+      "member": {
+        "form": "plain",
+        "name": "get-environment"
+      },
+      "jsName": "getEnvironment",
+      "type": {
+        "params": [],
+        "results": [
+          {
+            "kind": "list",
+            "element": {
+              "kind": "tuple",
+              "elements": [
+                {
+                  "kind": "string"
+                },
+                {
+                  "kind": "string"
+                }
+              ]
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:cli/terminal-stdin@0.2.9",
+      "path": [
+        "get-terminal-stdin"
+      ],
+      "leaf": "get-terminal-stdin",
+      "kind": "func",
+      "member": {
+        "form": "plain",
+        "name": "get-terminal-stdin"
+      },
+      "jsName": "getTerminalStdin",
+      "type": {
+        "params": [],
+        "results": [
+          {
+            "kind": "option",
+            "type": {
+              "kind": "own",
+              "rt": {
+                "impl": null,
+                "dtor": null,
+                "dtorHost": null
+              }
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:cli/terminal-stdout@0.2.9",
+      "path": [
+        "get-terminal-stdout"
+      ],
+      "leaf": "get-terminal-stdout",
+      "kind": "func",
+      "member": {
+        "form": "plain",
+        "name": "get-terminal-stdout"
+      },
+      "jsName": "getTerminalStdout",
+      "type": {
+        "params": [],
+        "results": [
+          {
+            "kind": "option",
+            "type": {
+              "kind": "own",
+              "rt": {
+                "impl": null,
+                "dtor": null,
+                "dtorHost": null
+              }
+            }
+          }
+        ],
+        "async": false
+      }
+    },
+    {
+      "interfaceId": "wasi:cli/terminal-stderr@0.2.9",
+      "path": [
+        "get-terminal-stderr"
+      ],
+      "leaf": "get-terminal-stderr",
+      "kind": "func",
+      "member": {
+        "form": "plain",
+        "name": "get-terminal-stderr"
+      },
+      "jsName": "getTerminalStderr",
+      "type": {
+        "params": [],
+        "results": [
+          {
+            "kind": "option",
+            "type": {
+              "kind": "own",
+              "rt": {
+                "impl": null,
+                "dtor": null,
+                "dtorHost": null
+              }
+            }
+          }
+        ],
+        "async": false
+      }
+    }
+  ],
+  "exports": [
+    {
+      "kind": "lifted-func",
+      "name": "replace-text",
+      "coreDef": {
+        "kind": "export",
+        "instance": 1,
+        "item": {
+          "name": "[async-lift]replace-text",
+          "space": "func"
+        }
+      },
+      "options": 12,
+      "type": 16
+    }
+  ],
+  "types": [
+    {
+      "kind": "func",
+      "params": [
+        {
+          "label": "status",
+          "type": {
+            "kind": "result",
+            "ok": null,
+            "err": null
+          }
+        }
+      ],
+      "results": [],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [
+        {
+          "label": "self",
+          "type": {
+            "kind": "borrow",
+            "resource": 1
+          }
+        }
+      ],
+      "results": [],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [
+        {
+          "label": "self",
+          "type": {
+            "kind": "borrow",
+            "resource": 4
+          }
+        }
+      ],
+      "results": [
+        {
+          "kind": "own",
+          "resource": 1
+        }
+      ],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [],
+      "results": [
+        {
+          "kind": "own",
+          "resource": 3
+        }
+      ],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [],
+      "results": [
+        {
+          "kind": "own",
+          "resource": 4
+        }
+      ],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [
+        {
+          "label": "when",
+          "type": {
+            "kind": "u64"
+          }
+        }
+      ],
+      "results": [
+        {
+          "kind": "own",
+          "resource": 1
+        }
+      ],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [
+        {
+          "label": "self",
+          "type": {
+            "kind": "borrow",
+            "resource": 0
+          }
+        }
+      ],
+      "results": [
+        {
+          "kind": "result",
+          "ok": {
+            "kind": "record",
+            "fields": [
+              {
+                "label": "revision",
+                "type": {
+                  "kind": "string"
+                }
+              },
+              {
+                "label": "source",
+                "type": {
+                  "kind": "string"
+                }
+              }
+            ]
+          },
+          "err": {
+            "kind": "variant",
+            "cases": [
+              {
+                "label": "denied",
+                "type": null
+              },
+              {
+                "label": "revoked",
+                "type": null
+              },
+              {
+                "label": "conflict",
+                "type": {
+                  "kind": "record",
+                  "fields": [
+                    {
+                      "label": "revision",
+                      "type": {
+                        "kind": "string"
+                      }
+                    },
+                    {
+                      "label": "source",
+                      "type": {
+                        "kind": "string"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "label": "invalid-source",
+                "type": {
+                  "kind": "string"
+                }
+              },
+              {
+                "label": "cancelled",
+                "type": null
+              },
+              {
+                "label": "unavailable",
+                "type": null
+              }
+            ]
+          }
+        }
+      ],
+      "async": true
+    },
+    {
+      "kind": "func",
+      "params": [
+        {
+          "label": "self",
+          "type": {
+            "kind": "borrow",
+            "resource": 0
+          }
+        },
+        {
+          "label": "expected-revision",
+          "type": {
+            "kind": "string"
+          }
+        },
+        {
+          "label": "source",
+          "type": {
+            "kind": "string"
+          }
+        }
+      ],
+      "results": [
+        {
+          "kind": "result",
+          "ok": {
+            "kind": "record",
+            "fields": [
+              {
+                "label": "revision",
+                "type": {
+                  "kind": "string"
+                }
+              },
+              {
+                "label": "source",
+                "type": {
+                  "kind": "string"
+                }
+              }
+            ]
+          },
+          "err": {
+            "kind": "variant",
+            "cases": [
+              {
+                "label": "denied",
+                "type": null
+              },
+              {
+                "label": "revoked",
+                "type": null
+              },
+              {
+                "label": "conflict",
+                "type": {
+                  "kind": "record",
+                  "fields": [
+                    {
+                      "label": "revision",
+                      "type": {
+                        "kind": "string"
+                      }
+                    },
+                    {
+                      "label": "source",
+                      "type": {
+                        "kind": "string"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "label": "invalid-source",
+                "type": {
+                  "kind": "string"
+                }
+              },
+              {
+                "label": "cancelled",
+                "type": null
+              },
+              {
+                "label": "unavailable",
+                "type": null
+              }
+            ]
+          }
+        }
+      ],
+      "async": true
+    },
+    {
+      "kind": "tuple",
+      "elements": [
+        {
+          "kind": "result",
+          "ok": {
+            "kind": "string"
+          },
+          "err": {
+            "kind": "variant",
+            "cases": [
+              {
+                "label": "denied",
+                "type": null
+              },
+              {
+                "label": "revoked",
+                "type": null
+              },
+              {
+                "label": "conflict",
+                "type": {
+                  "kind": "record",
+                  "fields": [
+                    {
+                      "label": "revision",
+                      "type": {
+                        "kind": "string"
+                      }
+                    },
+                    {
+                      "label": "source",
+                      "type": {
+                        "kind": "string"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "label": "invalid-source",
+                "type": {
+                  "kind": "string"
+                }
+              },
+              {
+                "label": "cancelled",
+                "type": null
+              },
+              {
+                "label": "unavailable",
+                "type": null
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "func",
+      "params": [
+        {
+          "label": "in",
+          "type": {
+            "kind": "list",
+            "element": {
+              "kind": "borrow",
+              "resource": 1
+            }
+          }
+        }
+      ],
+      "results": [
+        {
+          "kind": "list",
+          "element": {
+            "kind": "u32"
+          }
+        }
+      ],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [
+        {
+          "label": "self",
+          "type": {
+            "kind": "borrow",
+            "resource": 4
+          }
+        }
+      ],
+      "results": [
+        {
+          "kind": "result",
+          "ok": {
+            "kind": "u64"
+          },
+          "err": {
+            "kind": "variant",
+            "cases": [
+              {
+                "label": "last-operation-failed",
+                "type": {
+                  "kind": "own",
+                  "resource": 2
+                }
+              },
+              {
+                "label": "closed",
+                "type": null
+              }
+            ]
+          }
+        }
+      ],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [
+        {
+          "label": "self",
+          "type": {
+            "kind": "borrow",
+            "resource": 4
+          }
+        },
+        {
+          "label": "contents",
+          "type": {
+            "kind": "list",
+            "element": {
+              "kind": "u8"
+            }
+          }
+        }
+      ],
+      "results": [
+        {
+          "kind": "result",
+          "ok": null,
+          "err": {
+            "kind": "variant",
+            "cases": [
+              {
+                "label": "last-operation-failed",
+                "type": {
+                  "kind": "own",
+                  "resource": 2
+                }
+              },
+              {
+                "label": "closed",
+                "type": null
+              }
+            ]
+          }
+        }
+      ],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [
+        {
+          "label": "self",
+          "type": {
+            "kind": "borrow",
+            "resource": 4
+          }
+        }
+      ],
+      "results": [
+        {
+          "kind": "result",
+          "ok": null,
+          "err": {
+            "kind": "variant",
+            "cases": [
+              {
+                "label": "last-operation-failed",
+                "type": {
+                  "kind": "own",
+                  "resource": 2
+                }
+              },
+              {
+                "label": "closed",
+                "type": null
+              }
+            ]
+          }
+        }
+      ],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [],
+      "results": [
+        {
+          "kind": "list",
+          "element": {
+            "kind": "tuple",
+            "elements": [
+              {
+                "kind": "string"
+              },
+              {
+                "kind": "string"
+              }
+            ]
+          }
+        }
+      ],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [],
+      "results": [
+        {
+          "kind": "option",
+          "type": {
+            "kind": "own",
+            "resource": 5
+          }
+        }
+      ],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [],
+      "results": [
+        {
+          "kind": "option",
+          "type": {
+            "kind": "own",
+            "resource": 6
+          }
+        }
+      ],
+      "async": false
+    },
+    {
+      "kind": "func",
+      "params": [
+        {
+          "label": "document",
+          "type": {
+            "kind": "borrow",
+            "resource": 0
+          }
+        },
+        {
+          "label": "from",
+          "type": {
+            "kind": "string"
+          }
+        },
+        {
+          "label": "to",
+          "type": {
+            "kind": "string"
+          }
+        }
+      ],
+      "results": [
+        {
+          "kind": "result",
+          "ok": {
+            "kind": "string"
+          },
+          "err": {
+            "kind": "variant",
+            "cases": [
+              {
+                "label": "denied",
+                "type": null
+              },
+              {
+                "label": "revoked",
+                "type": null
+              },
+              {
+                "label": "conflict",
+                "type": {
+                  "kind": "record",
+                  "fields": [
+                    {
+                      "label": "revision",
+                      "type": {
+                        "kind": "string"
+                      }
+                    },
+                    {
+                      "label": "source",
+                      "type": {
+                        "kind": "string"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "label": "invalid-source",
+                "type": {
+                  "kind": "string"
+                }
+              },
+              {
+                "label": "cancelled",
+                "type": null
+              },
+              {
+                "label": "unavailable",
+                "type": null
+              }
+            ]
+          }
+        }
+      ],
+      "async": true
+    }
+  ]
+}

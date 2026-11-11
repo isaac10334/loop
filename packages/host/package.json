@@ -1,0 +1,49 @@
+{
+  "name": "@loop-kit/host",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "In-process capability provider host",
+  "license": "MIT OR Apache-2.0",
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LIFECYCLE.md",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@loop-kit/capabilities": "workspace:^"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "bun run build",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "bun test ./test",
+    "clean": "bun ../../tooling/clean.ts",
+    "pack:check": "bun ../../scripts/check-typescript-packages.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isaac10334/loop.git",
+    "directory": "packages/host"
+  },
+  "homepage": "https://isaac10334.github.io/loop/docs/",
+  "bugs": {
+    "url": "https://github.com/isaac10334/loop/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,9 @@
+name = "docs_editor"
+description = "Condense one owned Loop guide/reference/spec set and verify its routes."
+developer_instructions = """
+Read applicable AGENTS and docs/spec instructions. Own only the assigned files.
+Find the canonical owner before merging duplicate prose. Preserve unique behavior,
+compatibility and acceptance details. Label proposals and unresolved choices.
+Use direct prose and working local links. Return changed/deleted paths, net size,
+checks and open questions. Do not change runtime code or publish content.
+"""

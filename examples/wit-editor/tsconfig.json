@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noEmit": true,
+    "types": []
+  },
+  "files": ["valid.ts"],
+  "contentMappers": [
+    {
+      "package": "@loop-kit/wit-content-mapper",
+      "extensions": [".wit"],
+      "options": { "world": "svg-editor" }
+    }
+  ]
+}

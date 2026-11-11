@@ -1,0 +1,328 @@
+{
+  "cwd": "C:\\src\\ilt\\loop\\experiments\\host-kits-2026-11-03",
+  "logWrapper": "PowerShell: command *>&1 | Tee-Object log; append EXIT_CODE=$LASTEXITCODE; propagate exit",
+  "commands": [
+    {
+      "command": "CARGO_TARGET_DIR=guest/target cargo build --offline --release --target wasm32-wasip2 --manifest-path guest/Cargo.toml",
+      "log": "guest-build-1.log",
+      "exitCodes": [
+        101
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=guest/target WIT_BINDGEN_DEBUG=1 cargo build --offline --locked --release --target wasm32-wasip2 --manifest-path guest/Cargo.toml",
+      "log": "guest-build-2.log",
+      "exitCodes": [
+        101
+      ]
+    },
+    {
+      "command": "same command as guest-build-2; corrected generated Rust binding source",
+      "log": "guest-build-3.log",
+      "exitCodes": [
+        101
+      ]
+    },
+    {
+      "command": "same command as guest-build-2; removed duplicate generated alias imports",
+      "log": "guest-build-4.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=guest/target cargo build --offline --release --target wasm32-wasip2 --manifest-path guest-v2/Cargo.toml",
+      "log": "guest-v2-build.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=semantic-guest/target cargo build --offline --release --target wasm32-wasip2 --manifest-path semantic-guest/Cargo.toml",
+      "log": "semantic-build-1.log",
+      "exitCodes": [
+        101
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=semantic-guest/target cargo build --offline --locked --release --target wasm32-wasip2 --manifest-path semantic-guest/Cargo.toml",
+      "log": "semantic-build-2.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=native/target cargo build --offline --manifest-path native/Cargo.toml",
+      "log": "native-build-1.log",
+      "exitCodes": [
+        101
+      ]
+    },
+    {
+      "command": "bun build browser.ts --target browser --outfile browser.bundle.js",
+      "log": "browser-build-1.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "bun build browser.ts --target browser --outfile browser.bundle.js",
+      "log": "browser-build-2.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "bun build-browser.ts",
+      "log": "browser-public-build.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "node run-browser.mjs (classic ESM load failure)",
+      "log": "browser-run-1.log",
+      "exitCodes": [
+        1
+      ]
+    },
+    {
+      "command": "node run-browser.mjs (module-script fix)",
+      "log": "browser-run-2.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "node run-browser.mjs guest/target/wasm32-wasip2/release/async_document_guest_v2.wasm -v2 'fresh-v2;'",
+      "log": "browser-v2-run.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "node run-browser.mjs artifacts/document-v1.wasm",
+      "log": "browser-public-v1-run.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "node run-browser.mjs artifacts/document-v2.wasm -v2 'fresh-v2;'",
+      "log": "browser-public-v2-run.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "bun build semantic-browser.ts --target browser --outfile semantic-browser.bundle.js",
+      "log": "semantic-browser-build.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "node run-semantic-browser.mjs",
+      "log": "semantic-browser-run-1.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "node run-semantic-browser.mjs (public-specifier rebuild)",
+      "log": "semantic-browser-public-run.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "bun inspect.ts",
+      "log": "inspect.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "bun inspect.ts guest/target/wasm32-wasip2/release/async_document_guest_v2.wasm profile-v2.json",
+      "log": "inspect-v2.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "bun inspect.ts semantic-guest/target/wasm32-wasip2/release/semantic_document_guest.wasm semantic-profile.json",
+      "log": "semantic-inspect.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "DASH_RELEASE_OFFLINE=1 bun desktop-electrobun-probe.ts (absolute package directory)",
+      "log": "desktop-electrobun-attempt-1.log",
+      "exitCodes": [
+        1
+      ]
+    },
+    {
+      "command": "DASH_RELEASE_OFFLINE=1 bun desktop-electrobun-probe.ts (declared public export target)",
+      "log": "desktop-electrobun-attempt-2.log",
+      "exitCodes": [
+        1
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=native/target cargo build --offline --features desktop --manifest-path native/Cargo.toml",
+      "log": "desktop-build-1.log",
+      "exitCodes": [
+        101
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=native/target cargo build --offline --locked --features desktop --manifest-path native/Cargo.toml",
+      "log": "desktop-build-2.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=native/target cargo build --offline --locked --features desktop --manifest-path native/Cargo.toml",
+      "log": "desktop-build-3.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "node run-desktop.mjs (initial existing-page readiness blocker)",
+      "log": "desktop-run-1.log",
+      "exitCodes": [
+        1
+      ]
+    },
+    {
+      "command": "node run-desktop.mjs (stale debug-port profile blocker)",
+      "log": "desktop-run-2.log",
+      "exitCodes": [
+        1
+      ]
+    },
+    {
+      "command": "node run-desktop.mjs (fresh owned profile + existing-page readiness)",
+      "log": "desktop-run-3.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "bun build js-guest/guest.ts --target browser --outfile js-guest/guest.js",
+      "log": "js-guest-build.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "bun js-guest/componentize.mjs (initial resolver selected0.23)",
+      "log": "js-guest-componentize.log",
+      "exitCodes": [
+        1
+      ]
+    },
+    {
+      "command": "bun js-guest/componentize.mjs (explicit installed0.22 public export)",
+      "log": "js-guest-componentize-pinned.log",
+      "exitCodes": [
+        1
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=native/target cargo build --offline --locked --manifest-path native/Cargo.toml",
+      "log": "native-build-2.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=native/target cargo build --offline --locked --manifest-path native/Cargo.toml",
+      "log": "native-build-3.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=native/target cargo build --offline --locked --manifest-path native/Cargo.toml",
+      "log": "native-build-4.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=native/target cargo build --offline --locked --manifest-path native/Cargo.toml",
+      "log": "native-build-5.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "native/target/debug/async-document-native-probe.exe (default v1 path)",
+      "log": "native-run-1.log",
+      "exitCodes": [
+        1
+      ]
+    },
+    {
+      "command": "native/target/debug/async-document-native-probe.exe (default v1 path)",
+      "log": "native-run-2.log",
+      "exitCodes": [
+        1
+      ]
+    },
+    {
+      "command": "native/target/debug/async-document-native-probe.exe (default v1 path)",
+      "log": "native-run-3.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "PROBE_EXPECTED_PREFIX='fresh-v2;' native/target/debug/async-document-native-probe.exe guest/target/wasm32-wasip2/release/async_document_guest_v2.wasm",
+      "log": "native-v2-run.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "CARGO_TARGET_DIR=native/target cargo build --offline --locked --manifest-path native/Cargo.toml",
+      "log": "native-semantic-build-1.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "native/target/debug/async-document-native-probe.exe semantic-guest/target/wasm32-wasip2/release/semantic_document_guest.wasm --semantic",
+      "log": "native-semantic-run-1.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "native/target/debug/async-document-native-probe.exe artifacts/document-v1.wasm",
+      "log": "native-final-v1.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "PROBE_EXPECTED_PREFIX='fresh-v2;' native/target/debug/async-document-native-probe.exe artifacts/document-v2.wasm",
+      "log": "native-final-v2.log",
+      "exitCodes": [
+        0
+      ]
+    },
+    {
+      "command": "native/target/debug/async-document-native-probe.exe artifacts/document-semantic.wasm --semantic",
+      "log": "native-final-semantic.log",
+      "exitCodes": [
+        0
+      ]
+    }
+  ]
+}

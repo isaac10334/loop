@@ -1,0 +1,22 @@
+package loopkit:script-probe@0.1.0;
+
+interface services {
+    invoke: async func(binding: string, input: string) -> string;
+}
+
+interface surfaces {
+    resource surface {
+        render: func(document: string);
+        next-event: async func() -> option<string>;
+    }
+    open: func() -> own<surface>;
+}
+
+world probe {
+    import services;
+    import surfaces;
+    export evaluate: async func(source: string, input: string) -> string;
+    export start: async func(source: string, input: string) -> string;
+    export dispatch: async func(input: string) -> string;
+    export stop: func();
+}

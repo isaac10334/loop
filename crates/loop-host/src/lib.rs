@@ -316,6 +316,10 @@ pub async fn headless(
 }
 #[cfg(feature = "desktop")]
 pub mod desktop;
+/// Async nominal document execution, separate from legacy application dispatch.
+pub mod document_runtime;
+/// Native lifecycle/presentation through bounded semantic surface ports.
+pub mod native_kit;
 
 #[cfg(test)]
 mod tests {

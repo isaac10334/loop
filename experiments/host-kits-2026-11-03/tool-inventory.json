@@ -1,0 +1,89 @@
+{
+  "versionsLog": "versions.log",
+  "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+  "cargo": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+  "bun": "1.3.14",
+  "node": "v24.14.1",
+  "tools": [
+    {
+      "path": "C:\\Users\\ijhar\\.rustup\\toolchains\\1.98.0-x86_64-pc-windows-msvc\\bin\\rustc.exe",
+      "bytes": 110592,
+      "sha256": "777119d5feeca3d9fc163dc0e0d8be896cfcb65c45255328cef214d833546c6a"
+    },
+    {
+      "path": "C:\\Users\\ijhar\\.rustup\\toolchains\\1.98.0-x86_64-pc-windows-msvc\\bin\\cargo.exe",
+      "bytes": 31435264,
+      "sha256": "197c9f582da4994c585b13366abc12e810de2708ce14ddcf0873a8f377f3954e"
+    },
+    {
+      "path": "C:\\Users\\ijhar\\.proto\\bin\\bun.exe",
+      "bytes": 98480216,
+      "sha256": "0187f68d843f825a72ada4a7eca60db896ed753759a7f8252edcd31ac1bf1b9c"
+    },
+    {
+      "path": "C:\\Program Files\\nodejs\\node.exe",
+      "bytes": 91426304,
+      "sha256": "58e74bf02fc5bbacc41dcb8bef089961cd5bddd37830b87784e4fc624d145d1f"
+    },
+    {
+      "path": "C:\\Users\\ijhar\\.cargo\\bin\\cargo-component.exe",
+      "bytes": 14412288,
+      "sha256": "c53487f05276caaa5247880831bd7cd51bdf70209546a113dee67d783c81edaa"
+    },
+    {
+      "path": "C:\\Program Files\\Wasmtime\\bin\\wasmtime.exe",
+      "bytes": 32815104,
+      "sha256": "f0c4bc5dacd3b94e792ac2aaaa5d57720ec493dfbaef2d0bf57b37e1c029e832"
+    },
+    {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa"
+    },
+    {
+      "path": "C:\\Users\\ijhar\\Desktop\\station\\node_modules\\@polyengine\\translator\\esm\\translator_shim.wasm",
+      "bytes": 1880176,
+      "sha256": "ddb2e0144a9c5a1d65ff6ba05c45f913cc4111bc92a11624a44ae49486260e13"
+    },
+    {
+      "path": "C:\\src\\ilt\\loop\\experiments\\wasip3\\js\\node_modules\\@bytecodealliance\\componentize-js\\package.json",
+      "bytes": 1775,
+      "sha256": "15929a1744df26e5cad2057d617fd4b366fac37e90df4b850f58535aeceb8b7e"
+    },
+    {
+      "path": "C:\\src\\ilt\\loop\\experiments\\wasip3\\js\\node_modules\\@bytecodealliance\\componentize-js\\src\\componentize.js",
+      "bytes": 18901,
+      "sha256": "e58ef4f3b126f4a3fd07c61b368930bbf02dd0029f0f03e4c6928528e994e559"
+    },
+    {
+      "path": "C:\\src\\ilt\\loop\\experiments\\wasip3\\js\\node_modules\\@bytecodealliance\\componentize-js\\lib\\spidermonkey-embedding-splicer.js",
+      "bytes": 155650,
+      "sha256": "075b7e63ca2c8d9337b9a05c3aebe392c22b11ebcadbef0292f8251814c91e7d"
+    },
+    {
+      "path": "C:\\src\\ilt\\loop\\experiments\\wasip3\\js\\node_modules\\@bytecodealliance\\componentize-js\\lib\\spidermonkey-embedding-splicer.core.wasm",
+      "bytes": 5498514,
+      "sha256": "8970f6ea3ac7dfdb1d17079cd47b295b53ae4944088b097045754b8e1bfbb852"
+    },
+    {
+      "path": "C:\\src\\ilt\\loop\\experiments\\wasip3\\js\\node_modules\\@bytecodealliance\\componentize-js\\lib\\spidermonkey-embedding-splicer.core2.wasm",
+      "bytes": 27254,
+      "sha256": "364466ad6cb6eb27aa2e6f38a15f6a986b50f0d964aa7bb838e2bb3a1259e4c2"
+    },
+    {
+      "path": "C:\\Users\\ijhar\\Desktop\\deepseek-harness\\node_modules\\.pnpm\\playwright@1.61.1\\node_modules\\playwright\\package.json",
+      "bytes": 1559,
+      "sha256": "6b840268612656f0639fb7d68782e8353bdf11518589d30ddf66f283c2670ed5"
+    },
+    {
+      "path": "C:\\Users\\ijhar\\Desktop\\station\\node_modules\\electrobun\\package.json",
+      "bytes": 759,
+      "sha256": "226c6b30406b08bb0c638bc2916d1bb00a7c82e333f1a4888796e6fd9a93c977"
+    },
+    {
+      "path": "C:\\Users\\ijhar\\Desktop\\station\\node_modules\\electrobun\\lib\\moved.cjs",
+      "bytes": 498,
+      "sha256": "eb1447231f902f1a71f0eddbb98b6f2a559523aa30274dc8d3d8a8dd28e63e48"
+    }
+  ]
+}

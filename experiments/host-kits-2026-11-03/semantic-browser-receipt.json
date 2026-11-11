@@ -1,0 +1,115 @@
+{
+  "profile": "SEPARATE document+semantic surface extension, NOT G1",
+  "componentSha256": "e8a5aa7730b6060d6b00cbbffade98e68588b76619365ba220567ae048b3af3d",
+  "worldDigest": "sha256:8f91fe49f2e999c6c9ff4d89146d7fa2b84eabe5c09a802c32290e3c1cfa99e1",
+  "tests": [
+    {
+      "name": "await-real-button",
+      "suspended": true,
+      "pendingEventReads": 1
+    },
+    {
+      "name": "invalid-stale-duplicate-event-denied",
+      "event": {
+        "revision": 9,
+        "sequence": 1,
+        "key": "replace",
+        "type": "activate"
+      }
+    },
+    {
+      "name": "invalid-stale-duplicate-event-denied",
+      "event": {
+        "revision": 0,
+        "sequence": 0,
+        "key": "replace",
+        "type": "activate"
+      }
+    },
+    {
+      "name": "invalid-stale-duplicate-event-denied",
+      "event": {
+        "revision": 0,
+        "sequence": 1,
+        "key": "unknown",
+        "type": "activate"
+      }
+    },
+    {
+      "name": "disabled-event-denied"
+    },
+    {
+      "name": "real-button-component-document-frame",
+      "ok": "revision=1;source=semantic world",
+      "frames": [
+        {
+          "revision": 0,
+          "root": {
+            "type": "button",
+            "key": "replace",
+            "label": "Replace document",
+            "text": "Replace document",
+            "disabled": false
+          }
+        },
+        {
+          "revision": 1,
+          "root": {
+            "key": "result",
+            "text": "semantic world",
+            "type": "text"
+          }
+        }
+      ],
+      "documentEvents": [
+        "read-enter",
+        "read-resume",
+        "write-enter",
+        "write-resume",
+        "commit"
+      ]
+    },
+    {
+      "name": "post-disposal-event-denied"
+    },
+    {
+      "name": "close-pending",
+      "error": {
+        "kind": "cancelled"
+      },
+      "revision": 0
+    },
+    {
+      "name": "document-denied",
+      "error": {
+        "kind": "denied"
+      },
+      "revision": 0
+    },
+    {
+      "name": "document-revoked",
+      "error": {
+        "kind": "revoked"
+      },
+      "revision": 0
+    },
+    {
+      "name": "surface-denied",
+      "error": "Trap: import 'loopkit:ui/surfaces@0.1.0/[method]surface.render' threw Error: surface render denied/revoked. An unbranded throw from a host import is a host bug and becomes a trap: signal a WIT error with `throw new ComponentException(payload)`.",
+      "revision": 0
+    }
+  ],
+  "done": true,
+  "renderedOutput": "semantic world",
+  "cleanup": {
+    "live": 0,
+    "pending": 0,
+    "surfaces": 0,
+    "pendingEventReads": 0,
+    "listeners": 0
+  },
+  "deniedRuntimeCalls": [],
+  "pageErrors": [],
+  "console": [],
+  "browser": "156.0.8078.80"
+}

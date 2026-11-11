@@ -1,0 +1,13 @@
+package loop:document-lifecycle-conformance@0.1.0;
+
+// Test-only nominal resource conformance. Not admitted as an application profile.
+// The production document and semantic worlds remain unchanged.
+world lifecycle {
+  import loop:document-tool/documents@0.1.0;
+  use loop:document-tool/documents@0.1.0.{document, snapshot, failure};
+  export save-borrow: func(document: borrow<document>);
+  export read-saved: async func() -> result<snapshot, failure>;
+  export accept-own: func(document: own<document>);
+  export read-owned: async func() -> result<snapshot, failure>;
+  export drop-owned: func();
+}
