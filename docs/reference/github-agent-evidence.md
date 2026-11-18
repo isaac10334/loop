@@ -15,7 +15,7 @@ about later repository settings. Procedure ownership:
 - Isolated checkout: `C:/src/ilt/loop-auto-02`. The dirty primary checkout at
   `C:/src/ilt/loop` was not copied, staged, committed or reset. Its release, CLI and
   documentation changes remain independently owned.
-- Owned paths: the runbook, skill, claim helper, this receipt and the small routing
+- Owned paths: the runbook, skill, claim helper/contract tests, this receipt and the small routing
   addition to the GitHub README. No workflow YAML or product contracts changed.
 - Human explicitly authorized the task-local install, issue/claim/branch/draft-PR
   exercise, and subsequently branch protection configuration through the CLI.
@@ -87,7 +87,41 @@ executed; independent task branches do not require stacked PRs.
 - Assigned the issue and posted the claim receipt. No issue closed or claim deleted;
   both remain for human integration/handoff.
 
-Publication, graph and final check results are recorded below after execution.
+- Committed/pushed only the six owned paths and opened
+  [draft PR #2](https://github.com/isaac10334/loop/pull/2), base `main`, head
+  `lk-auto-02-github-agents`. Initial head
+  `6cccd2e2d7fc2ffaad8dbfb82c1574132ab502cf` was read back as draft.
+- At that exact head, `gh pr checks` reported GitGuardian Security Checks SUCCESS;
+  `gh run list --branch ... --commit ...` returned no Actions runs. TypeScript CI
+  was not triggered by these paths: no package/build success is claimed.
+- PR reviews, general comments and REST inline comments were empty. GraphQL
+  `reviewThreads` returned no nodes and `hasNextPage: false`. There was no real
+  review to answer; reply commands are documented but not live-tested. No approval,
+  review dismissal or fabricated review was posted.
+- Ran issue-graph against issue #1 with depth 1, budget 20, `--no-save --no-open`
+  and an explicit JSON export outside Git. It returned two fetched nodes: issue #1
+  and draft PR #2, with the issue cross-reference and PR mention edge. `cappedOut`
+  and `overlaps` were empty; no fetch failure or hub warning was reported. This
+  bounds the observed neighborhood, not repository-wide completeness. The ordinary
+  `Refs #1` link intentionally is not an automatic closing relationship.
+- Offline [claim contract tests](../../scripts/test-github-claim.ps1) passed all
+  six cases: success receipt, closed issue, PR instead of issue, another assignee,
+  failed ref creation, and changed confirmation SHA. The first mock run failed
+  because mock variables resolved in the invoked script's scope; isolated test
+  state fixed the harness, then all cases passed. These tests intercept `gh` and
+  are not additional live concurrency evidence.
+- Changed Markdown relative-link checks, PowerShell parser validation and staged
+  `git diff --check` passed. A bounded independent review found no concrete
+  protocol defect; repository-slug validation was tightened to reject dot-only
+  path components. No full TypeScript/native build ran: product code was unchanged.
+- Primary-checkout final status still showed the same nine modified and three
+  untracked paths observed before isolation. No primary worktree content was
+  edited by this task. The issue, claim ref, task branch and worktree are retained
+  for human review; no destructive cleanup was attempted.
+
+The follow-up receipt commit changes documentation only. Exact final-head checks
+are recorded in the PR handoff rather than making a self-referential commit hash
+inside this receipt.
 
 ## Limits and next human action
 
