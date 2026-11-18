@@ -5,6 +5,14 @@ artifacts. None of these workflows or local dry runs grants ownership, creates a
 account or configures a trusted publisher. See [release preparation and current
 published compatibility](../RELEASING.md).
 
+## Agent development
+
+For concurrent issue claims, isolated branches, draft PRs, CI and review replies,
+read the [GitHub runbook](agent-development.md) and
+[repo skill](../skills/loop-github/SKILL.md). Merges remain human-controlled.
+The [dated receipt](../docs/reference/github-agent-evidence.md) records live checks
+and the separately configured main-branch ruleset; release workflows are unchanged.
+
 ## npm packages
 
 The manual [npm workflow](workflows/npm-publish.yml) defaults to `publish: false`.
