@@ -5,6 +5,14 @@ artifacts. None of these workflows or local dry runs grants ownership, creates a
 account or configures a trusted publisher. See [release preparation and current
 published compatibility](../RELEASING.md).
 
+## Current run policy
+
+All repository workflows currently use **manual `workflow_dispatch` only**,
+including TypeScript verification, knowledge checks and website deployment.
+Pushing code or opening a PR does not automatically run CI. Dispatch verification
+explicitly when needed; this temporary run policy does not waive release checks
+or change branch-protection/ruleset settings.
+
 ## Agent development
 
 For concurrent issue claims, isolated branches, draft PRs, CI and review replies,
