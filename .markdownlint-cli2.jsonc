@@ -1,0 +1,14 @@
+{
+  "globs": ["knowledge/**/*.md", ".agents/skills/loop-knowledge*/SKILL.md", "docs/reference/knowledge.md"],
+  "ignores": ["knowledge/_index.md"],
+  "config": {
+    "default": false,
+    "MD001": true,
+    "MD018": true,
+    "MD023": true,
+    "MD031": true,
+    "MD040": true,
+    "MD042": true,
+    "MD051": true
+  }
+}

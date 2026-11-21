@@ -20,7 +20,8 @@ but is excluded from site pages, navigation, search, sitemaps and agent exports.
 | Review host-kit evidence and agent skill delivery | [November audit](development-alpha/host-kits-evidence.md), [skill contract](../specs/host-kits.md#8-repo-skill-and-optional-data-driven-installation) |
 | Understand runtime terms and limits | [Runtime reference](reference/runtime.md) |
 | Understand accounts and distribution | [Identity and distribution](reference/identity-and-distribution.md) |
-| Coordinate agents and tasks | [Agent workflow](reference/agent-workflow.md), [task prompts](development-alpha/prompts.md) |
+| Find and maintain repository knowledge | [Knowledge map](../knowledge/README.md), [generated catalog](../knowledge/_index.md), [maintenance operations](reference/knowledge.md) |
+| Develop with agents: knowledge owners, issues, worktrees, PRs and approvals | [Agent development workflow](reference/agent-workflow.md); [task prompts](development-alpha/prompts.md) are optional historical context |
 | Check package/layer ownership | [Architecture](../ARCHITECTURE.md), [local evidence ledger](../ENGINEERING_PLAN.md) |
 | Prepare releases | [Release workflow](../RELEASING.md) |
 

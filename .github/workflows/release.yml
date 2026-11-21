@@ -51,6 +51,7 @@ jobs:
           if ($LASTEXITCODE) { throw 'Build failed.' }
       - name: Package and test lifecycle
         run: |
+          ./scripts/test-cli.ps1 -Binary target/release/loop.exe
           ./scripts/package-release.ps1
           ./scripts/test-install.ps1 -ArchivePath target/release-assets/loop-windows-x64.zip
           powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-bootstrap.ps1

@@ -4,8 +4,9 @@ import { resolve, dirname, relative, isAbsolute } from 'node:path';
 import { createRequire } from 'node:module';
 import { extractHostConfig, resolveHostPlan, canonicalHostJson, type LoopConfig, type ResolvedHostPlan, type HostPlugin } from '@loop-kit/host';
 import { createSourceSnapshot, type SourceSnapshot } from '@loop-kit/workspace';
+import { pinBrowserAssets, type PinnedBrowserAsset } from './browser-assets';
 export const sha=(text:string|Uint8Array)=>new Bun.CryptoHasher('sha256').update(text).digest('hex');
-export interface Evaluation { plan:ResolvedHostPlan; config:LoopConfig; hooks:Map<string,HostPlugin>; files:Map<string,string>; root:string; source:SourceSnapshot; configFiles:Set<string> }
+export interface Evaluation { plan:ResolvedHostPlan; config:LoopConfig; hooks:Map<string,HostPlugin>; files:Map<string,string>; root:string; source:SourceSnapshot; configFiles:Set<string>; browserAssets:PinnedBrowserAsset[] }
 export function error(code:string,message:string):never {throw Object.assign(new Error(message),{code});}
 export async function localFile(root:string,path:string):Promise<string>{const candidate=resolve(root,path);if(relative(root,candidate).startsWith('..')||isAbsolute(relative(root,candidate)))error('E_CONFIG_ROOT','Input must be inside explicit project root');let at=root;for(const part of relative(root,candidate).split(/[\\/]/)){at=resolve(at,part);if((await lstat(at)).isSymbolicLink())error('E_CONFIG_ROOT','Symlinks/reparse inputs are not supported');}if(await realpath(candidate)!==candidate)error('E_CONFIG_ROOT','Aliased path');return candidate;}
 export async function assertCurrent(ev:Evaluation):Promise<void>{for(const [path,digest]of ev.files)if(sha(await readFile(path))!==digest)error('E_STALE_INPUT',`Changed input ${relative(ev.root,path)}`);}
@@ -35,9 +36,9 @@ export async function evaluate(request:any):Promise<Evaluation>{
  const component=(target.kit.options as any)?.component;if(component){if(typeof component.path!=='string'||!/^[a-f0-9]{64}$/.test(component.sha256))error('E_COMPONENT_ARTIFACT','Explicit component path and SHA-256 required');const artifact=await localFile(root,component.path);if(sha(await capture(artifact))!==component.sha256)error('E_STALE_INPUT','Component bytes differ from configured digest');}
  const locks=[];for(const name of ['bun.lock','package-lock.json','Cargo.lock']){const p=resolve(root,name);if(await Bun.file(p).exists())locks.push({path:name,sha256:sha(await capture(p))});}
  // Public workspace snapshot identity is the canonical source identity.
- const snapshot=await createSourceSnapshot(sourceFiles,manifest.dependencies??[]);
+ const browserAssets=target.kit.kind==='browser'?await pinBrowserAssets(target.kit.options,root,localFile,async path=>new Uint8Array(await capture(path)),bytes=>sha(bytes)):[];const snapshot=await createSourceSnapshot(sourceFiles,manifest.dependencies??[]);
  const toolchain=[{id:'bun',version:Bun.version,sha256:sha(await readFile(process.execPath))},{id:'loop-evaluator',version:'0.1.0',sha256:request.evaluatorDigest??sha(await readFile(import.meta.path))}];if(process.env.LOOP_CLI_EXECUTABLE)toolchain.push({id:'loop-cli',version:request.cliVersion??'0.1.0',sha256:sha(await readFile(process.env.LOOP_CLI_EXECUTABLE))});
  const plan=resolveHostPlan(inert,{target:target.id,modules:pinned,sourceSnapshotDigest:snapshot.digest,configDigest:sha(canonicalHostJson([...files].sort(([a],[b])=>a.localeCompare(b)).map(([path,sha256])=>({path:relative(root,path).replaceAll('\\','/'),sha256})))),lockDigests:locks,toolchain,buildRecipes:[`sha256:${sha('loop-bun-build-v1')}`],provenance:{projectRoot:root,configPath,executedConfig:true,closure:[...files].map(([path,sha256])=>({path,sha256})),selection:request.target?'explicit':'single-target'}},sha);
  const hooks=new Map<string,HostPlugin>();const actual=config.targets.find(t=>t.id===target.id)!;for(const p of [...actual.kit.plugins,...(actual.plugins??[])])hooks.set(p.key,p);
- const ev={plan,config,hooks,files,root,source:snapshot,configFiles};await assertCurrent(ev);return ev;
+ const ev={plan,config,hooks,files,root,source:snapshot,configFiles,browserAssets};await assertCurrent(ev);return ev;
 }

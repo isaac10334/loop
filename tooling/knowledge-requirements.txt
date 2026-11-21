@@ -1,0 +1,16 @@
+# knowledge-wiki 0.1.0, reviewed 2026-11-19. Isolated under target; never global.
+kb @ https://github.com/lfreeman/knowledge-wiki/archive/126bfe6cc60ce3bd38c0600fc93525c174ee897b.zip
+annotated-doc==0.0.7
+annotated-types==0.8.0
+colorama==0.4.6
+markdown-it-py==4.3.0
+mdurl==0.1.2
+pydantic==2.14.4
+pydantic_core==2.50.5
+Pygments==2.21.0
+PyYAML==6.0.3
+rich==15.0.0
+shellingham==1.5.4
+typer==0.29.2
+typing-inspection==0.4.5
+typing_extensions==4.16.0

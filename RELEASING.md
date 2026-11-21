@@ -15,6 +15,69 @@ source, README, dual licenses and repository metadata. Scripting also ships its
 optional engine inputs and build script; ordinary imports need no native tools.
 The optional engine build retains its pinned Windows compiler and Rust toolchain.
 
+## Version-bump policy
+
+Bump versions when preparing a release, not for every development commit. During
+ordinary work, record consumer-visible changes, compatibility effects and any
+migration steps in the change handoff or owning documentation. Local `loop-dev`
+builds may share a version: identify the checkout/revision and development install
+marker rather than treating the version string as a unique build identifier.
+
+Choose the bump against the last published version of each affected artifact,
+using the most significant change included in the release:
+
+| Change | Before 1.0 | From 1.0 onward |
+| --- | --- | --- |
+| Compatible bug fix, packaging repair or dependency update | Patch (`0.1.0` → `0.1.1`) | Patch |
+| Backward-compatible public feature or deprecation | Minor (`0.1.0` → `0.2.0`) | Minor |
+| Breaking consumer contract | Minor (`0.1.0` → `0.2.0`) | Major |
+
+Pre-1.0 does not make breaking patch releases acceptable. Public contracts include
+exports and types, documented runtime behavior, CLI flags/output intended for
+machines, configuration, persisted/wire formats and supported platform/toolchain
+requirements. Review dependency updates and security fixes for those effects too;
+the reason for a change does not determine compatibility. Breaking releases need
+migration instructions. Promoting to 1.0 is an explicit maintainer decision about
+API stability, not an automatic consequence of adding a feature.
+
+Documentation-only or internal changes need no release solely to advance a
+version. If changed published contents must be redistributed, use at least a patch
+unless their compatibility effects require a larger bump. Unpublished prepared
+versions may be revised during review; published versions/tags are immutable and
+must never be reused for different artifacts. A prerelease is not permission to
+replace a previously published prerelease: advance its sequence. Use the
+[canary route](#canary-route) for the existing coordinated npm prerelease train.
+
+### Prepare the version change
+
+1. Compare source with the last published release for the artifact, review the
+   compatibility impact and select the version explicitly. The release helper's
+   patch suggestions and `readyToPublish` flag do not make that decision or prove
+   registry availability. A prepared version is not evidence of publication.
+2. For npm, update affected package manifests and review reverse dependents and
+   their internal dependency ranges. The current release helper includes reverse
+   dependents for rebuild/release even when their ranges still accept the new
+   dependency; give those selected artifacts at least a patch unless their own
+   changes require more. Regenerate `bun.lock` with `bun install`, then run the
+   [release preparation](#inspect-a-release) checks with the appropriate npm base
+   ref. The initial unpublished release may retain its reviewed initial versions.
+3. For Rust, update `[workspace.package].version` in `Cargo.toml`, the CLI's exact
+   `loop-host` dependency in `crates/loop-cli/Cargo.toml`, and `Cargo.lock` together.
+   Host and CLI currently share a release version because generated legacy hosts
+   derive their host version from the CLI. Choose the larger bump required by
+   either artifact. Regenerate the lockfile with Cargo, review the diff, and run
+   the formatting, locked workspace tests and clippy commands in the
+   [README](README.md#rust-status). Rebuild embedded assets and the CLI using the
+   [Bun/Cargo bootstrap](crates/loop-cli/WINDOWS.md#development-checkout-no-installed-loop-required),
+   never an installed `loop` to build itself.
+4. Review WIT, capability/source IDs, profiles and protocol schema versions
+   separately under their compatibility contracts. Do not mechanically change
+   them, or unrelated npm/Rust versions, to match a release number.
+5. Review release notes, migration instructions, dependency order, generated
+   artifacts and checksums. Follow the host-first Rust/CLI gates below or the npm
+   dry-run and explicit publication process. Version edits and successful local
+   checks do not authorize publishing, tagging, pushing or workflow dispatch.
+
 ## Published versus prepared (checked November 11, 2026)
 
 Read-only checks of all nine package endpoints at
@@ -40,6 +103,21 @@ registry crate without a local patch, then run checkout-free create/run/build an
 relocation tests before releasing the matching Windows CLI. Paired local archives,
 local `--host-source` tests and a passing workspace build do not prove this gate.
 See [workflow setup](.github/README.md) for human account and GitHub configuration.
+
+## CLI bootstrap and development channel
+
+Loop Kit development does not require a published or installed CLI. The existing
+Bun/Cargo bootstrap and separate `loop-dev` install/update commands are documented
+in [Windows development setup](crates/loop-cli/WINDOWS.md#development-checkout-no-installed-loop-required).
+The development installer does not replace stable `loop.exe` or use `loop upgrade`.
+Do not use `cargo install loop-cli`: this CLI is not published on crates.io.
+
+Read-only checks on November 18, 2026 reconfirmed GitHub latest CLI v0.1.0 and
+crates.io host 0.1.0 at the endpoints above. A prebuilt stable CLI remains useful
+for its legacy application path, but cannot bootstrap current host-kit development.
+Publishing current support still requires the host-first release gate above and
+the human registry/GitHub setup in [workflow setup](.github/README.md).
+No publishing or external configuration is performed by the development scripts.
 
 ## Inspect a release
 
