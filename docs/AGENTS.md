@@ -16,6 +16,8 @@ It needs no installation or global settings; do not assume harness skill discove
 The [internal writing check](reference/writing-check.md) contains rationale and
 sample checks; load it only when reviewing the procedure or a difficult passage.
 
+Use [the knowledge skill](../.agents/skills/loop-knowledge/SKILL.md) to search before creating, update the authoritative owner and link related concepts. Vault pointers supplement this index; do not move owned docs into the vault. Run `bun run knowledge links` for owner edits; vault edits also need regenerated indexes and `bun run knowledge check`. Use [the audit skill](../.agents/skills/loop-knowledge-audit/SKILL.md) only for bounded audits, not every small edit.
+
 Set finite acceptance and non-goals for the changed documents. Check affected
 relative links and compare claims with their source. Record relevant follow-ups
 in the handoff or owning document, not automatically in external tasks or ledgers.

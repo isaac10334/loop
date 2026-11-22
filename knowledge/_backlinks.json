@@ -1,0 +1,83 @@
+{
+  "reference/agent-workflow": [
+    "reference/knowledge-system",
+    "reference/release",
+    "reference/workspace"
+  ],
+  "reference/architecture": [
+    "reference/component-runtime",
+    "reference/contracts",
+    "reference/decisions",
+    "reference/evidence",
+    "reference/host",
+    "reference/specifications",
+    "reference/station",
+    "reference/ui",
+    "reference/workspace"
+  ],
+  "reference/component-runtime": [
+    "reference/architecture",
+    "reference/contracts",
+    "reference/evidence",
+    "reference/host",
+    "reference/specifications",
+    "reference/ui"
+  ],
+  "reference/contracts": [
+    "reference/architecture",
+    "reference/component-runtime",
+    "reference/specifications",
+    "reference/workspace"
+  ],
+  "reference/decisions": [
+    "reference/architecture",
+    "reference/host",
+    "reference/specifications",
+    "reference/station"
+  ],
+  "reference/evidence": [
+    "reference/architecture",
+    "reference/component-runtime",
+    "reference/release",
+    "reference/specifications"
+  ],
+  "reference/host": [
+    "reference/architecture",
+    "reference/component-runtime",
+    "reference/decisions"
+  ],
+  "reference/knowledge-system": [
+    "reference/agent-workflow",
+    "research/knowledge-tools"
+  ],
+  "reference/release": [
+    "reference/agent-workflow",
+    "reference/evidence"
+  ],
+  "reference/specifications": [
+    "reference/architecture",
+    "reference/component-runtime",
+    "reference/contracts",
+    "reference/decisions",
+    "reference/evidence",
+    "reference/station"
+  ],
+  "reference/station": [
+    "reference/decisions",
+    "reference/specifications",
+    "reference/ui"
+  ],
+  "reference/ui": [
+    "reference/architecture",
+    "reference/component-runtime",
+    "reference/station"
+  ],
+  "reference/workspace": [
+    "reference/agent-workflow",
+    "reference/architecture",
+    "reference/contracts"
+  ],
+  "research/knowledge-tools": [
+    "reference/knowledge-system"
+  ]
+}

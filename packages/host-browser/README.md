@@ -35,6 +35,26 @@ cancellation and is not sandboxed; forced guest termination belongs to a dedicat
 worker. Each bootstrap has independent host/provider/surface state, never a global
 mutable registry. The caller retains endpoint and outer-process ownership.
 
+`browser({assets: [{source, path, sha256}]})` declares pinned binary/text output
+assets without embedding them in the 1 MiB authored source snapshot. `source` is a
+project-relative regular file; `path` is a portable lowercase output basename.
+The CLI independently rejects traversal, reserved/colliding names and symlinks,
+checks each digest during evaluation and again during copying, and includes the
+binary input in source-currentness checks. Limits: 16 assets, 32 MiB each, 64 MiB
+total. Assets are copied into static and live output and served only by their
+declared names. This is artifact delivery, not permission for a guest to read files.
+Changing an asset requires regenerating its explicit pin before a fresh build.
+
+`createGpuSession({gpu, signal?, onLost?})` acquires an **owned** WebGPU device
+from an injected platform; it never reads `navigator`. Track created buffers with
+`trackBuffer`, and register exclusive canvas ownership with `configure(context, fn)`
+before configuring. Wrap later initialization in `try`/`catch` and dispose on failure;
+call `assertActive()` after asynchronous work. Disposal is synchronous, idempotent,
+cleans tracked buffers, unconfigures the canvas and destroys the device. Abort rejects
+pending acquisition and destroys a late device; device loss disposes and calls `onLost`.
+Pending platform operations cannot be forcibly stopped. Extracted GPU objects are not
+revoked, and the caller must not independently dispose or share owned resources.
+
 Verify: `bun run repo verify host-browser`; actual two-launch/stop-A-leaves-B,
 relocated static output and real Component interaction:
 `bun tooling/host-browser/acceptance.ts`. These runtime fixture plans are synthetic;

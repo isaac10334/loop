@@ -5,7 +5,7 @@ import type { DocPage } from './content';
 import { pageHref } from './render';
 import { sourceName } from './exports';
 export async function verifyPublication(root: string, pages: readonly DocPage[], base: URL): Promise<void> {
-  const expected = new Set(['index.html', 'favicon.svg', 'install.ps1', 'llms.txt', 'sitemap.xml',
+  const expected = new Set(['index.html', 'favicon.svg', 'assets/kinetic-gear.svg', 'assets/loop-display.ttf', 'assets/Space-Grotesk-LICENSE.txt', 'assets/loop-sans.ttf', 'assets/landing.css', 'assets/DM-Sans-LICENSE.txt', 'install.ps1', 'llms.txt', 'sitemap.xml',
     'docs/_assets/docs.css', 'docs/_assets/docs.js', 'docs/search-index.json', 'docs/build-receipt.json', 'docs/support.json',
     'docs/_demo/index.html', 'docs/_demo/app.js', 'docs/_demo/build-receipt.json',
     ...pages.flatMap(page => ['docs/' + pageHref(page.id), 'docs/_source/' + sourceName(page.id)])]);

@@ -2,6 +2,15 @@
 
 Loop-kit currently has two implementation paths. The new TypeScript packages make capability contracts and local providers usable without WebAssembly. The existing Rust host and CLI run component applications with concrete native grants and desktop/headless integrations. They do not currently share a runtime API.
 
+## Contents
+
+- [Renderer-free TypeScript composition](#renderer-free-typescript-composition)
+- [Proposed CLI host-kit composition](#proposed-cli-host-kit-composition)
+- [Shared vocabulary and product direction](#shared-vocabulary-and-product-direction)
+- [Enforced package ownership](#enforced-package-ownership)
+- [Source and native ownership](#source-and-native-ownership)
+- [Repository commands and agent handoff](#repository-commands-and-agent-handoff)
+
 **Portable development proof, 2026-10-28:** `@loop-kit/workspace` now owns bounded
 immutable text-source snapshots, pinned dependency references, build-provider/receipt
 contracts and checked Git change requests. It owns no Station persistence, grants,
@@ -10,8 +19,10 @@ file/Git adapter; `tooling/github-change-port.ts` is an explicitly authenticated
 GitHub draft-PR adapter. Neither is a durable event/workflow service.
 
 Capabilities may retain a pinned WIT source identity and binding dialect. The
-official parser/codegen and TypeScript 7.1 content mapper proof live under
-`contracts/svg-editor` and `tooling/wit-*`. Generated jco declarations are not
+official parser/codegen and TypeScript 7.1 content mapper proof use
+[the WIT fixture](tooling/fixtures/wit/README.md) and `tooling/wit-*`;
+`bun run contracts:generate` writes disposable output under `target/svg-editor-contract`.
+Generated jco declarations are not
 Polyengine runtime facades, and source hashes are not canonical world ABI digests.
 
 **Host lifecycle expansion, 2026-10-20:** [the current contract](packages/host/LIFECYCLE.md) adds retained/transferred/borrowed leases, explicit shared generations, eager named services and bindings, task groups with cancellation/deadlines, partial-initialization ownership and registration activation. Factories receive narrow dependency objects; permissions stay in callers. Resource and lease signals have distinct lifetimes; `toLegacyHandle` is the explicit old raw-value/provider-signal adapter. The [independent monitor](examples/lifecycle-monitor/README.md) consumes real public tarballs in Bun, Node and a browser.
@@ -22,11 +33,33 @@ Scopes have host-local IDs, optional display names and optional parent ownership
 
 `Host.define()` documents an ID/version without providing it. Snapshots include a definition catalog with namespace and contract package derived from the ID. Provider registration automatically records unknown definitions without replacing explicit documentation. Definitions survive unregistration and are cleared on disposal; multiple documented versions do not relax exact-version acquisition. This catalog contains explicit display metadata, not inferred TypeScript members or authorization rules.
 
-WASM Components can later implement or bridge a provider behind the same contract identity. This repository does not yet contain that adapter. Native and remote provider placement are also future work, not capabilities of the current TypeScript host.
+The generic TypeScript capability host does not automatically turn a WASM Component into a provider under a capability identity. The separate [Polyengine adapter](packages/component-polyengine/README.md) implements bounded document/semantic sessions and a separate import-free string-call Component session in dedicated workers; neither is an automatic capability-provider bridge. Trusted adapters explicitly map a guest contract to a registered provider. Pure sessions pin component/translation/world identities, deny all host imports before instantiation, serialize calls, and terminate on cancellation/deadline; payload checks do not establish canonical pre-lift allocation limits. [Native composition](packages/host-native/README.md) uses a checked surface transport and a separate Rust document runtime. Arbitrary remote provider placement remains future work.
 
 The Rust host uses Wasmtime 48, an authored WIT application contract in `crates/loop-host/wit`, per-use scoped notes grant checks, and desktop/headless dispatch. The CLI embeds its starters from `crates/loop-cli/templates` and is released through manual GitHub workflows. The isolated `experiments/wasip3` probe retains pinned async WIT inputs and documents the current JavaScript generation limit.
 
 Repository map: `packages/` is the publishable TypeScript SDK; `crates/` is existing Rust implementation; `experiments/` holds reproducible probes; `site/`, `scripts/`, and `.github/workflows/` own the existing Windows distribution. Design proposals for cloud, Station, registries and UI systems are outside this implemented architecture.
+
+Browser kit configuration also supports explicitly pinned artifact assets. The CLI
+captures local regular-file bytes separately from the bounded authored text snapshot,
+checks digests/currentness, copies them into static/live output and serves only the
+declared basenames. This delivery mechanism is not a guest filesystem grant; see
+[the browser kit](packages/host-browser/README.md) for budgets and constraints.
+
+## Renderer-free TypeScript composition
+
+`@loop-kit/host` exports `headless()` and `bootstrapHeadless` for the explicit
+`loop:profile/headless-ts@0.1.0` profile. Each launch creates a fresh host/scope,
+checks declared provider registrations and disposes partial startup. The CLI's
+trusted config path supervises headless run/dev/stop/restart with the existing
+instance/epoch reservations. Headless dev has no source replacement yet;
+standalone build rejects explicitly. This is same-user TypeScript execution, not
+a Component engine, a Discord adapter, a GPU backend or a guest permission grant.
+
+The browser kit also exports injected `createGpuSession` ownership for one device,
+tracked buffers and exclusive canvas configuration. Abort destroys late-arriving
+devices; loss/disposal attempts owned cleanup. Application shaders and other GPU
+objects remain application-owned. This helper is not native wgpu or wasi:webgpu
+support; its fake-platform tests do not establish GPU conformance.
 
 ## Proposed CLI host-kit composition
 
@@ -59,7 +92,7 @@ Station is the editable workspace consumer at `C:/Users/ijhar/Desktop/station`; 
 
 The direction is authored, inspectable configuration rendered by trusted adapters, with explicit service bindings and ownership. Reuse the current descriptors, controllers and guest bindings before adding another settings model. Station's asset references, theme resolution and widget placement remain product responsibilities unless a proven portable contract is extracted upstream. Keep runtime installation, instantiation, activation and execution separate.
 
-Open investigations include richer property evaluation, remote machines/providers and alternative Component-to-DOM transport. No choice of transport, DOM protocol or WASI version is made here. Evaluate these against cancellation, resource lifetime, accessible rendering, capability denial and version compatibility; a DOM protocol alone does not establish guest isolation. The TypeScript host currently has no Component/native/remote provider adapter. The Rust host and isolated WASIP3 probe are separate evidence, as described above and in [the probe README](experiments/wasip3/README.md).
+Open investigations include richer property evaluation, remote machines/providers and alternative Component-to-DOM transport. No choice of transport, DOM protocol or WASI version is made here. Evaluate these against cancellation, resource lifetime, accessible rendering, capability denial and version compatibility; a DOM protocol alone does not establish guest isolation. Do not confuse the implemented document/semantic Component adapters with a generic Component/native/remote capability-provider adapter. The Rust host and isolated WASIP3 probe retain their own evidence, as described above and in [the probe README](experiments/wasip3/README.md).
 
 ## Enforced package ownership
 
@@ -75,7 +108,7 @@ Open investigations include richer property evaluation, remote machines/provider
 | `@loop-kit/host-browser` | Browser runtime | Official browser composition/bootstrap; host and ui |
 | `@loop-kit/host-native` | Native runtime | Typed native composition and semantic process bridge; host and ui |
 | `@loop-kit/renderer-dom` | UI interaction | Trusted semantic-to-DOM presentation; host and ui |
-| `@loop-kit/component-polyengine` | Component runtime | Dedicated browser worker document/semantic adapter; ui |
+| `@loop-kit/component-polyengine` | Component runtime | Dedicated worker document/semantic and import-free string-call adapters; ui |
 
 The graph includes `host → capabilities`, `scripting → capabilities, ui`, `host-browser/host-native/renderer-dom → host, ui`, and `component-polyengine → ui`; workspace and ui have no package dependencies. The policy file is the machine-checked owner of this graph. No package imports Station or the optional Rust implementations. Root exports are the only current npm entrypoints; publishing source for declaration maps does not make private paths an API. Runtime-installable Station contributions are a separate concept from these npm packages.
 

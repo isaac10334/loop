@@ -1,0 +1,10 @@
+{
+  "commands": [
+    {"command":"solid.torus","params":{"major":32,"minor":7,"center":[0,0,0],"body_name":"Lime ring"}},
+    {"command":"solid.torus","params":{"major":32,"minor":7,"center":[0,28,0],"body_name":"Porcelain ring"}},
+    {"command":"solid.move","params":{"bodies":["Porcelain ring"],"origin":[0,28,0],"axis":[1,0,0],"angle":"90 deg"}},
+    {"command":"appearance.assign","params":{"bodies":["Lime ring"],"color":"#d5ef83","pbr":{"metallic":0.25,"roughness":0.22,"dielectric_ior":1.46}}},
+    {"command":"appearance.assign","params":{"bodies":["Porcelain ring"],"color":"#eeeede","pbr":{"metallic":0.12,"roughness":0.25,"dielectric_ior":1.46}}},
+    {"command":"inspect.measure","params":{"bodies":["Lime ring","Porcelain ring"]}}
+  ]
+}

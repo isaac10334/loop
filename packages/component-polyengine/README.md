@@ -1,5 +1,38 @@
 # @loop-kit/component-polyengine
 
+Two explicit adapters share pinned Polyengine 0.6.7: the document/semantic profile
+below and import-free string-call Components. Neither automatically registers a
+capability provider or grants host authority.
+
+## Import-free Components
+
+Bundle a dedicated module worker calling `installPureComponentWorker()` from this
+public root. `createPureComponentSession({workerUrl, componentBytes, translation,
+artifact, exports, signal?})` accepts reviewed prepared translation/adapters and
+exact component SHA-256, translation SHA-256 and world digest pins. Before
+instantiation, the worker verifies those pins and rejects **all host imports**.
+`exports` is an explicit allowlist of root functions; there is no WASI shim,
+filesystem, clock, network, GPU or document provider.
+
+`session.call(name, args)` accepts up to 16 finite numeric, boolean or string
+arguments and returns a string. Calls serialize by rejecting concurrent entry;
+they do not queue or retry. A trusted application adapter owns WIT-specific shapes
+and any JSON checkpoint schema. Defaults: 2 MiB decoded argument/result budget
+(configurable 1 byte–4 MiB), 15 s initialization/call deadline (1–30000 ms), and
+32 MiB component bytes. Prepared plan/adapter bounds are also checked by
+`translationSha256`. Output checks occur **after canonical lifting**, not before
+allocation inside the engine; this is not a hostile-memory conformance claim.
+
+`dispose()` synchronously terminates the worker and rejects pending initialization
+or calls. Repeated disposal shares completion. Abort, trap, malformed/stale messages
+and deadlines poison the session; create a new one and restore a known checkpoint
+rather than retrying an operation of uncertain completion. `inspect()` exposes only
+closed/worker/pending-call counts. Caller-owned pins bind reviewed bytes, not
+publisher authenticity or translator correctness. Tests include mocked-worker
+lifecycle/denial cases; real guest execution needs a separate host acceptance lane.
+
+## Document/semantic Components
+
 Dedicated Polyengine 0.6.7 workers run the reviewed async document profile or its
 separate semantic extension. One session owns one worker and one serialized guest
 entry. No filesystem, network, environment, document lookup or ambient grant is

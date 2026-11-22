@@ -1,13 +1,14 @@
 import {test,expect} from 'bun:test';
-import {mkdtemp,mkdir,cp,writeFile,readFile,stat,open,unlink,rm} from 'node:fs/promises';
+import {mkdtemp,mkdir,cp,writeFile,readFile,stat,open,unlink,rm,realpath} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {resolve} from 'node:path';
+const tempRoot=await realpath(tmpdir());
 import {frames,frame,strictJson} from '../../crates/loop-cli/host-tools/protocol';
 import {lockFixture} from './lock-fixture';
 import {startNativeRuntime} from '../../crates/loop-cli/host-tools/native';
 import {launch} from '../../crates/loop-cli/host-tools/supervise';
 import {evaluate,assertCurrent} from '../../crates/loop-cli/host-tools/evaluate';
-async function fixture(){const root=await mkdtemp(resolve(tmpdir(),'loop-hk-'));for(const name of ['host','capabilities','workspace']){const out=resolve(root,'node_modules/@loop-kit',name);await mkdir(out,{recursive:true});await cp(resolve('packages',name,'dist'),resolve(out,'dist'),{recursive:true});const pkg=await Bun.file(resolve('packages',name,'package.json')).json();await writeFile(resolve(out,'package.json'),JSON.stringify(pkg));}await writeFile(resolve(root,'package.json'),'{"type":"module","dependencies":{"@loop-kit/host":"0.1.0"}}');await lockFixture(root,['@loop-kit/host','@loop-kit/capabilities','@loop-kit/workspace']);await writeFile(resolve(root,'runtime.ts'),'export function bootstrap() {}');await writeFile(resolve(root,'app.ts'),'export function start() {}');await writeFile(resolve(root,'loop.package.json'),JSON.stringify({version:1,id:'test:project',sourcePaths:['app.ts','runtime.ts','loop.config.ts']}));await writeFile(resolve(root,'loop.config.ts'),`import {defineConfig} from '@loop-kit/host';console.log('config log stays off protocol');let count=0;export default defineConfig({schemaVersion:1,source:{manifest:'./loop.package.json'},targets:[{id:'web',kit:{apiVersion:1,identity:{id:'loop:kit/browser',version:'0.1.0'},kind:'browser',profile:{id:'loop:profile/browser-ts',version:'0.1.0'},options:{},hosts:[{key:'application',realm:'application',profile:{id:'loop:profile/browser-ts',version:'0.1.0'}}],coordinator:{specifier:'./runtime.ts',export:'bootstrap'},plugins:[]},application:{specifier:'./app.ts',export:'start'},plugins:[{apiVersion:1,identity:{id:'test:plugin/hooks',version:'1.0.0'},key:'hooks',targets:['browser'],runtime:[],prepare(){count++;}}]}]});`);return root;}
+async function fixture(){const root=await mkdtemp(resolve(tempRoot,'loop-hk-'));for(const name of ['host','capabilities','workspace']){const out=resolve(root,'node_modules/@loop-kit',name);await mkdir(out,{recursive:true});await cp(resolve('packages',name,'dist'),resolve(out,'dist'),{recursive:true});const pkg=await Bun.file(resolve('packages',name,'package.json')).json();await writeFile(resolve(out,'package.json'),JSON.stringify(pkg));}await writeFile(resolve(root,'package.json'),'{"type":"module","dependencies":{"@loop-kit/host":"0.1.0"}}');await lockFixture(root,['@loop-kit/host','@loop-kit/capabilities','@loop-kit/workspace']);await writeFile(resolve(root,'runtime.ts'),'export function bootstrap() {}');await writeFile(resolve(root,'app.ts'),'export function start() {}');await writeFile(resolve(root,'loop.package.json'),JSON.stringify({version:1,id:'test:project',sourcePaths:['app.ts','runtime.ts','loop.config.ts']}));await writeFile(resolve(root,'loop.config.ts'),`import {defineConfig} from '@loop-kit/host';console.log('config log stays off protocol');let count=0;export default defineConfig({schemaVersion:1,source:{manifest:'./loop.package.json'},targets:[{id:'web',kit:{apiVersion:1,identity:{id:'loop:kit/browser',version:'0.1.0'},kind:'browser',profile:{id:'loop:profile/browser-ts',version:'0.1.0'},options:{},hosts:[{key:'application',realm:'application',profile:{id:'loop:profile/browser-ts',version:'0.1.0'}}],coordinator:{specifier:'./runtime.ts',export:'bootstrap'},plugins:[]},application:{specifier:'./app.ts',export:'start'},plugins:[{apiVersion:1,identity:{id:'test:plugin/hooks',version:'1.0.0'},key:'hooks',targets:['browser'],runtime:[],prepare(){count++;}}]}]});`);return root;}
 test('dev disposal rejection is guarded while a browser client remains connected',async()=>{
  const child=Bun.spawn([process.execPath,'test',resolve('tooling/host-config/fixtures/dev-disposal-isolated.test.ts')],{env:{...process.env,LOOP_ISOLATED_DEV_TEST:'1'},stdout:'pipe',stderr:'pipe'});
  const [stdout,stderr,code]=await Promise.all([new Response(child.stdout).text(),new Response(child.stderr).text(),child.exited]);
@@ -28,6 +29,19 @@ test('real native adapter and supervisor fence startup cleanup',async()=>{
  const [stdout,stderr,code]=await Promise.all([new Response(child.stdout).text(),new Response(child.stderr).text(),child.exited]);
  expect(code,stdout+'\n'+stderr).toBe(0);expect(stderr).toContain('3 pass');
 },20000);
+test('trusted headless target evaluates, starts, stops and restarts without an endpoint',async()=>{const root=await fixture();let running:Awaited<ReturnType<typeof launch>>|undefined;try{await writeFile(resolve(root,'loop.config.ts'),`import {defineConfig,headless} from '@loop-kit/host';export default defineConfig({schemaVersion:1,source:{manifest:'./loop.package.json'},targets:[{id:'bot',kit:headless(),application:{specifier:'./app.ts',export:'start'}}]});`);await writeFile(resolve(root,'app.ts'),`export function start({scope}){scope.own({[Symbol.dispose](){}})}`);await expect(evaluate({root,target:'bot'})).rejects.toMatchObject({code:'E_CONFIG_TRUST'});const ev=await evaluate({root,target:'bot',trustLocalConfig:true});expect(ev.plan.kind).toBe('headless');running=await launch(ev,{instance:'bot',epoch:'first'});expect(running.endpoint).toBeUndefined();expect((running.inspect() as any).state).toBe('active');await running.stop();running=await launch(ev,{instance:'bot',epoch:'second',dev:true});expect((running.inspect() as any).state).toBe('active');await running.stop();running=undefined;}finally{await running?.stop();await rm(root,{recursive:true,force:true});}});
+test('trusted local TypeScript resolves emitted .js specifiers and captures actual source bytes',async()=>{
+ const root=await fixture();
+ try {
+  await writeFile(resolve(root,'value.ts'),'export const value=42;');
+  await writeFile(resolve(root,'app.ts'),"import {value} from './value.js';export function start(){return value}");
+  await writeFile(resolve(root,'loop.package.json'),JSON.stringify({version:1,id:'test:project',sourcePaths:['app.ts','value.ts','runtime.ts','loop.config.ts']}));
+  const ev=await evaluate({root,trustLocalConfig:true});
+  expect(ev.files.has(resolve(root,'value.ts'))).toBe(true);
+  await writeFile(resolve(root,'value.ts'),'export const value=43;');
+  await expect(assertCurrent(ev)).rejects.toMatchObject({code:'E_STALE_INPUT'});
+ } finally {await rm(root,{recursive:true,force:true});}
+});
 test('shared HK1 framing corpus agrees with Rust',async()=>{const corpus=await Bun.file('contracts/host-kit-protocol-golden.json').json();for(const c of corpus.cases){const bytes=new TextEncoder().encode(c.payload);const data=new Uint8Array(bytes.length+4);new DataView(data.buffer).setUint32(0,bytes.length,true);data.set(bytes,4);let accepted=true;try{for await(const _ of frames(new ReadableStream({start(ctrl){ctrl.enqueue(data);ctrl.close();}}))) {}}catch{accepted=false;}expect(accepted,c.id).toBe(c.accept);}for(const c of corpus.lengthCases){const data=new Uint8Array(4);new DataView(data.buffer).setUint32(0,c.length,true);let accepted=true;try{for await(const _ of frames(new ReadableStream({start(ctrl){ctrl.enqueue(data);ctrl.close();}}))) {}}catch{accepted=false;}expect(accepted,c.id).toBe(c.accept);}});
 test('strict protocol rejects duplicate escaped keys, corruption and truncated child frames',async()=>{expect(()=>strictJson('{"a":1,"\\u0061":2}')).toThrow();for(const bytes of [new Uint8Array([255,255,255,255]),new Uint8Array([2,0,0,0,123])]){const stream=new ReadableStream<Uint8Array>({start(c){c.enqueue(bytes);c.close();}});expect(async()=>{for await(const _ of frames(stream)){}}).toThrow();}});
 test('exported third-party subpaths validate owning version and record nested metadata',async()=>{const root=await fixture();try{const pkg=resolve(root,'node_modules/third-party');await mkdir(resolve(pkg,'shim'),{recursive:true});await writeFile(resolve(pkg,'package.json'),JSON.stringify({name:'third-party',version:'1.0.0',exports:{'./shim':'./shim/index.js'}}));await writeFile(resolve(pkg,'shim/package.json'),'{"type":"module"}');await writeFile(resolve(pkg,'shim/index.js'),'export const value=1;');await writeFile(resolve(root,'app.ts'),"import {value} from 'third-party/shim';export function start(){return value}");const project=await Bun.file(resolve(root,'package.json')).json();project.dependencies['third-party']='1.0.0';await writeFile(resolve(root,'package.json'),JSON.stringify(project));await lockFixture(root,['@loop-kit/host','@loop-kit/capabilities','@loop-kit/workspace','third-party']);const ev=await evaluate({root,trustLocalConfig:true});expect(ev.plan.targetId).toBe('web');expect(ev.files.has(resolve(pkg,'shim/package.json'))).toBe(true);await writeFile(resolve(pkg,'shim/package.json'),'{"type":"commonjs"}');await expect(assertCurrent(ev)).rejects.toMatchObject({code:'E_STALE_INPUT'});}finally{await rm(root,{recursive:true,force:true});}});
@@ -71,7 +85,7 @@ test('profile contention preserves the owner reservation and cleans only the con
 },30000);
 test('stop request cancels a held prepare without early unlock',async()=>{
  const root=await fixture(),global=globalThis as any;let release!:()=>void,entered!:()=>void;
- if(!root.startsWith(resolve(tmpdir(),'loop-hk-')))throw Error('Unexpected fixture deletion target');
+ if(!root.startsWith(resolve(tempRoot,'loop-hk-')))throw Error('Unexpected fixture deletion target');
  const started=new Promise<void>(resolve=>{entered=resolve;}),gate=new Promise<void>(resolve=>{release=resolve;});
  global.__loopPrepareStop={entered,gate,aborted:false,finished:false,quiesced:false};let pending:Promise<{running?:Awaited<ReturnType<typeof launch>>;error?:unknown}>|undefined;
  try{
@@ -88,7 +102,7 @@ test('stop request cancels a held prepare without early unlock',async()=>{
 },30000);
 test('stop request does not hide a prepare failure',async()=>{
  const root=await fixture(),global=globalThis as any;let release!:()=>void,entered!:()=>void;
- if(!root.startsWith(resolve(tmpdir(),'loop-hk-')))throw Error('Unexpected fixture deletion target');
+ if(!root.startsWith(resolve(tempRoot,'loop-hk-')))throw Error('Unexpected fixture deletion target');
  const started=new Promise<void>(resolve=>{entered=resolve;}),gate=new Promise<void>(resolve=>{release=resolve;});global.__loopPrepareFailure={entered,gate,aborted:false};
  let pending:Promise<{running?:Awaited<ReturnType<typeof launch>>;error?:unknown}>|undefined;
  try{
@@ -132,7 +146,7 @@ test('ready admission is single-flight and stop joins a pending hook before quie
  }finally{release();if(running)await running.stop().catch(()=>{});delete global.__loopReadyTest;await rm(root,{recursive:true,force:true});}
 },30000);
 test('a registered client receives stopping when readiness arrives after abort',async()=>{
- const root=await fixture();if(!root.startsWith(resolve(tmpdir(),'loop-hk-')))throw Error('Unexpected fixture deletion target');let running:Awaited<ReturnType<typeof launch>>|undefined;
+ const root=await fixture();if(!root.startsWith(resolve(tempRoot,'loop-hk-')))throw Error('Unexpected fixture deletion target');let running:Awaited<ReturnType<typeof launch>>|undefined;
  try{
   const ev=await evaluate({root,trustLocalConfig:true});running=await launch(ev,{instance:'late-ready-stop',epoch:'first'});const endpoint=running.endpoint!,client=crypto.randomUUID();expect((await fetch(endpoint+'/__loop/client',{method:'POST',body:client})).status).toBe(200);
   const stopping=running.stop(),record=resolve(root,'.loop/instances/web/late-ready-stop/first/launch.json'),deadline=Date.now()+5000;while((await Bun.file(record).json()).state!=='stopping'&&Date.now()<deadline)await Bun.sleep(10);
@@ -141,7 +155,7 @@ test('a registered client receives stopping when readiness arrives after abort',
 },30000);
 test('stop does not hide a ready hook failure',async()=>{
  const root=await fixture(),global=globalThis as any;let release!:()=>void,entered!:()=>void;
- if(!root.startsWith(resolve(tmpdir(),'loop-hk-')))throw Error('Unexpected fixture deletion target');
+ if(!root.startsWith(resolve(tempRoot,'loop-hk-')))throw Error('Unexpected fixture deletion target');
  const started=new Promise<void>(resolve=>{entered=resolve;}),gate=new Promise<void>(resolve=>{release=resolve;});global.__loopReadyFailure={entered,gate};let running:Awaited<ReturnType<typeof launch>>|undefined;
  try{
   const config=resolve(root,'loop.config.ts'),source=await Bun.file(config).text();await writeFile(config,source.replace('prepare(){count++;}',`async ready(){const t=globalThis.__loopReadyFailure;t.entered();await t.gate;throw Error('ready failure after stop');}`));
@@ -155,7 +169,7 @@ test('failed stopping publication retains reservation and reports failure',async
  try{
   const ev=await evaluate({root,trustLocalConfig:true});running=await launch(ev,{instance:'failure-test',epoch:'first'});
   const record=resolve(root,'.loop/instances/web/failure-test/first/launch.json'),lock=resolve(root,'.loop/instances/web/failure-test/active.lock');
-  if(!root.startsWith(resolve(tmpdir(),'loop-hk-'))||record!==resolve(root,'.loop/instances/web/failure-test/first/launch.json'))throw Error('Unexpected fixture deletion target');
+  if(!root.startsWith(resolve(tempRoot,'loop-hk-'))||record!==resolve(root,'.loop/instances/web/failure-test/first/launch.json'))throw Error('Unexpected fixture deletion target');
   await unlink(record);await mkdir(record);
   await expect(running.stop()).rejects.toThrow('Launch cleanup failed');
   expect((await stat(lock)).isFile()).toBe(true);expect((running.inspect() as any).state).toBe('failed');
@@ -220,7 +234,7 @@ test('a profile unlock failure does not release the instance reservation',async(
  try{
   const ev=await evaluate({root,trustLocalConfig:true});running=await launch(ev,{instance:'unlock-test',epoch:'first',profile:'test-profile'});
   const profile=resolve(root,'.loop/profiles/test-profile.lock'),instanceLock=resolve(root,'.loop/instances/web/unlock-test/active.lock');
-  if(!root.startsWith(resolve(tmpdir(),'loop-hk-'))||profile!==resolve(root,'.loop/profiles/test-profile.lock'))throw Error('Unexpected fixture deletion target');
+  if(!root.startsWith(resolve(tempRoot,'loop-hk-'))||profile!==resolve(root,'.loop/profiles/test-profile.lock'))throw Error('Unexpected fixture deletion target');
   await unlink(profile);await mkdir(profile);
   await expect(running.stop()).rejects.toThrow('Launch cleanup failed');
   expect((await stat(instanceLock)).isFile()).toBe(true);
@@ -246,7 +260,7 @@ test('stop request during replacement fences promotion and joins cleanup',async(
  }finally{if(endpoint)await fetch(endpoint+'/__loop/disposed',{method:'POST',body:client}).catch(()=>{});if(running)await running.stop().catch(()=>{});await rm(root,{recursive:true,force:true});}
 },30000);
 test('registered readiness arriving during replacement is cancelled without running hooks',async()=>{
- const root=await fixture(),global=globalThis as any;if(!root.startsWith(resolve(tmpdir(),'loop-hk-')))throw Error('Unexpected fixture deletion target');global.__loopLateReady={count:0};let running:Awaited<ReturnType<typeof launch>>|undefined;
+ const root=await fixture(),global=globalThis as any;if(!root.startsWith(resolve(tempRoot,'loop-hk-')))throw Error('Unexpected fixture deletion target');global.__loopLateReady={count:0};let running:Awaited<ReturnType<typeof launch>>|undefined;
  try{
   const config=resolve(root,'loop.config.ts'),source=await Bun.file(config).text();await writeFile(config,source.replace('prepare(){count++;}',`ready(){globalThis.__loopLateReady.count++;}`));running=await launch(await evaluate({root,trustLocalConfig:true}),{instance:'late-ready-replace',epoch:'first',dev:true});
   const endpoint=running.endpoint!,client=crypto.randomUUID(),oldPlan=(running.inspect() as any).planId;expect((await fetch(endpoint+'/__loop/client',{method:'POST',body:client})).status).toBe(200);await writeFile(resolve(root,'app.ts'),'export function start() { return 5; }');
@@ -280,7 +294,7 @@ test('a disposed old-generation ready cannot activate a replacement',async()=>{
 },30000);
 test('stop joins an old ready hook already blocking replacement',async()=>{
  const root=await fixture(),global=globalThis as any;let release!:()=>void,entered!:()=>void;
- if(!root.startsWith(resolve(tmpdir(),'loop-hk-')))throw Error('Unexpected fixture deletion target');const started=new Promise<void>(resolve=>{entered=resolve;}),gate=new Promise<void>(resolve=>{release=resolve;});global.__loopReplacementStop={entered,gate,aborted:false};let running:Awaited<ReturnType<typeof launch>>|undefined;
+ if(!root.startsWith(resolve(tempRoot,'loop-hk-')))throw Error('Unexpected fixture deletion target');const started=new Promise<void>(resolve=>{entered=resolve;}),gate=new Promise<void>(resolve=>{release=resolve;});global.__loopReplacementStop={entered,gate,aborted:false};let running:Awaited<ReturnType<typeof launch>>|undefined;
  try{
   const config=resolve(root,'loop.config.ts'),source=await Bun.file(config).text();await writeFile(config,source.replace('prepare(){count++;}',`async ready({signal}){const t=globalThis.__loopReplacementStop;signal.addEventListener('abort',()=>{t.aborted=true;},{once:true});t.entered();await t.gate;}`));
   running=await launch(await evaluate({root,trustLocalConfig:true}),{instance:'replacement-ready-stop',epoch:'first',dev:true,profile:'shared'});const endpoint=running.endpoint!,oldPlan=(running.inspect() as any).planId,client=crypto.randomUUID();expect((await fetch(endpoint+'/__loop/client',{method:'POST',body:client})).status).toBe(200);
@@ -292,7 +306,7 @@ test('stop joins an old ready hook already blocking replacement',async()=>{
 },30000);
 test('old readiness failure during replacement remains a launch failure',async()=>{
  const root=await fixture(),global=globalThis as any;let release!:()=>void,entered!:()=>void;
- if(!root.startsWith(resolve(tmpdir(),'loop-hk-')))throw Error('Unexpected fixture deletion target');const started=new Promise<void>(resolve=>{entered=resolve;}),gate=new Promise<void>(resolve=>{release=resolve;});global.__loopReplacementFailure={entered,gate,aborted:false};let running:Awaited<ReturnType<typeof launch>>|undefined;
+ if(!root.startsWith(resolve(tempRoot,'loop-hk-')))throw Error('Unexpected fixture deletion target');const started=new Promise<void>(resolve=>{entered=resolve;}),gate=new Promise<void>(resolve=>{release=resolve;});global.__loopReplacementFailure={entered,gate,aborted:false};let running:Awaited<ReturnType<typeof launch>>|undefined;
  try{
   const config=resolve(root,'loop.config.ts'),source=await Bun.file(config).text();await writeFile(config,source.replace('prepare(){count++;}',`async ready({signal}){const t=globalThis.__loopReplacementFailure;signal.addEventListener('abort',()=>{t.aborted=true;},{once:true});t.entered();await t.gate;throw Error('old ready failed during replacement');}`));
   running=await launch(await evaluate({root,trustLocalConfig:true}),{instance:'replacement-ready-failure',epoch:'first',dev:true});const endpoint=running.endpoint!,oldPlan=(running.inspect() as any).planId,client=crypto.randomUUID();expect((await fetch(endpoint+'/__loop/client',{method:'POST',body:client})).status).toBe(200);

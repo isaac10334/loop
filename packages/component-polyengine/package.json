@@ -36,6 +36,10 @@
     "url": "git+https://github.com/isaac10334/loop.git",
     "directory": "packages/component-polyengine"
   },
+  "homepage": "https://isaac10334.github.io/loop/docs/",
+  "bugs": {
+    "url": "https://github.com/isaac10334/loop/issues"
+  },
   "engines": {
     "node": ">=22"
   },

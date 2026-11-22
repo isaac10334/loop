@@ -1,0 +1,18 @@
+# Local machine probe: reuse the already installed, compatible Desktop plugin.
+# No profile edits, installation, token copying, or version exemptions.
+- insert:
+    - id: lk-auto-03-codex
+      name: 'C:/Users/ijhar/.dsh/profiles/desktop/node_modules/dsh-openai-codex-auth/lib/index.js'
+- id: session-title-llm
+  disabled: true
+- id: schedule
+  disabled: true
+- id: tool-schedule
+  disabled: true
+- id: tool-plugin-manager
+  disabled: true
+- id: agent-default-model
+  config:
+    provider: openai-codex
+    model: gpt-6-luna
+    reasoningEffort: low

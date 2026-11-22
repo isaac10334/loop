@@ -21,8 +21,8 @@ fn legacy_run_defaults_remain_unchanged() {
     }
 }
 #[test]
-fn both_official_create_kits_parse_without_changing_legacy_create() {
-    for kind in ["browser", "native"] {
+fn typed_create_kits_parse_without_changing_legacy_create() {
+    for kind in ["browser", "native", "headless"] {
         let cli = Cli::try_parse_from(["loop", "create", "demo", "--kit", kind, "--yes"]).unwrap();
         match cli.command {
             Command::Create(options) => {

@@ -374,7 +374,10 @@ fn verify_plan(plan: &Value) -> Result<(), KitError> {
         || plan["schemaVersion"] != 1
         || plan["protocolVersion"] != 1
         || plan["cache"] != "disabled"
-        || !matches!(plan["kind"].as_str(), Some("browser" | "desktop"))
+        || !matches!(
+            plan["kind"].as_str(),
+            Some("browser" | "desktop" | "headless")
+        )
     {
         return Err(invalid());
     }
@@ -656,9 +659,9 @@ fn scaffold(r: &KitRequest) -> Result<Value, KitError> {
     let kit = r
         .kit
         .as_deref()
-        .ok_or_else(|| KitError::from("E_KIT: choose browser or native".to_string()))?;
-    if kit != "browser" && kit != "native" {
-        return Err("E_KIT: official kits are browser and native"
+        .ok_or_else(|| KitError::from("E_KIT: choose browser, native or headless".to_string()))?;
+    if kit != "browser" && kit != "native" && kit != "headless" {
+        return Err("E_KIT: choose browser, native or headless"
             .to_string()
             .into());
     }
@@ -668,6 +671,28 @@ fn scaffold(r: &KitRequest) -> Result<Value, KitError> {
             .into());
     }
     std::fs::create_dir_all(r.root.join("src"))?;
+    if kit == "headless" {
+        std::fs::write(
+            r.root.join("loop.config.ts"),
+            "import {defineConfig,headless} from '@loop-kit/host';\nexport default defineConfig({schemaVersion:1,source:{manifest:'./loop.package.json'},targets:[{id:'service',kit:headless(),application:{specifier:'./src/app.ts',export:'start'}}]});\n",
+        )?;
+        std::fs::write(
+            r.root.join("src/app.ts"),
+            include_str!("../templates/kits/headless-app.ts"),
+        )?;
+        std::fs::write(r.root.join("package.json"), serde_json::to_vec_pretty(&json!({"name":"loop-headless-app","private":true,"type":"module","dependencies":{"@loop-kit/host":"0.1.0","@loop-kit/capabilities":"0.1.0"}})).unwrap())?;
+        std::fs::write(r.root.join("loop.package.json"), serde_json::to_vec_pretty(&json!({"version":1,"id":"example:headless-app","sourcePaths":["loop.config.ts","package.json","src/app.ts"]})).unwrap())?;
+        std::fs::write(r.root.join(".gitignore"), "node_modules/\ndist/\n.loop/\n")?;
+        std::fs::write(
+            r.root.join("README.md"),
+            "# Headless Loop application\n\nRequires the source-built SDK and CLI; npm publication is pending. Prepare reviewed package artifacts and a frozen lock explicitly. This starter does not install dependencies.\n\nRun: `loop run . --config loop.config.ts --target service --instance service-local --trust-local-config`\n\nStop from another terminal: `loop stop service-local --root . --target service`\n\nConfiguration and application code are trusted same-user code, not sandboxed guests. Headless dev has no source watching yet; standalone build is unsupported.\n",
+        )?;
+        return Ok(envelope(
+            r,
+            false,
+            json!({"path":r.root,"kit":kit,"next":format!("Prepare source-built SDK artifacts and a frozen lock explicitly, then: loop run {} --config loop.config.ts --target service --instance service-local --trust-local-config",r.root.display())}),
+        ));
+    }
     let package = if kit == "browser" {
         "@loop-kit/host-browser"
     } else {
@@ -752,6 +777,30 @@ mod tests {
             .unwrap(),
         )
         .unwrap();
+    }
+
+    #[test]
+    fn headless_scaffold_has_no_renderer_dependency_and_preserves_nonempty_destinations() {
+        let root = tempfile::tempdir().unwrap();
+        let request = KitRequest {
+            root: root.path().to_path_buf(),
+            kit: Some("headless".into()),
+            ..Default::default()
+        };
+        scaffold(&request).unwrap();
+        let config = std::fs::read_to_string(root.path().join("loop.config.ts")).unwrap();
+        assert!(config.contains("kit:headless()"));
+        let package: Value =
+            serde_json::from_slice(&std::fs::read(root.path().join("package.json")).unwrap())
+                .unwrap();
+        assert_eq!(package["dependencies"].as_object().unwrap().len(), 2);
+        assert!(package["dependencies"].get("@loop-kit/ui").is_none());
+        assert!(
+            std::fs::read_to_string(root.path().join("src/app.ts"))
+                .unwrap()
+                .contains("scope.defer")
+        );
+        assert!(scaffold(&request).is_err());
     }
 
     #[test]

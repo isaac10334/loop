@@ -30,6 +30,30 @@ Use a runtime contribution for providers and an explicit plugin for rendering. K
 
 Keep the kit's borrowed host/scope/surface in the application. If an application creates a second host, its providers and cleanup are no longer owned by the composed instance.
 
+## Run without a window
+
+Use the `headless` factory from `@loop-kit/host` for a trusted TypeScript service. It composes the same provider ownership without a browser or native renderer:
+
+```ts
+import { defineConfig, headless } from '@loop-kit/host';
+export default defineConfig({
+  schemaVersion: 1, source: { manifest: './loop.package.json' },
+  targets: [{ id: 'bot', kit: headless(), application: { specifier: './app.ts', export: 'start' } }],
+});
+```
+
+```ts
+import type { HeadlessApplicationContext } from '@loop-kit/host';
+export function start({ scope }: HeadlessApplicationContext) {
+  const timer = setInterval(() => console.log('Service running'), 5000);
+  scope.defer(() => clearInterval(timer));
+}
+```
+
+Include both files in the source inventory and install the source-built SDK before evaluation. Launch with `loop run . --config loop.config.ts --target bot --instance bot-local --trust-local-config`; stop with `loop stop bot-local --root . --target bot`. Startup must return after initialization. Long-running work belongs to owned resources/tasks that observe cancellation.
+
+This preview runs trusted code in the evaluator process. It supplies no Discord transport, audio processing, guest isolation or implicit network authorization. Headless `dev` currently behaves like `run`, without source watching; standalone headless `build` fails explicitly. Legacy `run --headless` is a different application ABI and cannot select this kit.
+
 ## When a custom kit is justified
 
 The counter example retains an optional custom-kit route with its own identity, runtime contribution and coordinator hooks. Use that route to study extension rather than impersonating an official kit's ID.

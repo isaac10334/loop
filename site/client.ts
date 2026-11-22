@@ -1,35 +1,73 @@
 /** Progressive docs interactions. Search data stays local; Markdown content is never evaluated. */
+import { mountMechanism } from './mechanism';
+import { icon } from './icons';
+import { mountDocsNavigation } from './docs-navigation';
+import { mountCapabilityExplorers } from './capability-explorer-client';
+const mechanism = document.querySelector<HTMLElement>('.mechanism');
+if (mechanism) mountMechanism(mechanism);
+if ('IntersectionObserver' in window) {
+  const logo = document.querySelector('.loop-mark');
+  if (logo) {
+    let logoVisible = true;
+    const sync = () => document.body.classList.toggle('motion-suspended', document.hidden || !logoVisible);
+    new IntersectionObserver(entries => { logoVisible = entries[0]?.isIntersecting ?? false; sync(); }).observe(logo);
+    document.addEventListener('visibilitychange', sync);
+  }
+}
 interface SearchEntry { title: string; group: string; href: string; text: string }
 const themeButton = document.querySelector<HTMLButtonElement>(".theme-toggle");
 const setTheme = (dark: boolean) => {
   document.documentElement.dataset.theme = dark ? "dark" : "light";
   themeButton?.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
-  if (themeButton) themeButton.textContent = dark ? "☼" : "☾";
+  if (themeButton && !themeButton.classList.contains("orbital-toggle")) themeButton.innerHTML = icon(dark ? 'sun' : 'moon');
+  document.querySelector<HTMLIFrameElement>('.app-window iframe')?.contentWindow?.postMessage({ type: 'loop-site-theme', dark }, location.origin);
 };
 let savedTheme: string | null = null;
 try { savedTheme = localStorage.getItem("loop-docs-theme"); } catch { /* Storage may be unavailable; keep the system preference. */ }
-setTheme(savedTheme ? savedTheme === "dark" : matchMedia("(prefers-color-scheme:dark)").matches);
-themeButton?.addEventListener("click", () => {
+setTheme(savedTheme !== 'light');
+let themeTransition: ViewTransition | undefined;
+themeButton?.addEventListener("click", event => {
   const dark = document.documentElement.dataset.theme !== "dark";
-  setTheme(dark);
+  const update = () => setTheme(dark);
+  themeTransition?.skipTransition();
+  if (document.body.classList.contains('landing') && document.startViewTransition && event.detail > 0 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const bounds = themeButton.getBoundingClientRect();
+    document.documentElement.style.setProperty('--theme-x', `${bounds.x + bounds.width / 2}px`);
+    document.documentElement.style.setProperty('--theme-y', `${bounds.y + bounds.height / 2}px`);
+    themeTransition = document.startViewTransition(update);
+  } else update();
   try { localStorage.setItem("loop-docs-theme", dark ? "dark" : "light"); } catch { /* A theme remains usable without persistent storage. */ }
 });
+const demoFrame = document.querySelector<HTMLIFrameElement>('.app-window iframe');
+demoFrame?.addEventListener('load', () => setTheme(document.documentElement.dataset.theme === 'dark'));
+if (document.body.classList.contains('landing') && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const reveals = document.querySelectorAll<HTMLElement>('.reveal');
+  const observer = new IntersectionObserver(changes => {
+    for (const change of changes) if (change.isIntersecting) {
+      change.target.classList.add('is-visible'); observer.unobserve(change.target);
+    }
+  }, { threshold: 0.08 });
+  for (const reveal of reveals) observer.observe(reveal);
+  document.body.classList.add('motion-ready');
+}
 const menu = document.querySelector<HTMLButtonElement>(".menu-toggle");
 const sidebar = document.querySelector<HTMLElement>(".sidebar");
 menu?.addEventListener("click", () => { const open = sidebar?.classList.toggle("open") ?? false; menu.setAttribute("aria-expanded", String(open)); });
 document.addEventListener("keydown", event => { if (event.key === "Escape") { sidebar?.classList.remove("open"); menu?.setAttribute("aria-expanded", "false"); const search = document.querySelector<HTMLDialogElement>(".search-dialog"); if (search?.open) { event.preventDefault(); search.close(); } } });
 
-for (const button of document.querySelectorAll<HTMLButtonElement>(".copy-code")) button.addEventListener("click", async () => {
-  const code = button.closest(".code-block")?.querySelector("code")?.textContent;
+document.addEventListener('click', async event => {
+  const button = event.target instanceof Element ? event.target.closest<HTMLButtonElement>('.copy-code') : null;
+  if (!button) return;
+  const code = button.closest('.code-block')?.querySelector('code')?.textContent;
   if (code === undefined || code === null) return;
-  try { await navigator.clipboard.writeText(code); button.textContent = "Copied"; button.setAttribute("aria-label", "Code copied"); }
-  catch { button.textContent = "Select code to copy"; }
+  try { await navigator.clipboard.writeText(code); button.textContent = 'Copied'; button.setAttribute('aria-label', 'Code copied'); }
+  catch { button.textContent = 'Select code to copy'; }
 });
 
 const dialog = document.querySelector<HTMLDialogElement>(".search-dialog");
 const input = dialog?.querySelector<HTMLInputElement>("input");
 const results = dialog?.querySelector<HTMLElement>(".search-results");
-const root = document.body.dataset.docsRoot ?? "./";
+const root = new URL(document.body.dataset.docsRoot ?? './', location.href).href;
 let entries: SearchEntry[] | undefined;
 let failed = false;
 function showResults() {
@@ -66,12 +104,20 @@ document.addEventListener("keydown", event => {
   const target = event.target;
   if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k" && !(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLElement && target.isContentEditable)) { event.preventDefault(); void openSearch(); }
 });
-const toc = [...document.querySelectorAll<HTMLAnchorElement>(".toc a")];
-if ("IntersectionObserver" in window && toc.length) {
-  const observer = new IntersectionObserver(changes => {
-    for (const change of changes) if (change.isIntersecting) {
-      toc.forEach(link => link.classList.toggle("current", link.hash === "#" + change.target.id));
-    }
-  }, { rootMargin: "-90px 0px -65% 0px" });
-  for (const link of toc) { const element = document.getElementById(link.hash.slice(1)); if (element) observer.observe(element); }
+let tocObserver: IntersectionObserver | undefined;
+function mountDocumentContent() {
+  tocObserver?.disconnect();
+  const toc = [...document.querySelectorAll<HTMLAnchorElement>('.toc a')];
+  if ('IntersectionObserver' in window && toc.length) {
+    tocObserver = new IntersectionObserver(changes => {
+      for (const change of changes) if (change.isIntersecting) toc.forEach(link => link.classList.toggle('current', link.hash === '#' + change.target.id));
+    }, { rootMargin: '-90px 0px -65% 0px' });
+    for (const link of toc) { const element = document.getElementById(link.hash.slice(1)); if (element) tocObserver.observe(element); }
+  }
+  for (const button of document.querySelectorAll<HTMLButtonElement>('.copy-code')) {
+    if (!button.querySelector('.icon')) button.insertAdjacentHTML('afterbegin', icon('copy'));
+  }
+  mountCapabilityExplorers();
 }
+mountDocumentContent();
+mountDocsNavigation(mountDocumentContent);

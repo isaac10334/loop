@@ -73,12 +73,65 @@ removes only installer-owned files and its own PATH entry. It keeps projects,
 Rust toolchains, and Cargo's shared PATH entry. A direct ZIP download is portable;
 managed upgrade/uninstall commands apply only to installer-managed copies.
 
-## Development checkout
+## Development checkout (no installed Loop required)
+
+Repository development uses Bun and Cargo directly, not `loop`. Install the
+prerequisites above and the toolchain in `rust-toolchain.toml`; do not change your
+Rust default. From the checkout:
 
 ```powershell
+bun install --frozen-lockfile
+# Build SDK output, regenerate embedded tools/templates, then build the Rust CLI.
+$cli = .\scripts\build-cli.ps1
+& $cli --version
+.\scripts\test-cli.ps1 -Binary $cli
+# Optional persistent development command; rerun after editing to update.
 .\scripts\install-dev.ps1
-loop create hello --host-source . --yes
+loop-dev --version  # -V also works
+loop-dev --help     # -h or `help` also works
+loop-dev help create
 ```
+
+The build script uses the checkout's pinned Rust toolchain and Cargo's reported
+artifact path (including `CARGO_TARGET_DIR`). `-Release` selects the release
+profile. It never invokes an installed `loop` or installs dependencies. Running
+Cargo alone does not regenerate the embedded Bun worker and asset inventory.
+
+The development installer always rebuilds and copies to `loop-dev.exe` in
+`$CARGO_HOME\bin` (default `%USERPROFILE%\.cargo\bin`). It records checkout,
+version and SHA-256 in `loop-dev-install.json`, refuses unrecognized/modified
+copies or another owning checkout, and leaves `loop.exe` alone. There is no
+`-SkipBuild` shortcut. Use `-InstallDir <directory> -NoPath` for an isolated copy
+without persistent PATH changes. Without `-NoPath`, it adds the development bin
+to user and current-session PATH if needed. Reopen PowerShell to refresh other
+sessions, then check `Get-Command loop,loop-dev -All`.
+
+Use `loop` for an installed stable release and `loop-dev` for local source. Their
+version numbers alone may match; inspect command paths and the development marker.
+`loop-dev upgrade`/`uninstall` refuse unmanaged copies: update by rerunning the
+script. To remove development installation, inspect its marker and remove only
+its `loop-dev.exe` and `loop-dev-install.json`; keep Cargo's shared PATH entry.
+The old installer used `loop.exe` plus `loop-install-source.txt`; those are legacy
+development files, not evidence of a stable release. Inspect them before removing
+only those two files to switch to the stable installer. No automatic migration
+or replacement of a legacy `loop.exe` occurs.
+
+For legacy host development, pass an absolute checkout path:
+
+```powershell
+loop-dev create hello --host-source C:\src\ilt\loop --yes
+```
+
+`test-cli.ps1` copies the supplied binary to a temporary directory outside the
+repository and tests PATH resolution, version/help/doctor, embedded Rust scaffolding
+and managed-upgrade refusal with repository/tool directories absent from PATH.
+It leaves its evidence directory. `scripts/test-dev-install.ps1` additionally
+runs real isolated install/repeat-update checks, stable-file preservation, and
+modified/unmanaged executable rejection without changing user PATH.
+These checks do not prove application compilation or native-window execution. For the stronger published-host gate, run
+`scripts/test-release.ps1 -Binary <absolute-cli-path>`; it requires the matching
+published host, Rust target, MSVC and network access. See
+[release prerequisites](../../RELEASING.md#published-versus-prepared-checked-november-11-2026).
 
 ## TypeScript preview
 

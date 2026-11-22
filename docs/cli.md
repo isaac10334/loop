@@ -115,7 +115,7 @@ For Loop host development, `create --host-source <checkout>` selects a local
 checkout for generated/user host compilation; `LOOP_HOST_SOURCE` is the fallback.
 That override does **not** replace the runtime already compiled into the CLI's
 normal generated-host `run` path. Keep local host paths out of released projects
-and packages. See [Windows host development](../crates/loop-cli/WINDOWS.md#development-checkout).
+and packages. See [Windows host development](../crates/loop-cli/WINDOWS.md#development-checkout-no-installed-loop-required).
 
 ## Project formats and experimental TypeScript
 

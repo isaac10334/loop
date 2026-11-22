@@ -1,0 +1,3 @@
+# Listing itself requires a one-operation approval; the probe always rejects it.
+- id: tool-plugin-manager
+  disabled: false
