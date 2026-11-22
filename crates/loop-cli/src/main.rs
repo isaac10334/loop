@@ -41,7 +41,7 @@ struct CreateOptions {
     #[command(flatten)]
     legacy: dev::Create,
     /// Select an official typed-config starter; absent preserves legacy create.
-    #[arg(long, value_parser = ["browser", "native"])]
+    #[arg(long, value_parser = ["browser", "native", "headless"])]
     kit: Option<String>,
     #[arg(long)]
     json: bool,

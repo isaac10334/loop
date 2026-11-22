@@ -1,6 +1,8 @@
 /** Browser host-kit composition. Trusted modules execute only in a fresh per-launch host. */
 import { createHost, type HostKit, type Host, type Scope, type ResolvedHostPlan, type Json, type RegistrationKey } from "@loop-kit/host";
 import type { Surface } from "@loop-kit/ui";
+export { createGpuSession } from "./gpu.js";
+export type { GpuAdapterResource, GpuBufferResource, GpuCanvasResource, GpuDeviceResource, GpuPlatform, GpuSession } from "./gpu.js";
 
 export interface BrowserAsset {
   /** Project-relative regular file, captured and pinned by the CLI evaluator. */

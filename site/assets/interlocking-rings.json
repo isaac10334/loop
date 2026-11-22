@@ -1,0 +1,47 @@
+{
+  "commands": [
+    {
+      "command": "solid.torus",
+      "params": {
+        "major": 32,
+        "minor": 7,
+        "center": [0, 0, 0],
+        "body_name": "Emerald ring"
+      }
+    },
+    {
+      "command": "solid.torus",
+      "params": {
+        "major": 32,
+        "minor": 7,
+        "center": [0, 28, 0],
+        "body_name": "Mint ring"
+      }
+    },
+    {
+      "command": "solid.move",
+      "params": {
+        "bodies": ["Mint ring"],
+        "origin": [0, 28, 0],
+        "axis": [1, 0, 0],
+        "angle": "90 deg"
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": ["Emerald ring"],
+        "color": "#28745f",
+        "pbr": {"metallic": 0.18, "roughness": 0.28, "dielectric_ior": 1.46}
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": ["Mint ring"],
+        "color": "#b8d9c5",
+        "pbr": {"metallic": 0.08, "roughness": 0.3, "dielectric_ior": 1.46}
+      }
+    }
+  ]
+}

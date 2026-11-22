@@ -1,7 +1,7 @@
 /** HK1 trusted composition contracts. Module references carry runtime code; JSON never carries callbacks. */
 import type { ResourceOwner } from "../contracts.js";
 export type Json = null | boolean | number | string | readonly Json[] | { readonly [key: string]: Json };
-export type TargetKind = "browser" | "desktop";
+export type TargetKind = "browser" | "desktop" | "headless";
 export interface VersionedId { readonly id: string; readonly version: string }
 export interface ModuleRef { readonly specifier: string; readonly export: string; readonly sha256?: string }
 export interface ResolvedModuleRef extends ModuleRef { readonly sha256: string }

@@ -11,4 +11,6 @@
 export type * from "./contracts.js";
 export { createHost, createResourceOwner, toLegacyHandle } from "./runtime.js";
 export type * from "./kits/contracts.js";
+export { headless, bootstrapHeadless } from "./kits/headless.js";
+export type { HeadlessApplicationContext, HeadlessPluginContext, HeadlessStart, HeadlessSetup } from "./kits/headless.js";
 export { HostPlanError, hostPlanData, canonicalHostJson, defineConfig, defineHostKit, defineHostPlugin, extractHostConfig, resolveHostPlan } from "./kits/resolve.js";

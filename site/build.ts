@@ -7,9 +7,11 @@ import { renderMarkdown, escapeHtml as e, pageHref } from "./render";
 import { documentShell } from "./shell";
 import { checkSite } from "./check";
 import { llmsText, markdownExport, siteBase, sourceName } from './exports';
-import { support } from './support';
+import { support, capabilityMatrix } from './support';
 import { buildDemo } from './demo-build';
 import { verifyPublication } from './publication';
+import { renderCapabilityExplorer } from './capability-explorer';
+import { renderProductStories, renderLandingCapabilities } from './landing-content';
 const base = siteBase(process.env.DOCS_BASE_URL);
 
 const root = resolve(import.meta.dir, "..");
@@ -22,14 +24,29 @@ if (existsSync(publication)) {
   await rm(publication, { recursive: true, force: true });
 }
 await mkdir(join(output, "_assets"), { recursive: true });
-for (const file of ['index.html', 'favicon.svg']) await writeFile(join(publication, file), new Uint8Array(await Bun.file(join(root, 'site', file)).arrayBuffer()));
+const landing = (await Bun.file(join(root,'site/index.html')).text()).replace('<!-- PRODUCT_STORIES -->', renderProductStories()).replace('<!-- CAPABILITY_SHOWCASE -->',renderLandingCapabilities());
+await writeFile(join(publication,'index.html'),landing);
+await writeFile(join(publication,'favicon.svg'),new Uint8Array(await Bun.file(join(root,'site/favicon.svg')).arrayBuffer()));
+await mkdir(join(publication, 'assets'), { recursive: true });
+for (const [source, name] of [['site/assets/kinetic-gear.svg', 'kinetic-gear.svg'], ['site/assets/loop-display.ttf', 'loop-display.ttf'], ['site/assets/Space-Grotesk-LICENSE.txt', 'Space-Grotesk-LICENSE.txt'], ['site/assets/loop-sans.ttf', 'loop-sans.ttf'], ['site/landing.css', 'landing.css'], ['site/assets/DM-Sans-LICENSE.txt', 'DM-Sans-LICENSE.txt']]) {
+  await writeFile(join(publication, 'assets', name!), new Uint8Array(await Bun.file(join(root, source!)).arrayBuffer()));
+}
 await mkdir(join(output, "_source"), { recursive: true });
 const hasher = new Bun.CryptoHasher("sha256");
 for (const page of pages) { hasher.update(page.sourcePath); hasher.update("\0"); hasher.update(page.markdown); hasher.update("\0"); }
 const identity = hasher.digest("hex");
 const records: { id: string; source: string; status: string; sha256: string }[] = [];
 for (const page of pages) {
-  const rendered = renderMarkdown(page.markdown, page, pages);
+  // The browser gets an explorable projection; Markdown/JSON exports retain the complete catalog.
+  const webMarkdown = page.id === 'reference/support'
+    ? page.markdown.slice(0,page.markdown.indexOf('## Engine capability roadmap and support matrix')) + page.markdown.slice(page.markdown.indexOf('## API support at a glance'))
+    : page.markdown;
+  const rendered = renderMarkdown(webMarkdown, page, pages);
+  if (page.id === 'reference/support') {
+    const marker = '<h2 id="api-support-at-a-glance">';
+    rendered.html = rendered.html.replace(marker,renderCapabilityExplorer({id:'docs-capabilities'}) + marker);
+    rendered.headings.unshift({ id:'docs-capabilities-title', title:'Capability explorer', level:2 });
+  }
   if (page.package) {
     const directory = join(root, "packages", page.package, "dist");
     let declarations: string[];
@@ -45,14 +62,14 @@ for (const page of pages) {
   await writeFile(join(output, '_source', sourceName(page.id)), markdownExport(page, pages, base));
   records.push({ id: page.id, source: page.sourcePath, status: page.status, sha256: new Bun.CryptoHasher("sha256").update(page.markdown).digest("hex") });
 }
-await writeFile(join(output, "_assets/docs.css"), await Bun.file(join(root, "site/styles.css")).text());
+await writeFile(join(output, '_assets/docs.css'), (await Promise.all(['styles.css','docs-theme.css','capability-explorer.css'].map(file => Bun.file(join(root,'site',file)).text()))).join('\n'));
 const client = await Bun.build({ entrypoints: [join(root, "site/client.ts")], target: "browser", minify: true });
 if (!client.success) throw new AggregateError(client.logs, "Docs client build failed");
 await writeFile(join(output, "_assets/docs.js"), await client.outputs[0]!.text());
 const search = pages.map(page => ({ title: page.title, group: page.group, href: pageHref(page.id), text: page.markdown.toLowerCase().replace(/[`#*_[\]()>|]/g, " ").replace(/\s+/g, " ") }));
 await writeFile(join(output, "search-index.json"), JSON.stringify(search));
 await writeFile(join(output, "build-receipt.json"), JSON.stringify({ format: "loop-docs-v1", contentSha256: identity, toolchain: `bun@${Bun.version}`, pages: records }, null, 2) + "\n");
-await writeFile(join(output, 'support.json'), JSON.stringify({ format: 'loop-support-v1', reviewedAt: '2026-11-11', distribution: 'source/packed preview', entries: support }, null, 2) + '\n');
+await writeFile(join(output, 'support.json'), JSON.stringify({ format: 'loop-support-v1', reviewedAt: '2026-11-20', distribution: 'source/packed preview', entries: support, capabilityMatrix }, null, 2) + '\n');
 await writeFile(join(publication, 'llms.txt'), llmsText(pages, base));
 await writeFile(join(publication, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ['', ...pages.map(page => 'docs/' + pageHref(page.id))].map(path => `<url><loc>${e(new URL(path, base).href)}</loc></url>`).join('') + '</urlset>\n');
 await buildDemo(join(output, '_demo'));

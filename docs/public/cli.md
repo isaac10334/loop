@@ -6,7 +6,7 @@ These host-kit commands describe the **source-built preview**. The latest public
 
 | Task | Command |
 | --- | --- |
-| Scaffold | `loop create <path> --kit browser\|native --yes` |
+| Scaffold | `loop create <path> --kit browser\|native\|headless --yes` |
 | Static inspection | `loop inspect <root> --json` |
 | Trusted evaluation | `loop inspect <root> --config loop.config.ts --evaluate-config --trust-local-config --target <id> --json` |
 | Run | `loop run <root> --config loop.config.ts --trust-local-config --target <id> --instance <name>` |
@@ -16,6 +16,8 @@ These host-kit commands describe the **source-built preview**. The latest public
 | Restart | `loop restart <instance> --root <root> --trust-local-config --json` |
 
 Create does not install dependencies. Review the generated project and prepare a frozen lock before evaluation. A project with several targets requires explicit target selection. Run/dev stay in the foreground; stop from another terminal or use the normal termination signal. JSON success is emitted after shutdown; startup information appears on stderr.
+
+The renderer-free `headless()` kit is configured through `@loop-kit/host`, not the legacy `--headless` flag. It supports run/dev/stop/restart; `dev` does not yet watch sources, and standalone build returns `E_BUILD_UNSUPPORTED`. `loop create <path> --kit headless --yes` creates a renderer-free service starter; it does not install dependencies. See [headless composition](composition.md#run-without-a-window).
 
 Static inspect reads literal metadata without importing config. Evaluation, run, dev and config-mode build execute same-user trusted code. There is no durable blanket trust grant. `--port` and `--profile` select resources; they do not authorize guest operations.
 

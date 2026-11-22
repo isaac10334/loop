@@ -45,6 +45,16 @@ total. Assets are copied into static and live output and served only by their
 declared names. This is artifact delivery, not permission for a guest to read files.
 Changing an asset requires regenerating its explicit pin before a fresh build.
 
+`createGpuSession({gpu, signal?, onLost?})` acquires an **owned** WebGPU device
+from an injected platform; it never reads `navigator`. Track created buffers with
+`trackBuffer`, and register exclusive canvas ownership with `configure(context, fn)`
+before configuring. Wrap later initialization in `try`/`catch` and dispose on failure;
+call `assertActive()` after asynchronous work. Disposal is synchronous, idempotent,
+cleans tracked buffers, unconfigures the canvas and destroys the device. Abort rejects
+pending acquisition and destroys a late device; device loss disposes and calls `onLost`.
+Pending platform operations cannot be forcibly stopped. Extracted GPU objects are not
+revoked, and the caller must not independently dispose or share owned resources.
+
 Verify: `bun run repo verify host-browser`; actual two-launch/stop-A-leaves-B,
 relocated static output and real Component interaction:
 `bun tooling/host-browser/acceptance.ts`. These runtime fixture plans are synthetic;

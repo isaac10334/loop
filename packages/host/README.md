@@ -44,6 +44,27 @@ values use `scope.own(value)` or `createResourceOwner().use(value)` with `await 
 Native `DisposableStack` / `AsyncDisposableStack` can consume those same protocols;
 the host itself needs no global stack implementation.
 
+## Renderer-free host kit
+
+`headless()` is an inert versioned kit factory for trusted TypeScript applications:
+
+```ts
+import { defineConfig, headless } from '@loop-kit/host';
+export default defineConfig({
+  schemaVersion: 1, source: { manifest: './loop.package.json' },
+  targets: [{ id: 'bot', kit: headless(), application: { specifier: './app.ts', export: 'start' } }],
+});
+```
+
+The application exports `start(context: HeadlessApplicationContext)` and receives a
+fresh host, root scope and cancellation signal. Register resources with that scope;
+return after initialization rather than awaiting the entire service lifetime.
+`bootstrapHeadless` validates provider registration receipts and unwinds failed
+startup. Each launch is independent. Trusted modules are not sandboxed and ignored
+cancellation can delay shutdown. No renderer, guest imports or network grants are
+provided. Source-built CLI run/dev/stop/restart support this profile; headless dev
+currently has no source watching and standalone build fails explicitly.
+
 Compatibility: IDs, exact versions, default/named resolution, lazy independent
 creation and explicit `Provider.dispose` precedence remain. `value` now checks the
 lease before returning the raw service. Extracted JavaScript references still

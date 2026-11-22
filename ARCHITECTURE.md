@@ -2,6 +2,15 @@
 
 Loop-kit currently has two implementation paths. The new TypeScript packages make capability contracts and local providers usable without WebAssembly. The existing Rust host and CLI run component applications with concrete native grants and desktop/headless integrations. They do not currently share a runtime API.
 
+## Contents
+
+- [Renderer-free TypeScript composition](#renderer-free-typescript-composition)
+- [Proposed CLI host-kit composition](#proposed-cli-host-kit-composition)
+- [Shared vocabulary and product direction](#shared-vocabulary-and-product-direction)
+- [Enforced package ownership](#enforced-package-ownership)
+- [Source and native ownership](#source-and-native-ownership)
+- [Repository commands and agent handoff](#repository-commands-and-agent-handoff)
+
 **Portable development proof, 2026-10-28:** `@loop-kit/workspace` now owns bounded
 immutable text-source snapshots, pinned dependency references, build-provider/receipt
 contracts and checked Git change requests. It owns no Station persistence, grants,
@@ -35,6 +44,22 @@ captures local regular-file bytes separately from the bounded authored text snap
 checks digests/currentness, copies them into static/live output and serves only the
 declared basenames. This delivery mechanism is not a guest filesystem grant; see
 [the browser kit](packages/host-browser/README.md) for budgets and constraints.
+
+## Renderer-free TypeScript composition
+
+`@loop-kit/host` exports `headless()` and `bootstrapHeadless` for the explicit
+`loop:profile/headless-ts@0.1.0` profile. Each launch creates a fresh host/scope,
+checks declared provider registrations and disposes partial startup. The CLI's
+trusted config path supervises headless run/dev/stop/restart with the existing
+instance/epoch reservations. Headless dev has no source replacement yet;
+standalone build rejects explicitly. This is same-user TypeScript execution, not
+a Component engine, a Discord adapter, a GPU backend or a guest permission grant.
+
+The browser kit also exports injected `createGpuSession` ownership for one device,
+tracked buffers and exclusive canvas configuration. Abort destroys late-arriving
+devices; loss/disposal attempts owned cleanup. Application shaders and other GPU
+objects remain application-owned. This helper is not native wgpu or wasi:webgpu
+support; its fake-platform tests do not establish GPU conformance.
 
 ## Proposed CLI host-kit composition
 
