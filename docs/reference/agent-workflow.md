@@ -37,39 +37,50 @@ supported promise or a passing unit test into installed-runtime evidence.
    duplicates. Include outcome, scope, acceptance and unresolved decisions; link
    the owning spec rather than copying it. Issue creation, comments, edits and
    closure require an explicit request covering those external writes.
-3. For a new implementation task, prefer a separate branch and isolated Git
-   worktree from an identified local baseline, such as `lk-<id>-<short-topic>` (or
-   `<short-topic>` without an ID). Record branch, baseline revision and path. A
-   worktree does not include dirty source changes: if those are required, stop and
-   agree on their integration rather than copying them or committing them silently.
-   A task explicitly scoped to the current checkout may stay there when ownership
-   is clear. Changing cwd alone is not isolation. No automatic fetch or tool install
+3. For a new non-trivial implementation task, create a separate branch and isolated
+   Git worktree from an identified local baseline, such as `lk-<id>-<short-topic>`
+   (or `<short-topic>` without an ID), rather than piling unrelated edits onto a
+   dirty checkout. Record branch, baseline revision and path. A worktree does not
+   include dirty source changes: if those are required, stop and agree on their
+   integration rather than copying them or committing them silently. A task
+   explicitly scoped to the current checkout may stay there when ownership is
+   clear. Changing cwd alone is not isolation. No automatic fetch or tool install
    is required to create a local worktree.
 4. Keep one integration owner. Independent workers use separate worktrees or
    explicitly disjoint owned paths; shared contracts and lockfiles need an assigned
    owner. Review the complete composed diff before handoff. Do not remove another
    task's branch/worktree; remove your own only after confirmed integration and
    authorization, checking for untracked work first.
-5. Local edits and validation do not imply permission to commit, push or open a PR.
-   When explicitly requested, commit only owned changes and push only the agreed
-   branch/remote. Prefer a draft PR until validation and review are complete. State
-   outcome, linked issue/spec, compatibility effects, checks actually run, skipped
-   checks and blockers. Use closing keywords only when closure is intended and
-   authorized. Never merge, force-push or bypass branch protection without explicit
-   approval for that action.
+5. Use `git` and GitHub CLI (`gh`) actively for clean version control:
+   - **Local commits:** Making scoped local commits of your own verified changes on
+     a dedicated task branch (or when cleanly isolated from unrelated dirty files)
+     is encouraged so work does not accumulate as uncommitted churn. Stage only
+     owned files — never `git add -A` on a dirty worktree.
+   - **GitHub CLI (`gh`):** Read-only inspection (`gh issue view`, `gh pr view`,
+     `gh run list`) is always permitted. Pushing your task branch and opening a
+     draft PR (`gh pr create --draft`) is permitted for scoped tasks or when
+     requested. State outcome, linked issue/spec, compatibility effects, checks
+     actually run, skipped checks and blockers.
+   - **Explicit approval required:** Never merge, force-push, rewrite shared
+     history, bypass branch protection, close issues or publish releases without
+     explicit approval for that action. Use closing keywords only when closure is
+     intended and authorized.
 
 ## Validation and review
 
 Use the smallest relevant checks first. Package work uses
 `bun run repo context <package>`, `bun run repo check` and
 `bun run repo verify <package>`. Shared package/packaging changes may require
-`bun run verify`; automation types use `bun run typecheck:tooling`. Rust commands
-are owned by the [root README](../../README.md#rust-status). Documentation-only
-changes need affected-link and source-claim checks, not an automatic full build.
-The [TypeScript CI workflow](../../.github/workflows/typescript.yml) and knowledge
-checks currently run only by explicit manual dispatch. A push or PR without a CI
-run is not evidence of a passing build; record the local checks and dispatch any
-required remote verification deliberately.
+`bun run verify`; automation types use `bun run typecheck:tooling`; Markdown lint
+and link validation use `bun run docs:check`. Rust formatting and lint checks use
+`bun run rust:fmt` and `bun run rust:clippy`, with full workspace tests documented
+in the [root README](../../README.md#rust-status). Documentation-only changes need
+affected-link and source-claim checks, not an automatic full build.
+The [TypeScript CI workflow](../../.github/workflows/typescript.yml) and
+[knowledge CI workflow](../../.github/workflows/knowledge.yml) run on pushes to
+`main`, pull requests matching their path filters, and manual `workflow_dispatch`.
+Release and deployment workflows remain manual `workflow_dispatch` only. Do not
+claim CI passed without checking the actual run (e.g., via `gh run list`).
 
 Review `git diff --check`, the final diff and status for scope, accidental generated
 files, secrets, compatibility and failure/resource behavior. Add a bounded second
@@ -80,12 +91,15 @@ GitHub approval or branch-protection enforcement without checking the actual sta
 
 ## Approval and real blockers
 
-An implementation request permits scoped local edits and relevant non-destructive
-checks. It does not authorize external tracker writes, Git publication, releases,
-deployment, workflow dispatch, dependency/tool installation, global settings,
-credential access or changes to account/repository/registry configuration. Obtain
-explicit authorization for those actions; release approval remains governed by
-[RELEASING](../../RELEASING.md). Never print tokens or inspect credential stores.
+An implementation request permits scoped local edits, task-branch/worktree
+isolation, scoped local commits, read-only `gh` inspection, pushing a task
+branch / opening a draft PR when working on a scoped task, and relevant
+non-destructive checks. It does not authorize merging, force-pushing, closing
+issues, releases, deployment, workflow dispatch, dependency/tool installation,
+global settings, credential access or changes to account/repository/registry
+configuration. Obtain explicit authorization for those actions; release approval
+remains governed by [RELEASING](../../RELEASING.md). Never print tokens or
+inspect credential stores.
 
 When credentials, publishing authorization or external configuration block a
 required step, stop that step. Report the exact operation, missing prerequisite,

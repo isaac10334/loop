@@ -1,6 +1,25 @@
 name: TypeScript packages
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/**'
+      - 'tooling/**'
+      - 'scripts/check-typescript-packages.ts'
+      - 'package.json'
+      - 'bun.lock'
+      - 'tsconfig*.json'
+      - '.github/workflows/typescript.yml'
+  pull_request:
+    paths:
+      - 'packages/**'
+      - 'tooling/**'
+      - 'scripts/check-typescript-packages.ts'
+      - 'package.json'
+      - 'bun.lock'
+      - 'tsconfig*.json'
+      - '.github/workflows/typescript.yml'
 jobs:
   verify:
     runs-on: windows-latest

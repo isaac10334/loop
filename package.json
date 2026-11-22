@@ -5,8 +5,8 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "bun test packages/capabilities/test packages/host/test packages/ui/test packages/scripting/test packages/workspace/test packages/host-browser/test packages/host-native/test packages/renderer-dom/test packages/component-polyengine/test tooling",
-    "typecheck": "bun run --cwd packages/capabilities typecheck && bun run --cwd packages/host typecheck && bun run --cwd packages/ui typecheck && bun run --cwd packages/scripting typecheck && bun run --cwd packages/workspace typecheck && bun run --cwd packages/host-browser typecheck && bun run --cwd packages/host-native typecheck && bun run --cwd packages/renderer-dom typecheck && bun run --cwd packages/component-polyengine typecheck && bun run typecheck:tooling",
+    "test": "bun run --filter \"@loop-kit/*\" test && bun test tooling",
+    "typecheck": "bun run --filter \"@loop-kit/*\" typecheck && bun run typecheck:tooling",
     "build": "bun run repo build",
     "check:packages": "bun scripts/check-typescript-packages.ts",
     "repo": "bun tooling/repo.ts",
@@ -19,6 +19,11 @@
     "pack:check": "bun run build && bun run check:packages",
     "release:prepare": "bun tooling/release.ts",
     "docs:build": "bun tooling/docs.ts",
+    "docs:lint": "bun node_modules/markdownlint-cli2/markdownlint-cli2.mjs",
+    "docs:links": "bun run knowledge links",
+    "docs:check": "bun run docs:links && bun run docs:lint",
+    "rust:fmt": "cargo fmt --all -- --check",
+    "rust:clippy": "cargo clippy --workspace --all-targets -- -D warnings",
     "release:git": "bun tooling/git-artifacts.ts",
     "workspace": "bun tooling/workspace.ts",
     "contracts:generate": "bun tooling/wit-contracts.ts tooling/fixtures/wit/editor.wit target/svg-editor-contract",
