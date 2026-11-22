@@ -24,7 +24,7 @@ try { & $exe } finally { Remove-Item Env:LOOP_UI_SMOKE }
 # For an interactive window, run & $exe without LOOP_UI_SMOKE.
 ```
 
-Use the fresh explicit [checkout CLI](../target/debug/loop.exe), not `loop` from
+Use the fresh explicit checkout CLI (`../target/debug/loop.exe`), not `loop` from
 PATH. `--host-source` selects the packaged host dependency; it does **not**
 redirect the runtime compiled into an installed CLI. Generated-host `loop run`
 uses that CLI's own host. This proof built both the CLI and the packaged host.

@@ -20,9 +20,9 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
   in Chrome; pointer/Enter/Space advanced 0→3, hooks ran, and stop cleared the surface.
   After strict Bun-lock validation, the offline fixture generator creates both locks.
   Tested CLI SHA `eb2673118fb19b81a67102949552a89ef50c996b572ff2d6ad540f3afb9a3bed`
-  re-evaluated the fresh fixture under [the consumer](target/custom-provider-fixture-2/consumer)
+  re-evaluated the fresh fixture under the consumer (`target/custom-provider-fixture-2/consumer`)
   as plan `724e12cee4fb24a2cd3515b8e2a2c485f4947578404d947f601513bc9fc9c74b`; see
-  [the final plan receipt](target/custom-provider-fixture-2/evaluated-plan-final-eb267.json).
+  the final plan receipt (`target/custom-provider-fixture-2/evaluated-plan-final-eb267.json`).
   Chrome pointer/Enter/Space, lifecycle hooks and `dev` replacement were subsequently
   exercised on that tested CLI; see the detailed receipts below. An earlier static
   build correctly refuses live callbacks (`E_NONPORTABLE_CALLBACK`). This is
@@ -58,11 +58,11 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
   committed write. Controlled-worker tests cover malformed and valid cases. In real-engine
   headless Chrome, a hostile guest's 129-byte ASCII and 130-byte multibyte revisions both
   returned `revision-rejected` with zero observed host write frames
-  ([receipt](target/host-browser/1794306420327/receipt.json)). Wasmtime ran the same hostile
+  (receipt (`target/host-browser/1794306420327/receipt.json`)). Wasmtime ran the same hostile
   guest; its revision-budget cases also passed. Browser decoded success results match
   native's 1 MiB + 256 byte ceiling while source remains 1 MiB. Real Chrome and artifact-enabled
   Wasmtime each committed a 1 MiB source and returned a 1,048,594-byte metadata result
-  ([native evidence](target/same-byte-headless-round88.json)). Invalid-source details now share
+  (native evidence (`target/same-byte-headless-round88.json`)). Invalid-source details now share
   the native 64 KiB cap. The browser validates exact data-only variants and individual field
   bounds instead of applying an unrelated JSON size limit to structured-clone messages; a
   real-engine conflict with a 530,000-byte newline source passed even though JSON encoding
@@ -75,37 +75,37 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
   `31abef9e42cc2dff01be19d1c4123335f1c7113937f0d744de0f45586c1c746c`): relocated static interaction,
   two Component launches, stop-A/B-survival, fresh-epoch restart, and cleanup to zero
   workers, pending host calls and live grants, with no console/page/request errors. A prior
-  run ([receipt](target/host-browser-cli/1794308720235/receipt.json)) saw readiness 500 and
+  run (receipt (`target/host-browser-cli/1794308720235/receipt.json`)) saw readiness 500 and
   a page error. A controlled held-hook test reproduced that failure on the prior CLI
-  ([receipt](target/host-browser-stop-ready/37eae580-2707-41dd-93a6-36df0a445bb5/receipt.json)).
+  (receipt (`target/host-browser-stop-ready/37eae580-2707-41dd-93a6-36df0a445bb5/receipt.json`)).
   The server now acknowledges cancellation with `{state:'stopping'}` and the generated
   client disposes and acknowledges it; a real headless browser passed this controlled
-  schedule without console/page errors ([receipt](target/host-browser-stop-ready/f33793d6-deea-4e0f-aceb-90806e3bcf37/receipt.json)).
+  schedule without console/page errors (receipt (`target/host-browser-stop-ready/f33793d6-deea-4e0f-aceb-90806e3bcf37/receipt.json`)).
   Genuine hook failures still report failure; arbitrary schedules are not exhaustively proven.
   Development replacement also aborts the old ready hook's generation-scoped signal,
   publishes `replacing`, and joins that hook before promotion. A controlled Chrome run
-  reproduced the former overlap/409 failure ([receipt](target/host-browser-replace-ready/b308fd82-4b9d-4c5e-9359-27d321da0504/receipt.json))
-  and passed with the current CLI ([receipt](target/host-browser-replace-ready/4ce1d0b4-429c-43c9-89e8-425f2a10edd6/receipt.json)).
+  reproduced the former overlap/409 failure (receipt (`target/host-browser-replace-ready/b308fd82-4b9d-4c5e-9359-27d321da0504/receipt.json`))
+  and passed with the current CLI (receipt (`target/host-browser-replace-ready/4ce1d0b4-429c-43c9-89e8-425f2a10edd6/receipt.json`)).
   Unit tests cover old-hook failure, late ready, and stop while replacement joins it.
   A hook that ignores cancellation can delay replacement indefinitely; no universal
   termination or all-schedules guarantee is implied.
   Installed optimized CLI and an external Component consumer also passed the same
-  headless acceptance in Microsoft Edge 157 ([receipt](target/host-browser-cli/1794149082284/receipt.json),
-  [browser identity](target/host-browser-cli/1794149082284/browser-context.json)). Edge
+  headless acceptance in Microsoft Edge 157 (receipt (`target/host-browser-cli/1794149082284/receipt.json`),
+  browser identity (`target/host-browser-cli/1794149082284/browser-context.json`)). Edge
   and Chrome both use Chromium; this is not a distinct engine, WebView2 or hostile-budget
   conformance proof. An installed optimized CLI also passed a headless Component `dev`
   source-only replacement against an external fixture: both old guests wrote before the
   edit, disposal acknowledgements preceded reload, new documents started fresh, and
-  stop-A/B-survival and restart passed ([summary](target/host-browser-cli/1794149528816/dev-replacement-summary.json)).
+  stop-A/B-survival and restart passed (summary (`target/host-browser-cli/1794149528816/dev-replacement-summary.json`)).
   Old-generation worker counters were not captured before reload. A prior diagnostic
   attempt observed a replacement UI/API active while `launch.json` still contained the
-  old plan ([receipt](target/host-browser-cli/1794149469328/receipt.json)); the passing
+  old plan (receipt (`target/host-browser-cli/1794149469328/receipt.json`)); the passing
   harness waited for the persisted record. The live supervisor now sends launch records
   through the [ordered atomic publisher](crates/loop-cli/host-tools/launch-record.ts):
   snapshots are serialized at submission and replaced through same-directory temporary
   files, with bounded Windows sharing-violation retries and no delete-then-rename fallback.
   Four focused tests pass, and a live Component dev replacement with 2,082 concurrent
-  record reads had zero parse errors ([receipt](target/host-browser-cli/1794150608750/receipt.json)).
+  record reads had zero parse errors (receipt (`target/host-browser-cli/1794150608750/receipt.json`)).
   Readiness is now single-flight, checks the client and generation around asynchronous
   hooks, publishes active before exposing it in memory, and stop joins in-flight ready
   hooks before quiescing. Three deterministic direct-supervisor HTTP tests cover duplicate
@@ -140,24 +140,24 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
   terminate its owned process tree; this may interrupt slow legitimate cleanup and cannot
   roll back trusted external effects. An actual async never-resolving ready hook produced
   the expected timeout, process exit and retained `stopping` record/lock in that scenario
-  ([receipt](target/noncooperative-cli/1794154349649/receipt.json)). The separate stop
+  (receipt (`target/noncooperative-cli/1794154349649/receipt.json`)). The separate stop
   client now waits up to twelve seconds rather than six: a seven-second cooperative hook
-  previously caused a false stop failure ([receipt](target/slow-cleanup-cli/1794154268968/receipt.json))
-  but now succeeds ([receipt](target/slow-cleanup-cli/1794154343441/receipt.json)); the
+  previously caused a false stop failure (receipt (`target/slow-cleanup-cli/1794154268968/receipt.json`))
+  but now succeeds (receipt (`target/slow-cleanup-cli/1794154343441/receipt.json`)); the
   non-cooperative case still fails closed. A second stop issued after `stopping` is now
   persisted waits for the same epoch instead of falsely reporting `E_INSTANCE`; two real
-  CLI stop clients both succeeded after seven-second quiescence ([receipt](target/slow-cleanup-cli/1794154944441/receipt.json)).
+  CLI stop clients both succeeded after seven-second quiescence (receipt (`target/slow-cleanup-cli/1794154944441/receipt.json`)).
   Selection fails closed on multiple stopping epochs or a failed epoch retaining its lock;
   stale records can still create conservative ambiguity, and same-target active selection
   does not prove an older stopping epoch's external effects completed. A Windows relocated
   CLI test observed one ordinary worker-spawned descendant alive before the stop timeout
   and absent afterward, before its 25-second self-exit; that scenario retained its lock
-  ([receipt](target/process-tree-test/a8ef2927-6fc9-478f-aa61-150d894e656a.json)). PID
+  (receipt (`target/process-tree-test/a8ef2927-6fc9-478f-aa61-150d894e656a.json`)). PID
   probing is best effort and does not prove termination of escaped or all descendants;
   lock retention and descendant termination are not guaranteed in every race.
   Live-inspection responses now have a separate ten-second
   receive deadline; a real synchronous `Atomics.wait` block produced `E_PROTOCOL_TIMEOUT`,
-  owner exit and a retained `awaiting-browser` record/lock ([receipt](target/syncblock-cli/1794155376933/receipt.json)).
+  owner exit and a retained `awaiting-browser` record/lock (receipt (`target/syncblock-cli/1794155376933/receipt.json`)).
   This can also terminate a legitimately unresponsive worker; pipe writes and process-tree
   termination are not proven wall-clock bounded, and Ctrl-C uses separate deadlines.
   Final publication follows
@@ -169,10 +169,10 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
   old record. This exercised a direct supervisor plus CLI, not an installed release. Stop
   requests now interrupt `replacing` and abort guards prevent late promotion/resumption.
   A direct-supervisor test and a headless two-instance CLI test with an intentionally
-  held disposal acknowledgement passed ([receipt](target/host-browser-cli/1794152436033/receipt.json));
+  held disposal acknowledgement passed (receipt (`target/host-browser-cli/1794152436033/receipt.json`));
   the stopped instance retained its old plan while its sibling promoted and remained usable.
   An earlier attempt had the same functional outcomes but logged one unclassified browser
-  `ERR_CONNECTION_REFUSED` ([receipt](target/host-browser-cli/1794152386337/receipt.json));
+  `ERR_CONNECTION_REFUSED` (receipt (`target/host-browser-cli/1794152386337/receipt.json`));
   the subsequent run did not reproduce it. The publisher's terminal fence remains unused.
   Launch epochs now require 1–128 lowercase ASCII letters/digits/hyphens, starting with
   a letter/digit and excluding Windows device names; exclusive epoch-directory creation
@@ -190,7 +190,7 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
   cases can return early while still counted as passed. A separate run explicitly set the
   six-artifact directory: all 28 host tests passed, including actual guest execution,
   canonical budget traps, borrowed-handle lifetime and measured runaway interruption
-  ([receipt](target/same-byte-headless-round88.json)). The same receipt links the
+  (receipt (`target/same-byte-headless-round88.json`)). The same receipt links the
   136,476-byte guest SHA-256 `632af23fc28546ff5c319fb23c26eede7404ac15fbe2b9eb8f24a261c070ea38`
   to the current debug CLI's earlier headless browser bundle and Wasmtime tests. This is not a native
   window/CLI interaction or browser pre-lift conformance proof. Current debug CLI SHA-256 is `345e5714ee4620092f99e539cd7b57875e7dba5474f0a04430f6cfd82d7a14b5`;
@@ -216,23 +216,23 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
   A starting record is now published after instance/profile reservations and before
   prepare hooks; an explicit stop aborts startup but joins hooks before unlocking.
   Relocated prior-CLI tests stopped a held browser prepare hook
-  ([receipt](target/host-config-start-stop/36b1de24-8085-4c88-9f21-be658d31f708.json))
+  (receipt (`target/host-config-start-stop/36b1de24-8085-4c88-9f21-be658d31f708.json`))
   and a held native readiness hook against a headless fake backend
-  ([receipt](target/native-headless-cli/7088affa-45f4-4af4-9044-96ab69bb6d5c.json)).
+  (receipt (`target/native-headless-cli/7088affa-45f4-4af4-9044-96ab69bb6d5c.json`)).
   Both observed locks until hook completion; a separate fake-backend run stopped before
-  native handshake ([receipt](target/native-headless-cli/d1a2a51c-2596-4e36-a290-278d571bdc17.json)).
+  native handshake (receipt (`target/native-headless-cli/d1a2a51c-2596-4e36-a290-278d571bdc17.json`)).
   Cancellation before native readiness is typed `E_CANCELLED`; none of the native tests
   exercised Tao/Wry or a Component guest. Noncooperative trusted hooks can still delay cleanup. A stop before
   the starting record is published cannot yet be delivered. If lookup observes an instance
   lock whose epoch has no matching live record, it now fails closed instead of reporting
-  an older stopped epoch as success ([receipt](target/host-config-unrecorded-lock/15012ea7-d0c8-411a-bd89-43a855b41361.json)).
+  an older stopped epoch as success (receipt (`target/host-config-unrecorded-lock/15012ea7-d0c8-411a-bd89-43a855b41361.json`)).
   Lock and record reads are not an atomic snapshot: a later lock acquisition or concurrent
   transition can still race the lookup, and a conservative error may require a retry.
   Four opt-in CLI tests subsequently passed on the prior relocated debug CLI:
   scaffold/inspect/trust/build/run/idempotent-stop/restart, concurrent slow quiescence,
   descendant termination and failure retaining its reservation. The general smoke test
   now writes a uniquely named receipt with the binary hash and scope limits
-  ([receipt](target/host-config-smoke/a5d51120-83d0-43cd-8b3d-b274f52ef9d3.json));
+  (receipt (`target/host-config-smoke/a5d51120-83d0-43cd-8b3d-b274f52ef9d3.json`));
   its HTTP probe does not execute browser UI or a Component. The quiesce-only direct test
   also verifies its owner is disposed while the instance lock is
   held, then the lock is released. Current focused evaluator tests pass 8/40; tooling
@@ -278,13 +278,13 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
   26 files, 12 embedded hashes, 119 current-source hashes, zero unlisted targets.
   The current extracted CLI and host archives passed offline `cargo check --locked
   --all-targets --all-features` for the CLI, using an explicit local patch to the extracted
-  host and a newly generated lock ([receipt](target/paired-crate-round88.json)). The reusable
+  host and a newly generated lock (receipt (`target/paired-crate-round88.json`)). The reusable
   [paired verifier](tooling/host-kit-verification/paired-crates.ts) rejects unexpected local or
   non-checksummed/non-crates.io lock dependencies; it uses trusted archives, ambient Cargo
   configuration and a reused cache. The current host archive has 22 files and SHA-256
   `a529c00d920586888081e0f1b423061992ecec8ef2f43be470387973c93059c3`.
   Independently, the extracted host passed offline locked `cargo check --all-targets
-  --all-features` using its packaged lock ([receipt](target/extracted-host-round52.json));
+  --all-features` using its packaged lock (receipt (`target/extracted-host-round52.json`));
   the lock has one local package (the host) and 397 registry packages. These checks used
   local Cargo caches and do not prove CLI registry-only resolution or installed UI. The reusable [registry crate verifier](tooling/host-kit-verification/registry-crate.ts)
   extracts an archive outside the workspace, generates an offline lock, rejects
@@ -293,7 +293,7 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
   `19cf2b0624b1251e213b0bd03b29bd7915b714553a080587f3bf776cf93a86b9`), then failed
   CLI compilation with four `E0433` references to missing `loop_host::native_kit`
   (`run_surface`/`SurfaceOptions`, `run_component`/`NativeOptions`); see
-  [the prior registry-only compile receipt](target/registry-crate-round84.json). The
+  the prior registry-only compile receipt (`target/registry-crate-round84.json`). The
   round-88 archive has not repeated that registry-only gate.
   Nine focused tests cover path aliases, lock-graph validation and structured errors for
   missing arguments, missing archives and invalid archives. The verifier accepts
@@ -310,46 +310,46 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
 - The current source-built debug CLI passed the legacy Rust headless release-smoke
   script offline outside the checkout: create, run (counts 0/1/2), build with cached
   registry `loop-host 0.1.0`, and relocated generated bundle (guest count 2). See
-  [the smoke receipt](target/release-smoke-round20.json). The CLI itself was not
+  the smoke receipt (`target/release-smoke-round20.json`). The CLI itself was not
   installed or relocated; this does not prove the new native host-kit or registry-only
   CLI crate compilation, and no visible desktop UI was opened.
 - A separate release-format ZIP containing a prior debug binary passed isolated
   install/upgrade/checksum-refusal/uninstall tests without PATH or registry changes.
   The temporary installed binary listed skills, evaluated the custom-provider plan,
   and passed two-instance headless browser interaction and stop-A/B-survival; see
-  [the archive/install receipt](target/release-round21/receipt.json) and
-  [the browser receipt](target/custom-provider-fixture-2/final-cli-provider/1794146108890/receipt.json).
+  the archive/install receipt (`target/release-round21/receipt.json`) and
+  the browser receipt (`target/custom-provider-fixture-2/final-cli-provider/1794146108890/receipt.json`).
   The install was removed. This was a local debug archive and the consumer stayed under
   checkout `target`; it is not a published/optimized release or native UI acceptance.
 - A prior optimized CLI SHA-256 `103b1e6940acc1d787ac4cf06845395fb254cf5a4a10206807f6d6ab4a417503`
   was packaged as an unpublished ZIP SHA-256 `39d2c9bb0e0015d38315dba7b6fc76cf9c1edfc18bf3471b36d5d6b8bf9d9442`.
   In an isolated directory with no PATH, registry or Rust installation changes, it passed
   install, same-byte upgrade, checksum refusal, direct-manager uninstall and user-file
-  preservation ([receipt](target/release-isolated-round86/receipt.json)). The installed
+  preservation (receipt (`target/release-isolated-round86/receipt.json`)). The installed
   executable passed headless Component browser lifecycle acceptance
-  ([receipt](target/host-browser-cli/1794359283410/receipt.json)); readiness was explicitly
+  (receipt (`target/host-browser-cli/1794359283410/receipt.json`)); readiness was explicitly
   acknowledged before stop. The same optimized bytes passed native starter/provider,
   pending-handshake stop and held-readiness stop with a trusted headless fake backend
-  ([provider](target/native-headless-cli/667433c0-3d21-46ac-ab17-18c12fba3ce4.json),
-  [handshake](target/native-headless-cli/748a8b10-7532-42f8-bcbd-2f269baa749d.json),
-  [readiness](target/native-headless-cli/eefcd5af-0f95-4dda-92eb-7eaf0712a556.json)).
+  (provider (`target/native-headless-cli/667433c0-3d21-46ac-ab17-18c12fba3ce4.json`),
+  handshake (`target/native-headless-cli/748a8b10-7532-42f8-bcbd-2f269baa749d.json`),
+  readiness (`target/native-headless-cli/eefcd5af-0f95-4dda-92eb-7eaf0712a556.json`)).
   Window avoidance depends on the reviewed CLI honoring the test-only spawn interceptor;
   no Rust native backend, Tao/Wry UI, Component guest in native UI, published artifact,
   signature, or CLI-delegated uninstall was exercised in these gates. The same optimized
   CLI also created and ran the legacy Rust template headlessly, built it offline, and ran
-  a copied bundle headlessly ([receipt](target/release-legacy-round86/receipt.json)); that
+  a copied bundle headlessly (receipt (`target/release-legacy-round86/receipt.json`)); that
   fixture is under `target`, uses cached registry crates and is not new native-kit UI.
 - A prior optimized CLI (`1102ff6b6de9fc67dc7aa85a760f633a007f3a28e4f81ed24f65e00be387f008`)
   was packaged and passed the same isolated installation lifecycle. Its temporary
   install listed skills, ran the existing external legacy Rust app headlessly (counts
   0/1/2), and passed Component-profile browser build/run/stop/restart, including
   stop-A/B-survival and zero worker/pending-host-call/live-grant cleanup counts; see
-  [the release-format receipt](target/release-round22/receipt.json) and
-  [the Component browser receipt](target/host-browser-cli/1794146561190/receipt.json).
+  the release-format receipt (`target/release-round22/receipt.json`) and
+  the Component browser receipt (`target/host-browser-cli/1794146561190/receipt.json`).
   A later run used a fresh offline installation of the same optimized CLI and a copied,
   offline-installed Component consumer outside the checkout; relocated static build,
   two concurrent launches, stop-A/B-survival, restart and measured cleanup passed with
-  no browser errors ([receipt](target/host-browser-cli/1794146921584/receipt.json)).
+  no browser errors (receipt (`target/host-browser-cli/1794146921584/receipt.json`)).
   Installs were removed without PATH or registry changes. The ZIP was not published;
   these results do not prove native UI, registry-only CLI compilation or Polyengine
   pre-lift conformance.
@@ -357,31 +357,31 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
   two-instance headless run against a separately prepared offline-tarball consumer
   outside the checkout, including pointer/Enter/Space, independent state, lifecycle
   hooks, stop-A/B-survival and cleanup; see
-  [the external-consumer receipt](target/custom-provider-fixture-2/final-cli-provider/1794146740071/receipt.json).
+  the external-consumer receipt (`target/custom-provider-fixture-2/final-cli-provider/1794146740071/receipt.json`).
   The install was removed. This trusted TypeScript test is not a guest-security proof.
   A later installed optimized CLI built the existing external legacy Rust project
   offline; a copy of its generated bundle ran headlessly from a second external
-  directory and reported guest count 2 ([receipt](target/release-round22/relocation-round25.json)).
+  directory and reported guest count 2 (receipt (`target/release-round22/relocation-round25.json`)).
   This reused source/build cache and does not establish new native host-kit or UI behavior.
   A separate installed-CLI, external native starter was prepared from public tarballs
   offline. Static inspection did not execute config, untrusted evaluation returned
   `E_CONFIG_TRUST`, trusted evaluation resolved `loop:kit/native` / `native-ts`, and
   a modified stored plan returned `E_PLAN_DIGEST`; see
-  [the summary](target/native-plan-round27-summary.json) and [plan](target/native-plan-round27.json).
+  the summary (`target/native-plan-round27-summary.json`) and plan (`target/native-plan-round27.json`).
   The durable [relocated CLI verifier](tooling/host-kit-verification/relocated-cli.ts)
   now repeats this native starter/trust/plan-tamper gate with offline tarballs and an
   execution marker: static and untrusted inspection leave it absent, trusted evaluation
   creates it. A deliberately stale native dependency then returns `E_PREPARE_REQUIRED`
   without another marker write. All 16 checks passed against the optimized CLI
-  ([receipt](target/relocated-cli-round30.json)) and again against the prior debug CLI
-  with freshly packed local tarballs ([receipt](target/relocated-cli-round53.json),
-  [tarball hashes](target/relocated-cli-round53-tarballs.json)). The verifier passed explicit
+  (receipt (`target/relocated-cli-round30.json`)) and again against the prior debug CLI
+  with freshly packed local tarballs (receipt (`target/relocated-cli-round53.json`),
+  tarball hashes (`target/relocated-cli-round53-tarballs.json`)). The verifier passed explicit
   TypeScript checking. No native backend, Wasmtime guest, window or run/stop was exercised
   in these native plan gates.
 - Final docs/site tests and docs build passed: 10 tests/64 assertions, 38 canonical
   pages, 39-page link/anchor check. Headless Chrome then passed 29 checks across 12
   routes with zero console/page/request errors; the content digest is recorded in
-  [the browser receipt](target/docs-browser-check/receipt.json).
+  the browser receipt (`target/docs-browser-check/receipt.json`).
   No deployment/publication occurred.
 - Native coordinator startup now owns and terminates its spawned backend if connection
   setup throws, rejects pre-aborted startup before spawning, and handles abort during setup.
@@ -395,10 +395,10 @@ HK-06/G1/G2 completion from package builds or a passing ordinary run.
   official native TypeScript starter with its real status provider; a trusted fixture hook
   intercepted native process spawn and redirected it to a headless Bun protocol fake. The
   ready/render/activation/render/close sequence, profile release and child exit passed
-  ([receipt](target/native-headless-cli/ae46e581-28bd-40d7-b7dd-1710516cbf4a.json)); it requires
+  (receipt (`target/native-headless-cli/ae46e581-28bd-40d7-b7dd-1710516cbf4a.json`)); it requires
   both `LOOP_TEST_CLI` and `LOOP_TEST_NATIVE_FAKE_CLI=1`; avoiding a window depends on the
   reviewed CLI honoring the inspected prepare hook and spawn interception. A separate
-  relocated-CLI readiness race ([receipt](target/native-headless-cli/22ad044c-3da5-4daf-b1ff-27999ec9ed27.json))
+  relocated-CLI readiness race (receipt (`target/native-headless-cli/22ad044c-3da5-4daf-b1ff-27999ec9ed27.json`))
   observed both reservations while the aborted ready hook was held; after the hook finished,
   the CLI exited 130 with `E_CANCELLED`, recorded failure and released both. These
   fake-backend gates do not exercise the Rust native backend, Tao/Wry, or a Component guest.

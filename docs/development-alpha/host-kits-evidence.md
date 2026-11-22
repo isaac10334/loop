@@ -238,7 +238,7 @@ Electrobun kit, desktop Polyengine, installed package or updater transaction.
 A complete TypeScript guest compiled to JavaScript, then actual pinned
 ComponentizeJS `0.22.0` async-document generation failed at
 `spidermonkey-embedding-splicer/src/bindgen.rs:720:47` (`not yet implemented`):
-[retained failure](../../experiments/host-kits-2026-11-03/js-guest-componentize-pinned.log).
+retained failure (`../../experiments/host-kits-2026-11-03/js-guest-componentize-pinned.log`).
 No Component resulted. An initial accidentally resolved cached `0.23` missing-
 binding error is recorded separately and is not the pinned failure. The working
 bootstrap is Rust; host composition/tooling remains TS/Bun. The cached wasm-rquickjs

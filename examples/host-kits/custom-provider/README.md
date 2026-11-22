@@ -156,10 +156,10 @@ interaction was not repeated. This is ordinary TS, not a Component, native-host,
 security or full shared-conformance claim.
 
 Generated local evidence (not shipped source):
-[browser receipt](.artifacts/browser-receipt.json),
-[lifecycle receipt](.artifacts/lifecycle-receipt.json),
-[tarball SHA-256 inventory](.artifacts/tarballs.json), and
-[screenshot](.artifacts/counter.png).
+browser receipt (`.artifacts/browser-receipt.json`),
+lifecycle receipt (`.artifacts/lifecycle-receipt.json`),
+tarball SHA-256 inventory (`.artifacts/tarballs.json`), and
+screenshot (`.artifacts/counter.png`).
 The installed graph was isolated from workspace links but remained within this
 example's allowed filesystem scope; physically outside-checkout conformance belongs
 to the integration gate. An initial stale host-browser tarball rejected the custom
