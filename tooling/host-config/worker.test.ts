@@ -1,9 +1,8 @@
 import {test,expect} from 'bun:test';
-import {realpathSync} from 'node:fs';
-import {mkdtemp,mkdir,cp,writeFile,readFile,stat,open,unlink,rm} from 'node:fs/promises';
+import {mkdtemp,mkdir,cp,writeFile,readFile,stat,open,unlink,rm,realpath} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {resolve} from 'node:path';
-const tempRoot=realpathSync(tmpdir());
+const tempRoot=await realpath(tmpdir());
 import {frames,frame,strictJson} from '../../crates/loop-cli/host-tools/protocol';
 import {lockFixture} from './lock-fixture';
 import {startNativeRuntime} from '../../crates/loop-cli/host-tools/native';
