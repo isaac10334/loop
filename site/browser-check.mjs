@@ -17,7 +17,8 @@ try {
   const assert = (condition, message) => { if (!condition) throw Error(message); receipt.checks.push(message); };
   await page.goto(origin + '/', { waitUntil: 'networkidle' });
   receipt.contentSha256 = (await (await page.request.get(origin + '/docs/build-receipt.json')).json()).contentSha256;
-  assert(await page.getByRole('heading', { level: 1 }).textContent() === 'Build worlds.Not silos.', 'landing expresses product direction');
+  assert(await page.getByRole('heading', { level: 1 }).textContent() === 'Build softwarefrom swappable parts.', 'landing expresses product direction');
+  assert(await page.locator('.hero-install').textContent().then(text => text.includes('install.ps1')), 'landing includes direct CLI install command');
   assert(await page.locator('.hero-console').textContent().then(text => text.includes('--kit headless')), 'landing preserves the real headless CLI route');
   assert(await page.locator('html').getAttribute('data-theme') === 'dark', 'landing defaults to dark');
   assert(await page.locator('.mechanism-scene image').count() === 2 && (await page.request.get(origin + '/assets/kinetic-gear.svg')).ok(), 'VectorCraft gear artwork loaded');
@@ -38,8 +39,8 @@ try {
   assert(await page.locator('#machine-reverse').getAttribute('aria-pressed') === 'true', 'mechanism reverse state is exposed');
   await page.locator('#machine-step').click();
   assert(await page.locator('#machine-phase').textContent() === '0°', 'reverse step is deterministic');
-  await page.locator('#machine-scrub').focus(); await page.keyboard.press('Home'); await page.keyboard.press('ArrowRight');
-  assert(await page.locator('#machine-phase').textContent() === '1°', 'mechanism supports keyboard scrubbing');
+  await page.locator('#gear-drag-surface').focus(); await page.keyboard.press('Home'); await page.keyboard.press('ArrowRight');
+  assert(await page.locator('#machine-phase').textContent() === '1°', 'mechanism supports keyboard turning');
   await page.locator('#machine-run').click();
   await page.waitForFunction(() => document.querySelector('#machine-phase').textContent !== '1°');
   await page.locator('#machine-run').click();
