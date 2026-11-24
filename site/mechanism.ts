@@ -14,8 +14,8 @@ export function mountMechanism(root: HTMLElement): void {
 
   function draw() {
     const pose = mechanismPose(state.phase);
-    drive.setAttribute('transform', `rotate(${state.phase} 210 178)`);
-    driven.setAttribute('transform', `rotate(${pose.driven} 342 178)`);
+    drive.setAttribute('transform', `rotate(${state.phase} 226 178)`);
+    driven.setAttribute('transform', `rotate(${pose.driven} 358 178)`);
     const rounded = Math.round(state.phase);
     phase.value = `${rounded}°`;
     gearSurface?.setAttribute('aria-valuenow', String(rounded));
