@@ -29,7 +29,7 @@ Use React only if the selected host already chooses it. Adapt existing controlle
 snapshots/subscriptions and keep effects/listeners under component or surface
 ownership; do not move hooks, DOM globals or React types into portable contracts.
 A React component is a renderer implementation, not a semantic element registration
-or a Station widget definition. Station owns its product rendering and placement.
+or a host application widget definition. host application owns its product rendering and placement.
 
 For a proposed standalone kit/DOM adapter, read `specs/host-kits.md` sections 3, 6
 and 7 before choosing package names or claiming runtime support. Verify a real

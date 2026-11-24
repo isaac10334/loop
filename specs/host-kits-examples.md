@@ -431,7 +431,7 @@ keyboard button activation and closing the exact example joins its workers and
 releases profile/endpoint leases. Launch two instances and test independent counts.
 Build the standalone desktop distribution, run its exact installed/relocated bytes,
 and prove it uses neither a checkout-relative resource nor CLI process. System
-WebView2/MSVC prerequisites stay visible. Do not borrow Station's identifier,
+WebView2/MSVC prerequisites stay visible. Do not borrow host application's identifier,
 profiles, updater feed, native bridge credentials or ports 43157–43159.
 
 ## Native Rust kit variant (proposed)

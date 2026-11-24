@@ -13,7 +13,7 @@ Loop-kit currently has two implementation paths. The new TypeScript packages mak
 
 **Portable development proof, 2026-10-28:** `@loop-kit/workspace` now owns bounded
 immutable text-source snapshots, pinned dependency references, build-provider/receipt
-contracts and checked Git change requests. It owns no Station persistence, grants,
+contracts and checked Git change requests. It owns no host application persistence, grants,
 renderer, cloud account or execution engine. `tooling/workspace.ts` is the concrete
 file/Git adapter; `tooling/github-change-port.ts` is an explicitly authenticated
 GitHub draft-PR adapter. Neither is a durable event/workflow service.
@@ -37,7 +37,7 @@ The generic TypeScript capability host does not automatically turn a WASM Compon
 
 The Rust host uses Wasmtime 48, an authored WIT application contract in `crates/loop-host/wit`, per-use scoped notes grant checks, and desktop/headless dispatch. The CLI embeds its starters from `crates/loop-cli/templates` and is released through manual GitHub workflows. The isolated `experiments/wasip3` probe retains pinned async WIT inputs and documents the current JavaScript generation limit.
 
-Repository map: `packages/` is the publishable TypeScript SDK; `crates/` is existing Rust implementation; `experiments/` holds reproducible probes; `site/`, `scripts/`, and `.github/workflows/` own the existing Windows distribution. Design proposals for cloud, Station, registries and UI systems are outside this implemented architecture.
+Repository map: `packages/` is the publishable TypeScript SDK; `crates/` is existing Rust implementation; `experiments/` holds reproducible probes; `site/`, `scripts/`, and `.github/workflows/` own the existing Windows distribution. Design proposals for cloud, host application, registries and UI systems are outside this implemented architecture.
 
 Browser kit configuration also supports explicitly pinned artifact assets. The CLI
 captures local regular-file bytes separately from the bounded authored text snapshot,
@@ -69,14 +69,14 @@ November 7 scope selects only the official browser and Rust/Wasmtime native Wry
 host kits. External ecosystems, including Electrobun, are optional compatibility
 examples through public ports, never official dependencies or release gates;
 see [desktop evidence](docs/reference/desktop-hosts.md). The existing Rust host/CLI
-and Station Electrobun packaging remain active. The proposal reuses
+and host application Electrobun packaging remain active. The proposal reuses
 portable host/UI/workspace contracts. It does not implement a unified runtime,
-replace Station React UI or turn kit selection into isolation. See the
+replace host application React UI or turn kit selection into isolation. See the
 [November audit and probe limits](docs/development-alpha/host-kits-evidence.md).
 
 ## Shared vocabulary and product direction
 
-Station is the editable workspace consumer at `C:/Users/ijhar/Desktop/station`; this independent upstream is [isaac10334/loop](https://github.com/isaac10334/loop). Station's documentation starts at `C:/Users/ijhar/Desktop/station/docs/README.md`; this is a machine-local route, not a package dependency. In another checkout, locate the consumer explicitly rather than assuming that path exists.
+A downstream host application is a consumer of this independent upstream ([isaac10334/loop](https://github.com/isaac10334/loop)). Consumer documentation and source stay in that application's checkout; locate it explicitly rather than assuming a machine-local path or package dependency.
 
 | Term | Meaning and owner |
 | --- | --- |
@@ -84,13 +84,13 @@ Station is the editable workspace consumer at `C:/Users/ijhar/Desktop/station`; 
 | Provider / adapter | Implementation of a contract / bridge to another implementation or transport. Placement does not change the caller's contract or policy obligations. |
 | Scope / resource / lease | Lifecycle owner / owned implementation instance / consumer ownership ticket in `@loop-kit/host`. These are not grants. |
 | UI element / surface / renderer | Semantic node type / revisioned UI frame-and-event session / trusted host mapping to DOM or another platform. `@loop-kit/ui` describes the first two; hosts render them. |
-| React component | Host implementation unit. A component is not automatically a registered semantic element or a Station widget. |
+| React component | Host implementation unit. A component is not automatically a registered semantic element or a host application widget. |
 | WASM Component | Component Model executable with declared imports/exports. Distinct from a React component; execution and permission enforcement require a concrete host. |
-| Asset / widget definition / widget instance | Station's stored authored content / reusable widget recipe / placed, stateful occurrence. These product concepts are not Loop host resources or npm packages. |
-| Layout / dock / overlay | Station composition / its placement authority / a presentation layer. Layer order, focus and interaction passthrough need explicit host policy; they are not capabilities provided by `@loop-kit/ui`. |
+| Asset / widget definition / widget instance | host application's stored authored content / reusable widget recipe / placed, stateful occurrence. These product concepts are not Loop host resources or npm packages. |
+| Layout / dock / overlay | host application composition / its placement authority / a presentation layer. Layer order, focus and interaction passthrough need explicit host policy; they are not capabilities provided by `@loop-kit/ui`. |
 | Property descriptor / value reference | Portable editor metadata / source-and-key identity in `@loop-kit/ui`. These do not yet constitute a general expression engine, asset-reference resolver or shared persistence system. |
 
-The direction is authored, inspectable configuration rendered by trusted adapters, with explicit service bindings and ownership. Reuse the current descriptors, controllers and guest bindings before adding another settings model. Station's asset references, theme resolution and widget placement remain product responsibilities unless a proven portable contract is extracted upstream. Keep runtime installation, instantiation, activation and execution separate.
+The direction is authored, inspectable configuration rendered by trusted adapters, with explicit service bindings and ownership. Reuse the current descriptors, controllers and guest bindings before adding another settings model. host application's asset references, theme resolution and widget placement remain product responsibilities unless a proven portable contract is extracted upstream. Keep runtime installation, instantiation, activation and execution separate.
 
 Open investigations include richer property evaluation, remote machines/providers and alternative Component-to-DOM transport. No choice of transport, DOM protocol or WASI version is made here. Evaluate these against cancellation, resource lifetime, accessible rendering, capability denial and version compatibility; a DOM protocol alone does not establish guest isolation. Do not confuse the implemented document/semantic Component adapters with a generic Component/native/remote capability-provider adapter. The Rust host and isolated WASIP3 probe retain their own evidence, as described above and in [the probe README](experiments/wasip3/README.md).
 
@@ -110,17 +110,17 @@ Open investigations include richer property evaluation, remote machines/provider
 | `@loop-kit/renderer-dom` | UI interaction | Trusted semantic-to-DOM presentation; host and ui |
 | `@loop-kit/component-polyengine` | Component runtime | Dedicated worker document/semantic and import-free string-call adapters; ui |
 
-The graph includes `host → capabilities`, `scripting → capabilities, ui`, `host-browser/host-native/renderer-dom → host, ui`, and `component-polyengine → ui`; workspace and ui have no package dependencies. The policy file is the machine-checked owner of this graph. No package imports Station or the optional Rust implementations. Root exports are the only current npm entrypoints; publishing source for declaration maps does not make private paths an API. Runtime-installable Station contributions are a separate concept from these npm packages.
+The graph includes `host → capabilities`, `scripting → capabilities, ui`, `host-browser/host-native/renderer-dom → host, ui`, and `component-polyengine → ui`; workspace and ui have no package dependencies. The policy file is the machine-checked owner of this graph. No package imports host application or the optional Rust implementations. Root exports are the only current npm entrypoints; publishing source for declaration maps does not make private paths an API. Runtime-installable host application contributions are a separate concept from these npm packages.
 
 Package boundaries and internal roles are separate checks. Contracts contain identities and public schemas; domain contains pure algorithms and invariants; application implements use cases through injected ports; providers implement concrete ports; presentation adapts typed state and actions; composition constructs implementations and owns startup/disposal. Dependencies point inward: domain to contracts, application to domain/contracts, providers and presentation to those inward roles, composition to all roles. Providers and presentation cannot import each other. Cohesive packages may contain multiple roles; folders named for roles or explicit longest-prefix policy overrides identify internal boundaries. Current single-module packages have a default role. No speculative package split is required.
 
-Inward code cannot import React/platform modules or read browser globals. Resource ownership is independent of authorization: host scopes and abort signals release and cancel work, while Station decides grants. Prefer small `createX` factories and specialized dependency ports over a service locator. Public reusable APIs document invariants, failures, cancellation and disposal beside their code; examples belong with reusable contracts, not decorative private comments.
+Inward code cannot import React/platform modules or read browser globals. Resource ownership is independent of authorization: host scopes and abort signals release and cancel work, while host application decides grants. Prefer small `createX` factories and specialized dependency ports over a service locator. Public reusable APIs document invariants, failures, cancellation and disposal beside their code; examples belong with reusable contracts, not decorative private comments.
 
 Exceptions require exact file, target, rule, owner and reason, with a reviewed `exceptionLimit`. The current limit is zero. Diagnostics identify source, resolved target, rule and the public package entrypoint where applicable. No unknown dependency can be made legal by silently expanding a path wildcard.
 
 ## Source and native ownership
 
-The `packages/*/src` trees are authoritative TypeScript implementation sources; `dist` is generated and package exports resolve there. `bun run repo context <package> --json` includes each real source path, exports, direct dependencies, reverse dependents and verification command. Station may consume snapshots or optional developer symlinks; it does not move this repository's Git history or CI ownership.
+The `packages/*/src` trees are authoritative TypeScript implementation sources; `dist` is generated and package exports resolve there. `bun run repo context <package> --json` includes each real source path, exports, direct dependencies, reverse dependents and verification command. host application may consume snapshots or optional developer symlinks; it does not move this repository's Git history or CI ownership.
 
 `crates/loop-host` and `crates/loop-cli` are active existing Rust release code, not obsolete code and not the current TypeScript host's implementation. The CLI's embedded starters live under `crates/loop-cli/templates`; existing Windows release, bootstrap and installation scripts remain necessary. `experiments/wasip3` is experimental. The scripting engine's pinned optional WASM build is separate from ordinary TypeScript consumers; this task does not claim fresh engine/native acceptance.
 
@@ -134,5 +134,5 @@ The `packages/*/src` trees are authoritative TypeScript implementation sources; 
 - `bun run repo context <package> --json`: compact machine-readable ownership and public API context.
 - `bun run watch`: initial build and serialized dependency-ordered rebuilds of workspace packages after source edits. This refreshes linked `dist` and declarations without publishing.
 
-An agent task names owned files/packages, public dependencies, forbidden changes, checks and acceptance evidence. Architecture/integration owns shared contract changes, Loop Kit runtime owns host/scripting, Station product/asset owns product contracts, UI/interaction owns surface adapters, verification/security independently reviews policy and evidence. These are assignments, not five always-running processes. One integrating owner coordinates a shared contract; agents must not edit it concurrently. Handoffs include changed sources, contract effects, unresolved issues and one next recommended slice. See `ENGINEERING_PLAN.md` for the active gate.
+An agent task names owned files/packages, public dependencies, forbidden changes, checks and acceptance evidence. Architecture/integration owns shared contract changes, Loop Kit runtime owns host/scripting, host application product/asset owns product contracts, UI/interaction owns surface adapters, verification/security independently reviews policy and evidence. These are assignments, not five always-running processes. One integrating owner coordinates a shared contract; agents must not edit it concurrently. Handoffs include changed sources, contract effects, unresolved issues and one next recommended slice. See `ENGINEERING_PLAN.md` for the active gate.
 

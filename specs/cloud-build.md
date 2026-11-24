@@ -66,9 +66,9 @@ A hash is content identity, not builder authentication or reproducibility proof.
 Keep signed provenance separate where available. Run the exact bytes through the
 async document fixture. Real-provider receipts cannot come from mock executors.
 
-Reuse Station compiler repair knowledge behind a standalone executor adapter;
-keep Station HTTP/session policy and asset mutation in Station. Loop Cloud imports
-public versioned Loop packages, not Station server internals or copied SDK source.
+Reuse host application compiler repair knowledge behind a standalone executor adapter;
+keep host application HTTP/session policy and asset mutation in host application. Loop Cloud imports
+public versioned Loop packages, not host application server internals or copied SDK source.
 Prepare a cloud checkout when this gate is selected; no repository move is needed.
 
 ## Git and registry extension

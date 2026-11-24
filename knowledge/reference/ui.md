@@ -7,7 +7,7 @@ last_updated: 2026-11-19
 summary: "Portable surfaces and events; concrete renderer support stays with each adapter."
 repos: [loop]
 systems: ["ui"]
-related: ["[[reference/architecture|Implemented architecture and package ownership]]","[[reference/component-runtime|Component document sessions and budget limits]]","[[reference/station|Station product and portable mechanism boundary]]"]
+related: ["[[reference/architecture|Implemented architecture and package ownership]]","[[reference/component-runtime|Component document sessions and budget limits]]"]
 path: ../packages/ui/README.md
 ---
 

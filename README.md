@@ -57,15 +57,7 @@ an explicit `loop.package.json` file list without executing it. See
 and [the development proof](docs/portable-development.md). Cloud hosting is optional;
 the initial GitHub adapter prepares draft pull requests, never merges them.
 
-Contributor agents: start with [AGENTS.md](AGENTS.md) and the on-demand
-[development workflow](docs/reference/agent-workflow.md) for knowledge ownership,
-GitHub issues, isolated worktrees, PR review and approval boundaries.
-
-## Local cross-repository development
-
-Build once with `bun run build`, then run `bun run watch` while editing. Root package exports resolve to generated `dist` JavaScript and declarations; source-only edits need a successful rebuild before a consumer sees them. Station owns an optional reversible link command in its own repository. That command should link the required package dependency closure together and restore the prior installed paths when finished. Avoid saving `link:` or machine-specific paths in publishable manifests.
-
-For manual Bun links, register each `packages/<name>` with `bun link` and run `bun link @loop-kit/<name>` in the consumer with `--no-save`. Registration alone is not source propagation: watch builds are still required. Production and CI use frozen installs and packed artifacts, never the global link registry. See [ARCHITECTURE.md](ARCHITECTURE.md) for the canonical graph and repository CLI and [ENGINEERING_PLAN.md](ENGINEERING_PLAN.md) for the active gate.
+Contributors can start with the [development workflow](docs/reference/agent-workflow.md).
 
 ## Rust CLI development
 

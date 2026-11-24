@@ -6,14 +6,14 @@ not a new universal runtime, asset database or managed cloud service.
 ## Ownership
 
 - Loop `@loop-kit/workspace`: immutable bounded source, pinned dependency identities,
-  build provider/receipt types and checked change requests. No Station imports.
+  build provider/receipt types and checked change requests. No host application imports.
 - Loop capabilities: optional immutable WIT provenance; host reflection retains it.
   Existing ID/version matching and cooperative lifecycle semantics remain intact.
 - Loop development tooling: actual WIT parsing/codegen, TS7.1 content mapping,
   explicit file snapshots and GitHub REST adapter.
 - Independent `loop-svg-editor` repository: source/controller/static SVG validation,
-  one portable UI and standalone/Station public-SDK document adapters.
-- Station: current store, permissions, package preparation/installation, opened-asset
+  one portable UI and standalone/host application public-SDK document adapters.
+- host application: current store, permissions, package preparation/installation, opened-asset
   bindings, sandbox, production renderer and concrete compiler providers.
 
 The editor is a TypeScript web contribution. Its WIT resource contract/codegen
@@ -67,7 +67,7 @@ Use original WIT for executable resources/imports/exports, generated language bi
 for consumers and JSON for inspected source receipts/control data. Resource handles,
 errors and async semantics are not losslessly interchangeable with arbitrary JSON
 Schema/gRPC. Current generator pins jco; Polyengine's own bindgen is the eventual
-runtime-specific facade adapter. No new WIT namespace replaces Station compatibility IDs.
+runtime-specific facade adapter. No new WIT namespace replaces host application compatibility IDs.
 
 Dynamic scripting reuses a compiled QuickJS engine, but each unrelated trust/lifetime
 boundary needs a separate engine instance/worker. Current evaluator `start` stops a
@@ -78,10 +78,10 @@ and worker termination, not only a cooperative guest flag.
 
 ## Verification and remaining gates
 
-The source/contract/adapter tests, packed external consumers and Station acceptance
-are recorded in Station's `docs/independent-package-proof.md`. A real fresh Rust cloud
+The source/contract/adapter tests, packed external consumers and host application acceptance
+are recorded in host application's `docs/independent-package-proof.md`. A real fresh Rust cloud
 build and execution passed separately; that does not make the TypeScript SVG editor
 a Component. Installed desktop/mobile, hostile marketplace confinement, general
 Component composition, durable workflows and managed multi-tenant services remain
-independent gates. Production Station continues consuming its frozen Loop artifacts;
+independent gates. Production host application continues consuming its frozen Loop artifacts;
 these new upstream APIs have not been silently released into that dependency set.

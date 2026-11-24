@@ -11,7 +11,7 @@ export const clock = defineCapability<Clock>({ id: "loop:time/clock", version: "
 
 `Capability<T>` associates the service type with immutable `{ id, version }` data. `defineCapability<T>` validates a namespaced ID and nonempty version. Identical ID and version values represent the same runtime contract even when defined in different modules. The TypeScript type is erased: authors must coordinate the actual contract and version, and the package does not validate implementation objects.
 
-Optional `methods` describe named input/output schemas, effects and subscriptions as immutable portable data. `defineCapability` bounds method names/counts and copies descriptors; consumers such as Station validate the schema vocabulary and enforce resource policy. Descriptors never grant authority or validate implementation functions automatically.
+Optional `methods` describe named input/output schemas, effects and subscriptions as immutable portable data. `defineCapability` bounds method names/counts and copies descriptors; host applications built on Loop Kit validate the schema vocabulary and enforce resource policy. Descriptors never grant authority or validate implementation functions automatically.
 
 Public root exports: `defineCapability` and its public descriptor/identity types. No package dependencies. Private source subpaths are not supported.
 

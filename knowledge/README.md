@@ -14,7 +14,7 @@ commands and [the generated catalog](_index.md) lists all vault articles.
 | External research/reference | Sources stay external; bounded evaluation records rationale and pins | [Knowledge tooling evaluation](research/knowledge-tools.md) |
 | Runbooks/agent operations | Existing contributor guides and discoverable local skills | [Agent workflow](reference/agent-workflow.md), [knowledge operations](reference/knowledge-system.md), [releases](reference/release.md) |
 | Active engineering work | [GitHub issues](https://github.com/isaac10334/loop/issues) and [PRs](https://github.com/isaac10334/loop/pulls) | [Authorization/claim rules](../docs/reference/agent-workflow.md#github-issues-worktrees-and-pull-requests) |
-| Product consumer boundary | Station owns product state/policy; Loop owns reusable mechanisms | [Boundary inventory](reference/station.md) |
+| Product consumer boundary | Downstream host applications own product state/policy; Loop owns reusable mechanisms | [Architecture](reference/architecture.md) |
 
 This is a small reference web, not a Markdown migration or new engineering ledger.
 Reference `path` values resolve relative to this directory. Standard Markdown links

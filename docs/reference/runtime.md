@@ -59,12 +59,12 @@ The [native proof](../windows-desktop-proof.md) does not establish a general JS
 Component-provider adapter. The independent SVG editor is sandboxed web code.
 
 Loop's QuickJS evaluator has static `evaluate/start/dispatch/stop` exports and one
-active logical session. Station owns a worker per program instance. Calling
+active logical session. host application owns a worker per program instance. Calling
 `start` does not create a new realm. Dynamic logical methods do not add WIT exports
 or imports. Fresh QuickJS contexts share a runtime heap; separate QuickJS runtimes
 inside one Component still share its outer memory and host capabilities.
 The pinned upstream engine also contains fresh-runtime execution-job machinery;
-Station has not proved or adopted it as a multi-tenant Loop session API.
+host application has not proved or adopted it as a multi-tenant Loop session API.
 
 Keep Component, dynamic-script and sandboxed-web execution profiles distinct.
 Each profile needs import inspection, budgets, per-use authority and forced-stop
@@ -93,5 +93,5 @@ Collections, properties, theme aliases and semantic UI build above these boundar
 Use typed values, stable identities, bounded relations and cycle checks. Keep
 measured simulation/audio/GPU data paths separate from reflective document queries.
 Portable widget, placement/docking and property mechanisms can be extracted after
-a real second consumer proves their contracts. Station retains desks, saved state,
+a real second consumer proves their contracts. host application retains desks, saved state,
 defaults, concrete renderers and product policy during that extraction.

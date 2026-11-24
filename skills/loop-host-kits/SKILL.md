@@ -33,7 +33,7 @@ Read the matching routes before editing; combine routes when the change spans th
 | Host kit/plugin factories, registration, bootstrap or stop/restart | `specs/host-kits.md` sections 3, 4 and 6; `packages/host/README.md` and `packages/host/LIFECYCLE.md` for implemented ownership APIs. |
 | Renderer adapter, semantic elements, events or UI bindings | Read [renderer guidance](references/renderers.md); `packages/ui/README.md` and its public exports. For guest bindings also read `packages/scripting/README.md`. |
 | Package/layer, cross-realm or trust boundary | `ARCHITECTURE.md` (Enforced package ownership); `specs/host-kits.md` sections 5 and 6. Read `packages/AGENTS.md` and the target package README for package edits. |
-| Station adoption, placement, saved state or grants | Locate the selected Station checkout and read its instructions; read Loop's `specs/station-adoption.md`. Keep consumer policy and persistence there. |
+| Downstream product behavior, placement, saved state or grants | Keep consumer policy and persistence in the host application; inspect its selected public contracts and owner guidance. |
 | Skill catalog or optional management | `specs/host-kits.md` section 8; `docs/reference/skills.md` for source-built `loop skills` commands, explicit write intent and recovery limits. Release/client-discovery gates remain separate; skill use grants no installation authority. |
 
 ## Keep the portable seam

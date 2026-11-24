@@ -11,9 +11,7 @@ preserving the editor and unsaved source. Station then adopts the same tool.
 
 ## First action
 
-Open DeepSeek Harness with `C:/src/ilt/loop` as its workspace and give its
-integrator [prompt 00](prompts.md#00-integrator). The Harness checkout at
-`C:/Users/ijhar/Desktop/deepseek-harness` is a different project. First review the
+Open DeepSeek Harness with `C:/src/ilt/loop` as its workspace. First review the
 dirty baseline and prove the async toolchain; freeze the document contract before
 delegating adapters. Follow [the gates](execution-plan.md).
 
@@ -28,7 +26,7 @@ delegating adapters. Follow [the gates](execution-plan.md).
 | Accounts, Git authority and distribution | [Identity reference](../reference/identity-and-distribution.md) |
 | Private cloud job and artifact publication | [Cloud build spec](../../specs/cloud-build.md) |
 | Machine roots, asset references and relations | [Access/reference spec](../../specs/machine-access-and-references.md) |
-| Reversible consumer UI/runtime adoption | [Station adoption](../../specs/station-adoption.md), [current behavior audit](host-kits-evidence.md#station-parity-inventory-static-audit-not-a-fresh-pass) |
+| Reversible consumer UI/runtime adoption | [current behavior audit](host-kits-evidence.md#station-parity-inventory-static-audit-not-a-fresh-pass) |
 | Agent roles, task inbox and questions | [Agent workflow](../reference/agent-workflow.md), root `QUESTIONS.md` |
 
 Loop owns portable mechanisms and public contracts. Station owns product behavior,

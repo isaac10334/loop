@@ -17,12 +17,10 @@ active TypeScript packages and specifications in Loop and current UI work in Sta
 | Loop | `4fd90622a43700a027f3da2d06ab44ffc2e33361` | Active untracked packages/contracts/tooling/specs/docs; tracked CLI template include relocation; old root starters/docs deleted; Windows workflows and site edits. Preserve all. |
 | Station | `9e77015798805f71da25078520391840d51d7ced` | Active docking/shortcuts/themes/settings and page-presentation changes, new tests and local artifacts. Read-only consumer throughout this run. |
 
-The integrator fingerprinted 260 Loop and 948 Station tracked/untracked paths
+The integrator fingerprinted 260 Loop and 948 consumer tracked/untracked paths
 (excluding ignored files), including missing tracked paths. Temporary baseline
-manifests were retained as [Loop fingerprints](../../experiments/host-kits-baseline-2026-11-03/loop-baseline.json)
-and [Station fingerprints](../../experiments/host-kits-baseline-2026-11-03/station-baseline.json)
-for the final preservation check. They are local receipts, not portable build
-inputs or clean Git revisions.
+manifests were archived locally during that run and later retired from the repo
+because they were local receipts, not portable build inputs or clean Git revisions.
 A dirty source hash does not identify remotely fetchable source.
 
 Four independent read-only audits used DSH subagents through authenticated
@@ -68,8 +66,8 @@ Station's [architecture](C:/Users/ijhar/Desktop/station/docs/architecture.md),
 [dependency workflow](C:/Users/ijhar/Desktop/station/docs/loop-kit-packages.md) and
 [design route](C:/Users/ijhar/Desktop/station/DESIGN.md) remain consumer owners.
 
-- Current Action Button already invokes an authored surface. The old
-  [adoption Gate A](../../specs/station-adoption.md#gate-a-adopt-one-authored-widget)
+- Current Action Button already invokes an authored surface. The historical
+  adoption Gate A (from the retired adoption spec)
   is an acceptance obligation, not evidence that a new parallel widget is needed.
 - [Rich text](C:/Users/ijhar/Desktop/station/apps/station/src/ui/components/ui/rich-text-editor-engine.tsx#L65-L89)
   implements 500ms debounced autosave, conflict retention and pagehide/unmount
@@ -252,8 +250,8 @@ fixtures does not establish all those properties.
 
 ## Final design checks and handoff
 
-[The dependency-free validation receipt](../../experiments/host-kits-baseline-2026-11-03/validation.json)
-checks local Markdown targets/fragments, TS/JSON fenced-example syntax, catalog
+The historical dependency-free validation receipt (retired from the repo after the alpha pass)
+checked local Markdown targets/fragments, TS/JSON fenced-example syntax, catalog
 inventory/digest and both original fingerprint sets. It does **not** typecheck the
 proposed APIs, prove external URLs, install/discover a skill or run production
 packages. Initial link checks failed only while the probe README did not yet
@@ -279,7 +277,7 @@ confirmed no owned Chrome/WebView2/native processes remained. No commit,
 publication, global installation, home-skill write or Station migration occurred.
 
 Use the existing [execution lane](execution-plan.md#host-kit-implementation-lane)
-and [prompt-2 cards](prompts.md#host-kit-prompt-2). First safe implementation is
+(the historical prompt-2 cards have been retired). First safe implementation is
 HK-01: pure plan contracts/resolution in the existing host package, with no config
 execution, process/window launch or persisted product-state change. Finish the
 existing authored Action Button seam later through public packed UI artifacts and

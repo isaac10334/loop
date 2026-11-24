@@ -7,7 +7,7 @@ last_updated: 2026-11-19
 summary: "Settled architectural rationale; open choices are routed to QUESTIONS rather than duplicated."
 repos: [loop]
 systems: ["decisions"]
-related: ["[[reference/architecture|Implemented architecture and package ownership]]","[[reference/host|Host lifecycle and capability ownership]]","[[reference/specifications|Proposed specifications and acceptance gates]]","[[reference/station|Station product and portable mechanism boundary]]"]
+related: ["[[reference/architecture|Implemented architecture and package ownership]]","[[reference/host|Host lifecycle and capability ownership]]","[[reference/specifications|Proposed specifications and acceptance gates]]"]
 path: ../DECISIONS.md
 ---
 

@@ -12,7 +12,6 @@ service have not passed their gates. Existing behavior belongs to
 | 2 | [Foreground development](foreground-development.md) | File edit/build/replace loop preserves its editor and rejects stale output. |
 | 3 | [Cloud build](cloud-build.md) | One authenticated build survives worker restart, returns verified bytes and preserves tenant boundaries. |
 | Supporting boundary | [Machine access and references](machine-access-and-references.md) | Scoped roots and reference resolution preserve identity, visibility and revocation. Implement only the operations the selected slice consumes. |
-| Consumer adoption | [Station adoption](station-adoption.md) | Existing authored widgets and future portable mechanisms retain saved identities, product policy and recovery; prove an independent public-package consumer. |
 
 Each implementation starts with a reviewed baseline and assigns exact files after
 `repo context`. Keep public WIT under `contracts/`, generated bindings under their
@@ -24,5 +23,5 @@ mutation probe can establish that an important denial test would detect a missin
 check; a blanket mutation-percentage target would not prove runtime correctness.
 
 The [execution plan](../docs/development-alpha/execution-plan.md) sequences gates.
-[Prompts](../docs/development-alpha/prompts.md) assign work. The integrator records
+The integrator records
 questions in root `QUESTIONS.md`, rather than forking decision lists across specs.

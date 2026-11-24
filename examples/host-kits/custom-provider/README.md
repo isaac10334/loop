@@ -47,8 +47,8 @@ application starting point.
 
 This is a real, trusted-host example, not a new official kit or a sandbox. It uses
 only installed public SDK roots. It needs Bun 1.3.14, npm, `tar`, a current Loop CLI
-with config-mode support, and a browser. No global links, Station source, private
-imports or framework-name dispatch are involved.
+with config-mode support, and a browser. No global links, a separate host application's
+source, private imports or framework-name dispatch are involved.
 
 ## Prepare explicitly
 
@@ -124,44 +124,3 @@ A current config CLI must bundle and call the pinned coordinator module/export,
 not hardcode the official browser coordinator. Reusable browser bootstrap must
 accept compatible external kit identities. Static typechecking alone proves
 neither condition nor rendered execution.
-
-## Official-route acceptance (November 11, 2026)
-
-A fresh physically outside-checkout consumer installed the five reviewed release
-preparation archives offline. Every archive hash matched the release inventory;
-all five public root imports resolved to regular installed package directories,
-not workspace links. The current source-built CLI passed static inspection,
-evaluated inspection, static build and actual development launch.
-
-The headless browser check passed relocated static interaction, pointer 0→1,
-amount 5 + Enter 1→6 + Space 6→11, invalid amount 0 denial, amount 2 recovery to 13,
-and awaited stop with an empty surface and an inert detached button. Browser
-console/page errors were empty. The two focused tests passed 20 assertions.
-No native visible-window test, Component execution or security isolation was run
-by this example acceptance. The output directory supplied to `browser-check.mjs`
-contains the machine-readable receipt and screenshot; the preparer separately
-writes the five archive hashes. The dirty release plan is not publishable.
-
-## Historical custom-route acceptance (November 8, 2026)
-
-The recorded five-tarball Chrome 156.0.8078.81 run exercised pointer 0→1, Enter
-1→2 and Space 2→3 through the semantic button and named service. CLI stop emptied
-the surface, exited 0 and observed all three Bun callback phases; page and console
-errors were empty. That receipt predates the CLI's required Bun frozen-lock preflight.
-The updated preparation script now creates both npm and Bun v1 lockfiles offline;
-a fresh consumer then passed final-CLI static/evaluated inspection (plan
-`73fef0fe…`) without launching a UI. The final static `build` correctly rejects this
-hook-bearing config with `E_NONPORTABLE_CALLBACK`; an updated final-binary Chrome
-interaction was not repeated. This is ordinary TS, not a Component, native-host,
-security or full shared-conformance claim.
-
-Generated local evidence (not shipped source):
-browser receipt (`.artifacts/browser-receipt.json`),
-lifecycle receipt (`.artifacts/lifecycle-receipt.json`),
-tarball SHA-256 inventory (`.artifacts/tarballs.json`), and
-screenshot (`.artifacts/counter.png`).
-The installed graph was isolated from workspace links but remained within this
-example's allowed filesystem scope; physically outside-checkout conformance belongs
-to the integration gate. An initial stale host-browser tarball rejected the custom
-identity; it was preserved under the ignored history directory and the successful
-run used refreshed public tarballs, not a patched installed package.

@@ -21,7 +21,7 @@ test('publication is a finite public allowlist, never internal repository discov
 test('application-first navigation keeps source release status explicit', () => {
   expect(pages.slice(0, 4).map(p => p.id)).toEqual(['index', 'installation', 'quickstart', 'concepts']);
   expect(page('installation').markdown).toContain('v0.1.0');
-  expect(page('installation').markdown).toContain('404');
+  expect(page('installation').markdown).toContain('not yet published to npm');
   const rendered = renderMarkdown(page('index').markdown, page('index'), pages);
   const shell = documentShell(page('index'), pages, rendered.html, rendered.headings, 'test');
   expect(shell).toContain('Current source guide');

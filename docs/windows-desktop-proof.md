@@ -2,7 +2,7 @@
 
 The existing Rust desktop starter ran against this checkout on Windows x64,
 Rust 1.98.0, wasm32-wasip2 and WebView2 156.0.4314.50. No runtime blocker
-required a source fix. Station was not modified; no cloud service, daemon,
+required a source fix. host application was not modified; no cloud service, daemon,
 renderer rewrite or build system was introduced.
 
 ## Reproduce without installing Loop
@@ -91,9 +91,9 @@ Existing Windows desktop provider: Tao + Wry/WebView2 + bundled DOM renderer
   Notes/Rights and locates the component relative to its executable, not cwd.
 
 This Rust runtime is separate from `@loop-kit/host`; it does not prove a
-TypeScript native/Component-provider adapter. Station is the first consumer,
+TypeScript native/Component-provider adapter. host application is the first consumer,
 retaining assets, widgets, placement, themes, policy and concrete renderers.
-Do not transplant Station wholesale or treat lifecycle/transport as authorization.
+Do not transplant host application wholesale or treat lifecycle/transport as authorization.
 
 ## Checks
 
@@ -103,6 +103,6 @@ Rustdoc test), and
 `cargo clippy --locked --workspace --all-features --all-targets -- -D warnings`.
 
 Only this evidence document was added by this slice. Existing checkout changes
-were preserved. Next bounded slice: let Station select one real contract to
+were preserved. Next bounded slice: let host application select one real contract to
 consume and supply its own policy/provider wiring; do not infer an adapter from
 this native starter proof.

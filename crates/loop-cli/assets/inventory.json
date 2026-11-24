@@ -8,8 +8,8 @@
       "sha256": "79cdc526756adb392047d71490521cbb8cffe3e7913bac7063126fad42e474ef"
     },
     "assets/skills.mjs": {
-      "bytes": 27144,
-      "sha256": "538401e7499709b6e11f78ff06391aa1c0dcc503b844d6947524730ead2991af"
+      "bytes": 27142,
+      "sha256": "7d2ee62d86efdf4cc8bcf9db74922aa6589799904d4e03ad9acd25eba9bff642"
     },
     "assets/protocol-golden.json": {
       "bytes": 1147,
@@ -44,8 +44,8 @@
       "sha256": "4528e66cd21535f3b332c102af45b170b755d7985192c75a34a601be1856907f"
     },
     "templates/kits/headless-app.ts": {
-      "bytes": 474,
-      "sha256": "bb0fce3f665bbd9b1bc65932b2c84c4b7f164bd45c2f00e745d43190d1bbbe51"
+      "bytes": 483,
+      "sha256": "356b48dd4a88cdec13bd8f080ef0d1ba2260ff9607bbb3dd76c2fef3701097b1"
     },
     "templates/kits/status-provider.ts": {
       "bytes": 465,
@@ -62,7 +62,7 @@
     "crates/loop-cli/host-tools/build.ts": "bd409691309421691e4c49bcf667117c4bdb961f1a0d6c80db46f77e2ef2c6d5",
     "crates/loop-cli/host-tools/development.ts": "867f42b0d1ec5d705bf7190b03074c133975d03016f24cd445b3ce65e2b45d3d",
     "crates/loop-cli/host-tools/diagnostic.ts": "d71c2c3ecfe15f8a3588fef3172cce26edc991b9442dfa82e80fe4c5b058e9f8",
-    "crates/loop-cli/host-tools/evaluate.ts": "fc146d9f965d4b2be3d6fc34eb31406e65b7981e4e62f330c390a5604df1cc00",
+    "crates/loop-cli/host-tools/evaluate.ts": "26a4f83421097378facc30fcbbf42a48ff8f6563a86b5082fc19b5af9f46f4ff",
     "crates/loop-cli/host-tools/launch-record.ts": "e475630c058c46bb9e01a73e9765f7675d59bea5a2da4f1e6611122a30e8bfcd",
     "crates/loop-cli/host-tools/native-process.ts": "be104fe451b39cb6433996812cb6fb171b4587a07329f843e960601c6d4c48db",
     "crates/loop-cli/host-tools/native.ts": "68261f622246098fd86e03b796e76de29ab8f7c6b146a3966c8568e325588703",
@@ -71,10 +71,10 @@
     "crates/loop-cli/host-tools/skills/bundle.ts": "4ca87ff277b356363c85cdc5ba7c5d68b38fa5d694b909c433234126f9277434",
     "crates/loop-cli/host-tools/skills/cli.ts": "37cf1baa19cfd5feab917dc13210582296a9de505652b40a5e81a1f61d69515d",
     "crates/loop-cli/host-tools/skills/manager.ts": "f60745e39079ef5ac1bf7d2fcd6339f22f02dcb0e8a7ca9316584472c8c0f14d",
-    "crates/loop-cli/host-tools/supervise.ts": "5e6ee5c115a3c8601a7b87054da9a1fea0e87f7e231baa38ce27d476161201d0",
-    "crates/loop-cli/host-tools/worker.ts": "5b2b559927b6fc039bded0ef32752003b776d8e82fa896926b9c46f53d6e4ba0",
+    "crates/loop-cli/host-tools/supervise.ts": "e1da9d40b9fddd0bccb163129a3c833d1b69110009c55eb75d3d5cda8e4a9305",
+    "crates/loop-cli/host-tools/worker.ts": "0cab4d7fc1e3f63655f4ac59cb7a75e0e17559f43bfe2bb27fac3cb71a8580ad",
     "crates/loop-cli/templates/kits/app.ts": "4528e66cd21535f3b332c102af45b170b755d7985192c75a34a601be1856907f",
-    "crates/loop-cli/templates/kits/headless-app.ts": "bb0fce3f665bbd9b1bc65932b2c84c4b7f164bd45c2f00e745d43190d1bbbe51",
+    "crates/loop-cli/templates/kits/headless-app.ts": "356b48dd4a88cdec13bd8f080ef0d1ba2260ff9607bbb3dd76c2fef3701097b1",
     "crates/loop-cli/templates/kits/status-provider.ts": "0c5c2753417e845451c35bf40d15040ebbfe57d218a77fa47feb4afeb85211d0",
     "crates/loop-cli/templates/kits/status.ts": "7e9b0bb94aec69c3cd5d2cbda2aa48359428faeb762043ad9bc5cb8138ad0349",
     "crates/loop-cli/templates/rust/lib.rs": "bfe3b657a4bd0d552cb10205d8612bfebd32d42eb1ca805d9f1058cf65ecafb9",
@@ -191,14 +191,14 @@
     "packages/workspace/dist/source.js.map": "c5acc3a147372e11c5f395ac77345736b14635d8173d778b0e2330f0897e2a75",
     "rust-toolchain.toml": "498d50dad27f454981329cdb69cad665c74695fb1de5653557c36b7cd36ee028",
     "scripts/manage.ps1": "8df41831420b8d9524754f18bc070203dbb52283b8d13162d39465b7657e6044",
-    "skills/catalog.json": "b8b06977c5b0240ac22d2778da8d26e0ad9f0d6a513550f6d035071ae2434c83",
+    "skills/catalog.json": "4b582285e323bcd0a1ee0895d34c205a63ae85ad314025c33d962893daf53876",
     "skills/knowledge-wiki/capture/SKILL.md": "393b51e2755863a3e183ad484358f892e7cc653ee96cf35ee0c74c370a24b55a",
     "skills/knowledge-wiki/gap/SKILL.md": "3ed1675e8f9574be66161c5b154755e6b43a121532909dd9e0586cb618af0fe8",
     "skills/knowledge-wiki/gaps-review/SKILL.md": "6e0826fee8caed89b7727c14bae095f665b6459c4dff13a1d16e055a06740320",
     "skills/knowledge-wiki/README.md": "58b77a14206b3e8e8afac99a423e5dcda1b14fa98d99347a292004308afd6d1c",
     "skills/loop-github/SKILL.md": "b74b35475232e0670121798a7fd34d3285f7d7d34076be82efe98d02b2fcec8c",
-    "skills/loop-host-kits/references/renderers.md": "f56c0167a68722225408c20ee2f3ad46ca61c19c2afe128bc332437ab286ff07",
-    "skills/loop-host-kits/SKILL.md": "bd3e22b5dc5a962cea6061c28fa525c04351c27aa7a171dc01ea02f1e032b38f",
+    "skills/loop-host-kits/references/renderers.md": "199ef2c1e0160ccf2df55c6c888c8c33084b3dd444ec4f030c8c9e707d323b5e",
+    "skills/loop-host-kits/SKILL.md": "9ce71b5241b8614d209dc1b3c7f5ec3529b9373ea1323bea6abf4f7cd191e5f5",
     "skills/loop-writing/SKILL.md": "5eed389850d68c96fe938a84a299fb0208bdf174ba5713f52194ded59c448171"
   }
 }

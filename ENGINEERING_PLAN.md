@@ -462,7 +462,7 @@ requires the usable config→CLI→plugin→browser/native Component spine, a wo
 Electrobun provider exemplar, skill manager, packed/boundary checks and the docs
 website. HK-01 is the first task, not the mission's finish line. The existing
 [execution lane](docs/development-alpha/execution-plan.md#host-kit-implementation-lane)
-and [cards](docs/development-alpha/prompts.md#host-kit-prompt-2) now state that bar;
+(the historical prompt-2 cards have been retired) now states that bar;
 no new roadmap or runtime implementation is introduced by this revision.
 
 [Desktop source research](docs/reference/desktop-hosts.md) confirms Electrobun's
@@ -508,8 +508,7 @@ does not implement a unified runtime/config CLI, install skills, publish, commit
 migrate Station. New integration candidates: browser/Bun and Electrobun/Bun;
 existing Rust desktop releases and Station React/Electrobun behavior remain active.
 The existing [alpha sequence](docs/development-alpha/execution-plan.md#host-kit-implementation-lane)
-and [prompt-2 cards](docs/development-alpha/prompts.md#host-kit-prompt-2) integrate the
-work. First safe implementation: HK-01, pure plan resolution inside existing host,
+integrates the work. First safe implementation: HK-01, pure plan resolution inside existing host,
 with no config execution or product-state change. Runtime G1/G2 remains independent
 acceptance, even when a disposable feasibility probe succeeds.
 

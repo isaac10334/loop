@@ -8,8 +8,8 @@ Local operation works offline without accounts or a background service.
 ## Core and clients
 
 Use one development core behind injected source/build/run/inspect ports. CLI,
-Station, docs and agent adapters invoke those ports through the same policy owner;
-the CLI need not run as a subprocess inside Station. Begin in the foreground with
+host application, docs and agent adapters invoke those ports through the same policy owner;
+the CLI need not run as a subprocess inside host application. Begin in the foreground with
 stdio for a parent process. Background mode, tray UI and MCP can adapt that core
 later. Reuse the existing harness instead of creating another conversation system.
 
@@ -87,7 +87,7 @@ devtools and development-only connection credentials unless the user selects an
 explicit development distribution. Native executable packaging still uses the
 existing host/template/update trust path; changing a guest is not a host update.
 
-Adopt the tool through public contracts in Station and a small standalone client.
+Adopt the tool through public contracts in host application and a small standalone client.
 Use existing editor and semantic UI adapters; keep a document picker, two text
 fields and Run in an authored definition. Do not widen the G1 world to hide a new
 surface API. Observe browser save/reload/denial and native execution. Run affected

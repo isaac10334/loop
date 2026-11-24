@@ -9,7 +9,7 @@ Preserve the existing synchronous tooling fixture at `tooling/fixtures/wit/edito
 
 Loop owns the new callable profile, generated descriptors/facades, instance
 mechanisms and conformance fixtures. Hosts supply document storage and policy.
-Station retains asset currentness, grants, editor drafts and concrete worker URLs.
+host application retains asset currentness, grants, editor drafts and concrete worker URLs.
 Choose files/packages through `repo context`; do not move the whole grant/store
 layer or create an empty runtime package. Both adapters consume one source world.
 
@@ -109,6 +109,6 @@ and packed-consumer checks. Record timings by build/translation/instantiate/call
 
 First deliver a feasibility receipt with actual compiler/WASI/runtime versions,
 embedded imports and same-artifact runs. If a host fails, record the exact
-ABI gap and keep its gate unfinished (G1 native, G2 browser/Station). Inspect
+ABI gap and keep its gate unfinished (G1 native, G2 browser/host application). Inspect
 bounded alternatives; do not relabel a
 sync guest, a web editor or the old native starter as this profile's acceptance.

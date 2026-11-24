@@ -4,7 +4,7 @@ Loop Kit is a developer preview. Choose a route explicitly; source availability,
 
 ## Current public Windows CLI
 
-The public release channel is [GitHub Releases](https://github.com/isaac10334/loop/releases). The latest release checked on November 11, 2026 was **v0.1.0**, with a Windows x64 ZIP. There are no advertised macOS, Linux or ARM CLI artifacts.
+The published Windows CLI is **v0.1.0**, available as a Windows x64 ZIP from [GitHub Releases](https://github.com/isaac10334/loop/releases). There are no advertised macOS, Linux or ARM CLI artifacts.
 
 [Download the Windows ZIP](https://github.com/isaac10334/loop/releases/latest/download/loop-windows-x64.zip) or review the [PowerShell installer](https://isaac10334.github.io/loop/install.ps1) before running it:
 
@@ -31,7 +31,7 @@ cargo build --locked -p loop-cli
 
 Rust compilation on Windows requires MSVC/Windows SDK; native windows require WebView2. Browser execution uses the browser kit and a local browser, not Tao/Wry. The [quick start](quickstart.md) documents reviewed packed dependencies and an outside-checkout consumer.
 
-All nine `@loop-kit/*` npm registry endpoints returned 404 when checked on November 11, 2026. Until publication, **do not use an unqualified `bun add @loop-kit/host-browser` as a working installation instruction**. Local tarball overrides are an explicit preview technique, not proof of public npm installation.
+The `@loop-kit/*` packages are not yet published to npm. Until publication, **do not use an unqualified `bun add @loop-kit/host-browser` as a working installation instruction**. The newer host-kit CLI requires a source build; local tarball overrides are an explicit preview technique, not proof of public npm installation.
 
 ## Compatibility before the next release
 
