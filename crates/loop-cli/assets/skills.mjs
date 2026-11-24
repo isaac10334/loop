@@ -28,18 +28,18 @@ var catalog_default = {
       },
       digest: {
         algorithm: "sha256",
-        value: "05f7f1be23d33b4e19f3521bf724627c44e1116d5f002a12d7e7f8c59ee485a7"
+        value: "cccbfb110e541b5d66a4ce0c7772f14be8e6efbfd28bc7ec52ab89c30a688b24"
       },
       inventory: [
         {
           path: "SKILL.md",
-          bytes: 4808,
-          sha256: "bd3e22b5dc5a962cea6061c28fa525c04351c27aa7a171dc01ea02f1e032b38f"
+          bytes: 4790,
+          sha256: "9ce71b5241b8614d209dc1b3c7f5ec3529b9373ea1323bea6abf4f7cd191e5f5"
         },
         {
           path: "references/renderers.md",
-          bytes: 2142,
-          sha256: "f56c0167a68722225408c20ee2f3ad46ca61c19c2afe128bc332437ab286ff07"
+          bytes: 2160,
+          sha256: "199ef2c1e0160ccf2df55c6c888c8c33084b3dd444ec4f030c8c9e707d323b5e"
         }
       ],
       destinations: [
@@ -85,7 +85,7 @@ Read the matching routes before editing; combine routes when the change spans th
 | Host kit/plugin factories, registration, bootstrap or stop/restart | \`specs/host-kits.md\` sections 3, 4 and 6; \`packages/host/README.md\` and \`packages/host/LIFECYCLE.md\` for implemented ownership APIs. |
 | Renderer adapter, semantic elements, events or UI bindings | Read [renderer guidance](references/renderers.md); \`packages/ui/README.md\` and its public exports. For guest bindings also read \`packages/scripting/README.md\`. |
 | Package/layer, cross-realm or trust boundary | \`ARCHITECTURE.md\` (Enforced package ownership); \`specs/host-kits.md\` sections 5 and 6. Read \`packages/AGENTS.md\` and the target package README for package edits. |
-| Host application adoption, placement, saved state or grants | Locate the selected host-application checkout and read its instructions. Keep consumer policy and persistence in that application. |
+| Downstream product behavior, placement, saved state or grants | Keep consumer policy and persistence in the host application; inspect its selected public contracts and owner guidance. |
 | Skill catalog or optional management | \`specs/host-kits.md\` section 8; \`docs/reference/skills.md\` for source-built \`loop skills\` commands, explicit write intent and recovery limits. Release/client-discovery gates remain separate; skill use grants no installation authority. |
 
 ## Keep the portable seam
@@ -151,7 +151,7 @@ Use React only if the selected host already chooses it. Adapt existing controlle
 snapshots/subscriptions and keep effects/listeners under component or surface
 ownership; do not move hooks, DOM globals or React types into portable contracts.
 A React component is a renderer implementation, not a semantic element registration
-or a product-specific widget definition. The host application owns its product rendering and placement.
+or a host application widget definition. host application owns its product rendering and placement.
 
 For a proposed standalone kit/DOM adapter, read \`specs/host-kits.md\` sections 3, 6
 and 7 before choosing package names or claiming runtime support. Verify a real
