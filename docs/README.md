@@ -21,7 +21,7 @@ but is excluded from site pages, navigation, search, sitemaps and agent exports.
 | Understand runtime terms and limits | [Runtime reference](reference/runtime.md) |
 | Understand accounts and distribution | [Identity and distribution](reference/identity-and-distribution.md) |
 | Find and maintain repository knowledge | [Knowledge map](../knowledge/README.md), [generated catalog](../knowledge/_index.md), [maintenance operations](reference/knowledge.md) |
-| Develop with agents: knowledge owners, issues, worktrees, PRs and approvals | [Agent development workflow](reference/agent-workflow.md); [task prompts](development-alpha/prompts.md) are optional historical context |
+| Develop with agents: knowledge owners, issues, worktrees, PRs and approvals | [Agent development workflow](reference/agent-workflow.md);  |
 | Check package/layer ownership | [Architecture](../ARCHITECTURE.md), [local evidence ledger](../ENGINEERING_PLAN.md) |
 | Prepare releases | [Release workflow](../RELEASING.md) |
 
@@ -29,7 +29,7 @@ Dates on evidence pages identify those runs. They do not establish acceptance of
 later edits. Keep actual results in the existing engineering ledgers and link the
 receipts. Record unresolved decisions in the root `QUESTIONS.md`.
 
-The alpha guide routes runtime/development gates and the supporting host-kit and
-Station-adoption contracts through the specification index. Its former runtime,
+The alpha guide routes runtime/development gates and the supporting host-kit
+contracts through the specification index. Its former runtime,
 local-development, cloud-and-identity and repo-and-agent-map pages were merged
 into those owner specifications and the two references above.

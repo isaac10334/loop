@@ -10,7 +10,6 @@ explicit target, and stop/restart one without affecting the other's resources.**
 the dirty baselines, source references and limits. [Examples](host-kits-examples.md)
 contain proposed help and two complete source projects. The existing
 [execution plan](../docs/development-alpha/execution-plan.md#host-kit-implementation-lane)
-and [implementation cards](../docs/development-alpha/prompts.md#host-kit-prompt-2)
 own sequencing. [Architecture](../ARCHITECTURE.md) describes implemented software.
 
 ## 1. Vocabulary and selected initial integrations
@@ -39,7 +38,7 @@ Electrobun may be one such example if cheap, never the reason for core abstracti
 SDK preparation, extra services, forks or patches. No default starter, official
 manifest/build or portable resolver may depend on it or Hutch. Skip/defer examples
 that require substantial integration work; that does not make the official mission
-partial. Preserve Station's independent Electrobun application and saved behavior.
+partial. Preserve host application's independent Electrobun application and saved behavior.
 
 The [version-pinned desktop investigation](../docs/reference/desktop-hosts.md)
 retains useful compatibility evidence, including the npm shim/projected SDK and
@@ -270,7 +269,7 @@ there is no universal CEF/Dawn/updater capability promised by the core.
   distinct from `1.0.0` and must not be normalized or rejected as a legacy
   capability identity. Config target/plugin-use keys use `[a-z][a-z0-9.-]{0,63}`.
   A plugin identity can appear twice with different use keys only when it declares
-  independent options/registrations. Host IDs are not capability IDs or Station IDs.
+  independent options/registrations. Host IDs are not capability IDs or host application IDs.
 - Provider conflict keys match the existing host: **capability ID + serviceId**
   (or the explicit default sentinel), not version. Acquisition/dependency matching
   additionally requires the exact version. Different versions cannot occupy the
@@ -415,7 +414,7 @@ editor/draft live in a sibling owner, candidate effects stay staged/read-only,
 quiesce old writes before promotion, reject stale results and transfer state only
 through a declared versioned adapter. A failed candidate leaves old active.
 User-visible plain restart may stop old first, but must say so and preserve saved
-source. Neither operation changes Station persisted identity or repairs a failed
+source. Neither operation changes host application persisted identity or repairs a failed
 external mutation by pretending rollback succeeded.
 
 ### Multiple instances
@@ -434,7 +433,7 @@ transient desktop development, the kit derives an isolated development identity
 from the declared base plus instance and records it; it never borrows an installed
 product's identity. Persistent/release profiles keep declared product identity and
 exclusive ownership, failing a second writer rather than redirecting to a hidden
-singleton. No derived identity gets written into Station data.
+singleton. No derived identity gets written into host application data.
 
 ## 5. Trusted config evaluation and Rust/Bun protocol
 
@@ -548,18 +547,18 @@ Rust loop-host [existing concrete adapter]                          -> Wasmtime/
 | Owner | Proposed owned paths | Contract and dependency rule |
 | --- | --- | --- |
 | Integration | This spec, shared schemas/fixtures, policy files, manifests/locks | One writer for IDs/types, protocol and graph. No concurrent shared-schema edits. |
-| Portable host | `packages/host/src/kits/{contracts,resolve}.ts`, root export, focused tests | Pure JSON/graph resolution; reuse host lifecycle. No Bun/React/WebView/Wasmtime/Station imports or globals. |
+| Portable host | `packages/host/src/kits/{contracts,resolve}.ts`, root export, focused tests | Pure JSON/graph resolution; reuse host lifecycle. No Bun/React/WebView/Wasmtime/host application imports or globals. |
 | Config evaluation | `crates/loop-cli/host-tools/{worker,evaluate,supervise}.ts`, `tooling/host-config/*` fixtures | Bun process adapter, module closure and callbacks; packaged built asset belongs to CLI include inventory. No portable resolver platform edges. |
 | Rust CLI | `crates/loop-cli/src/{main,commands,config_process}.rs` and compatibility tests | Parser/adapters only; preserve legacy `dev.rs`, templates, manager and release commands while extracting responsibilities incrementally. |
 | Rust plan | `crates/loop-host-plan/{Cargo.toml,src/*}` only when CLI consumes it | Bounded literal validation/protocol DTOs/ports, no engine/process/UI. Paired JSON golden corpus checks Rust/TS agreement. No parallel resolver semantics. |
 | Browser kit | `packages/host-browser/src/*` with contracts/application/providers/composition roles | Kit bootstrap and app realm; Bun server/bundler stays in CLI tooling. Explicit source module export; no React requirement. |
 | Native kit/runtime provider | `packages/host-native/src/*`; narrow `crates/loop-host/src/*` runtime/surface adapter modules and installed CLI backend dispatch | Reuse concrete Wasmtime and Wry through inward ports; shared native/headless provider, not a second SDK or speculative crate split. Integrator owns shared Rust DTOs/WIT. |
-| Optional compatibility examples | `examples/compatibility/*` | Example-local dependencies and public ports only; no official Electrobun package, mandatory SDK/fork work or release dependency. Defer complex examples. Station bootstrap stays Station-owned. |
+| Optional compatibility examples | `examples/compatibility/*` | Example-local dependencies and public ports only; no official Electrobun package, mandatory SDK/fork work or release dependency. Defer complex examples. host application bootstrap stays host application-owned. |
 | DOM renderer | `packages/renderer-dom/src/*` | Map existing UI definitions/events with focus/a11y/disposal. React adapter remains optional and separate; no guest code loading. |
 | Component adapters | Selected owned files under `experiments/` then actual adapter package/native modules | Gate on nominal async resources, engine limits and same-byte receipts. Do not turn existing host into an engine registry prematurely. |
 | Scaffolding/releases | `crates/loop-cli/templates/*`, CLI asset build/include rules, release/pack tests | Templates call public kit APIs. Embed evaluator/catalog/payload assets with digest/version; no checkout-relative runtime file reads. |
 | Agent workflow | `skills/loop-host-kits/*`, `skills/catalog.json`; future CLI manager modules/tests | Payload/data separate from install destinations. Generic manager, no per-skill branch. |
-| Station | Later named adapter/test files only, chosen from a new baseline | Public packed imports and policy ports. No source copies, store replacement, persisted-ID changes or packaging rewrite. |
+| host application | Later named adapter/test files only, chosen from a new baseline | Public packed imports and policy ports. No source copies, store replacement, persisted-ID changes or packaging rewrite. |
 
 Only a real adapter justifies a new publishable package. Start portable resolution
 inside host; do not add `core`, `common`, an empty runtime package, a second UI
@@ -571,7 +570,7 @@ exports; private files and absolute development paths cannot enter packs.
 Extend the compiler-resolved TS policy with explicit longest-prefix roles for new
 kit modules. Count type-only/dynamic/re-export/alias edges, computed imports,
 realpaths and cycles. Rejection fixtures must catch portable resolver importing
-Bun/React/WebView/Polyengine, browser globals, private exports, Station, a type-only
+Bun/React/WebView/Polyengine, browser globals, private exports, host application, a type-only
 cycle and a workspace-link escape. Provider and presentation modules cannot import
 each other's private implementations. Composition owns their wiring.
 
@@ -581,7 +580,7 @@ feature graph: normal/build/dev/proc-macro, optional/renamed/workspace-inherited
 platform cfg and feature forwarding. Core cannot depend on outer adapters under a
 disabled feature. Reject direct/transitive outer backedges, `cfg(windows)` or
 inactive-target escape, default-feature native activation, renamed dependency
-bypass and undeclared absolute/Station paths. Bound dev exceptions by exact owner
+bypass and undeclared absolute/host application paths. Bound dev exceptions by exact owner
 and edge. Positive fixtures preserve today's CLI→loop-host desktop and optional
 Windows Wry/Tao while pure plan consumers remain engine-free.
 
@@ -620,14 +619,14 @@ only after compiler/runtime feasibility; it is not implemented by naming it here
 | Path | Implemented evidence | Missing host-kit acceptance |
 | --- | --- | --- |
 | Ordinary TS host/providers | Independent scopes/leases/tasks and public package consumers | Typed kits/config/resolution, per-instance startup supervisor and adapters. No isolation claim. |
-| Public semantic UI | Frames/events, registries/controllers/descriptors, recording adapter | General standalone DOM renderer kit; Station still owns its React adapter and product UI. |
+| Public semantic UI | Frames/events, registries/controllers/descriptors, recording adapter | General standalone DOM renderer kit; host application still owns its React adapter and product UI. |
 | Rust legacy app | Async dispatch/timer, sync notes grants, native/headless package proof | New async document resource/CAS profile and bridge to TS host; native UI semantics differ from public UI. |
-| Browser Components | Station fixed greeting worker; this run's disposable Chrome document + semantic-Component proof using same bytes as Wasmtime | Production reusable document facade/import allowlist and worker isolation/forced-stop conformance; disposable harness is not a shipped adapter. |
+| Browser Components | host application fixed greeting worker; this run's disposable Chrome document + semantic-Component proof using same bytes as Wasmtime | Production reusable document facade/import allowlist and worker isolation/forced-stop conformance; disposable harness is not a shipped adapter. |
 | TS guest via ComponentizeJS | Complete disposable TS guest compiles to JS; pinned 0.22 async-document generation fails with `not yet implemented`, no Component output | New async document ABI generation. Preserve the separate wasm-rquickjs possibility; do not generalize this to every JS compiler. |
 | JS guest via wasm-rquickjs | Existing fixed P3 scripting engine/build wrapper with real async service/surface bindings | New document profile and independent-realm proof; `start` is not a new realm and a host kit cannot fix that by selection. |
 | Bun Component execution | Host tooling/provider execution works; source engine exists | Multi-memory/JSPI engine acceptance on pinned Bun. Use browser worker candidate instead of silent engine fallback. |
 | Rust desktop feasibility | Disposable Tao/Wry/WebView2 window runs the same semantic Component on Wasmtime; actual pointer event and rendered document result, close/join observed | Production kit/profile conformance and standalone distribution. This is not Electrobun or browser-Polyengine execution in a WebView. |
-| Optional Electrobun compatibility | Existing Station packaging is independent; SDK projection is version-specific | No official kit is planned. If a cheap example is selected, test only its claimed public-port interaction; otherwise defer it without blocking release. |
+| Optional Electrobun compatibility | Existing host application packaging is independent; SDK projection is version-specific | No official kit is planned. If a cheap example is selected, test only its claimed public-port interaction; otherwise defer it without blocking release. |
 | Wasmtime document bootstrap | Disposable same-byte document and semantic profiles invoked with delayed methods, denial/CAS/cancel/resource checks | Production nominal facade, complete malformed-input/borrow/runaway/isolation conformance and reviewed package/API; probe success does not close G1. |
 
 The dated [probe receipt](../experiments/host-kits-2026-11-03/README.md) is the sole
@@ -768,14 +767,13 @@ from this documentation run. Implementation cards select exact commands/files.
 - Skill manager fixtures prove zero-write inspection/dry-run, exact bytes,
   idempotency, data-only second entry, separate project/user roots, offline use,
   path/link aliases, local-edit preservation, ownership-safe remove and fault-injected
-  recovery. Forward-test the repo skill on config, renderer, boundary and Station
+  recovery. Forward-test the repo skill on config, renderer, boundary and host application
   policy-trap tasks, plus outside-checkout use.
-- Station adoption completes the current authored Action Button seam through public
+- host application adoption completes the current authored Action Button seam through public
   Loop artifacts and an independent packed consumer. Preserve saved definitions,
   IDs, placement, config, bindings/grants, undo/reload and existing React/Electrobun
-  behavior. The [adoption spec](station-adoption.md) and
-  [behavior inventory](../docs/development-alpha/host-kits-evidence.md#station-parity-inventory-static-audit-not-a-fresh-pass)
-  own those checks. Autosave risk needs a separate Station regression, not opportunistic
+  behavior. The [host-kit evidence inventory](../docs/development-alpha/host-kits-evidence.md)
+  records those checks. Autosave risk needs a separate host application regression, not opportunistic
   rewriting in this run. Broad dock/property extraction remains Gate B.
 
 Record unresolved consequential choices in [QUESTIONS](../QUESTIONS.md). Record

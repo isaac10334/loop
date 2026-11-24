@@ -22,12 +22,12 @@ Optional compatibility examples can demonstrate existing public ports across
 language ecosystems. Electrobun may be one isolated example if straightforward;
 defer it if it needs SDK wrangling, framework patches/forks or new production
 services. Do not change the official core, packaging or release criteria for it.
-Station's separate Electrobun product remains unchanged.
+host application's separate Electrobun product remains unchanged.
 
 ## What Electrobun actually supplies
 
 The current [documentation home](https://docs.electrobun.dev/) advertises newer
-releases than Station's `2.0.3-beta.26`. The following claims use that exact tag,
+releases than host application's `2.0.3-beta.26`. The following claims use that exact tag,
 resolved through [GitHub's tag API](https://api.github.com/repos/blackboardsh/electrobun/git/ref/tags/v2.0.3-beta.26)
 to commit `c4bbeca07829d9b1634d31598ef6091fb19ace2a`. A newer release requires a
 separate compatibility decision; its documentation is not evidence for the pin.
@@ -50,11 +50,11 @@ acceptance. Loop semantic UI does not become Electrobun UI merely by choosing a 
 ## Toolchain, packaging and trust
 
 The Electrobun-specific notes below apply only to an explicitly selected isolated
-compatibility example or Station's existing product. They impose no preparation,
+compatibility example or host application's existing product. They impose no preparation,
 implementation or feature-parity requirement on the official Loop kits.
 
 The installed `electrobun` npm package is a bootstrap shim. Runtime APIs resolve
-from the **prepared project devkit**, not that npm export. Station's app-local
+from the **prepared project devkit**, not that npm export. host application's app-local
 projection has the intended beta pin; another workspace projection can be stale.
 An adapter must inspect the selected project manifest, core/SDK/launcher/assets
 and hashes instead of searching a user's cache and choosing the nearest match.
@@ -67,11 +67,11 @@ unavailable or a silent different-backend fallback. Packs must contain required
 runtime resources and notices, with no `.hutch`/checkout/user-cache paths.
 
 Electrobun's webview sandbox/RPC switches do not supply Loop authorization.
-Station's current Windows integration uses additional native policy patches;
+host application's current Windows integration uses additional native policy patches;
 the [pinned Windows wrapper](https://raw.githubusercontent.com/blackboardsh/electrobun/c4bbeca07829d9b1634d31598ef6091fb19ace2a/package/src/native/win/nativeWrapper.cpp)
 contains security-disabling browser flags that its adapter removes. New foreign-
 content support needs pre-effect navigation/download/device/bridge denial tests,
-not an assumption that embedding a view isolates it. Keep Station's existing
+not an assumption that embedding a view isolates it. Keep host application's existing
 policy, saved identities, updater and packaged native patch intact.
 
 ## Shared ports, different compositions
@@ -131,7 +131,7 @@ Prefer the public SDK and an upstream patch. Consider a maintained fork only aft
 an exact pinned source investigation reproduces a required security/lifecycle/API
 gap that no supported extension solves. Record the minimal patch, owner, upstream
 issue/PR, rebase/security-update budget, provenance and distribution tests. A local
-patch is not permission to fork/publish remotely or migrate Station.
+patch is not permission to fork/publish remotely or migrate host application.
 
 The [pinned MIT license](https://raw.githubusercontent.com/blackboardsh/electrobun/c4bbeca07829d9b1634d31598ef6091fb19ace2a/LICENSE)
 permits adaptation with its notices; it gives no support SLA or warranty. CEF,

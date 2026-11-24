@@ -2,7 +2,7 @@
 
 This application measures real timer latency. It consumes public tarballs of
 `@loop-kit/capabilities`, `@loop-kit/host` and `@loop-kit/ui`, outside the workspace
-package graph. No Station, private imports, local links or native runtime.
+package graph. No separate host application, private imports, local links or native runtime.
 
 From the Loop checkout:
 
@@ -36,5 +36,5 @@ node dist/cli.mjs
 
 The browser is an intentionally plain acceptance harness. Its output and error
 handling make the actual runtime workflow reviewable. It does not demonstrate a
-Station renderer, sandboxed scripting, network providers or installed native code.
+a host application renderer, sandboxed scripting, network providers or installed native code.
 

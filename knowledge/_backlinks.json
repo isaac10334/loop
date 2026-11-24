@@ -11,7 +11,6 @@
     "reference/evidence",
     "reference/host",
     "reference/specifications",
-    "reference/station",
     "reference/ui",
     "reference/workspace"
   ],
@@ -32,8 +31,7 @@
   "reference/decisions": [
     "reference/architecture",
     "reference/host",
-    "reference/specifications",
-    "reference/station"
+    "reference/specifications"
   ],
   "reference/evidence": [
     "reference/architecture",
@@ -59,18 +57,11 @@
     "reference/component-runtime",
     "reference/contracts",
     "reference/decisions",
-    "reference/evidence",
-    "reference/station"
-  ],
-  "reference/station": [
-    "reference/decisions",
-    "reference/specifications",
-    "reference/ui"
+    "reference/evidence"
   ],
   "reference/ui": [
     "reference/architecture",
-    "reference/component-runtime",
-    "reference/station"
+    "reference/component-runtime"
   ],
   "reference/workspace": [
     "reference/agent-workflow",

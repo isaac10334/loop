@@ -34,7 +34,7 @@ loop run hello
 
 The starter has a Rust Component, scoped note access and a small native semantic
 renderer. The desktop host uses Wasmtime and Tao/Wry/WebView2. Closing this example
-closes its worker. This is separate from the TypeScript host package and Station.
+closes its worker. This is separate from the TypeScript host package and from host applications built on Loop Kit.
 
 Without explicit flags, create defaults to a Rust desktop application and a
 generated host. Interactive invocation offers template/language selection.

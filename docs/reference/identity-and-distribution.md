@@ -7,7 +7,7 @@ local authority. Neither service exists because this page describes it.
 
 ## Accounts and credentials
 
-Use one official Loop issuer and separate registered Station/CLI/native/web
+Use one official Loop issuer and separate registered host application/CLI/native/web
 clients with API-specific audiences. Store connection identity as issuer+subject;
 personal/work connections can coexist. Select a connection per project/operation
 and pin it to jobs. Switching the visible account does not retarget running work.
@@ -17,7 +17,7 @@ Use a maintained OAuth/OIDC implementation. CLI uses device authorization with
 denial/expiry/backoff; native clients use system-browser code+S256 PKCE; hosted
 web clients prefer server-held tokens and HttpOnly sessions. Installed public
 clients carry no shared secret. Better Auth's OAuth provider is a candidate;
-Station's existing cookie session is not already an authorization server.
+host application's existing cookie session is not already an authorization server.
 
 The broker owns refresh rotation and OS-backed storage. One foreground owner per
 connection holds an interprocess lock; other native clients route through it or
@@ -31,9 +31,9 @@ through the active registry. A disconnected host cannot observe cloud revocation
 at once. OIDC login, project membership, package entitlement, GitHub installation
 and native grants remain separate checks.
 
-Station keeps its current login and browser-local data. Add Connect Loop account
+host application keeps its current login and browser-local data. Add Connect Loop account
 before considering login migration. Link legacy identities only after proving
-both sessions. Loop login does not upload or partition existing Station assets.
+both sessions. Loop login does not upload or partition existing host application assets.
 
 References: [OAuth security BCP](https://www.rfc-editor.org/rfc/rfc9700.html),
 [native OAuth](https://www.rfc-editor.org/info/rfc8252),
@@ -59,7 +59,7 @@ runtime authority; client code secrecy cannot protect paid services.
 
 One web shell can serve public Markdown guides and private project/build/registry
 pages. Anonymous in-memory examples precede optional private save/build. Reuse
-the independent editor and semantic surfaces without importing Station's shell.
+the independent editor and semantic surfaces without importing host application's shell.
 Sanitize registry documentation and gate runnable examples through installation
 and grants. Official pages acquire no machine authority by reputation. Hosted
 HTTPS-to-loopback access needs its own browser network-policy acceptance.

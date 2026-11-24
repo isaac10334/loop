@@ -22,8 +22,7 @@ Do not create empty packages or a workflow engine to make the plan look complete
 
 HK1 is the [proposed shared contract](../../specs/host-kits.md), frozen after four
 read-only audits on November 3. This adds composition/CLI work to G0/G3; it does not
-relax G1/G2 or advance cloud/distribution. Use the [prompt-2 cards](prompts.md#host-kit-prompt-2),
-not a separate roadmap. [The audit receipt](host-kits-evidence.md) owns this run's
+relax G1/G2 or advance cloud/distribution. [The audit receipt](host-kits-evidence.md) owns this run's
 actual checks and runtime limits. November 7 limits official scope to our Rust
 desktop kit and browser kit. Electrobun and other ecosystems are optional isolated
 compatibility examples, not implementation or release prerequisites. The

@@ -5,7 +5,7 @@ open choices, not claims that the proposed behavior already exists.
 
 The November 7 [selected scope](specs/host-kits.md) requires only the official
 Rust desktop and browser kits. Electrobun is optional compatibility-example work,
-not a third kit or release dependency. Preserve Station's independent packaging
+not a third kit or release dependency. Preserve host application's independent packaging
 and existing Rust compatibility. [Pinned desktop evidence](docs/reference/desktop-hosts.md)
 remains reference, not an instruction to integrate it. Same Component bytes remain
 required; disposable proof does not complete production acceptance.
@@ -27,19 +27,19 @@ required; disposable proof does not complete production acceptance.
   does not supply them.
 - Which persistent profile/update identity should standalone first-party Loop
   applications use? Recommendation: require each project to name its own identity;
-  use transient per-instance development profiles and reserve no Station identifiers,
+  use transient per-instance development profiles and reserve no host application identifiers,
   ports or update feeds. Choose distribution signing/updates in their own release gate.
 
 ## Existing product/runtime questions
 
-- Which first visible tool should we ship: document transform, asset inspector, or a specific existing Station widget? Recommendation: document transform, then an inspector using the same resources.
+- Which first visible tool should we ship: document transform, asset inspector, or a specific existing host application widget? Recommendation: document transform, then an inspector using the same resources.
 - Can we retire the old evaluation-only QuickJS experiments once their unique
   findings and a reproducible engine test survive? Recommendation: keep the
   production engine and one useful test; retire duplicate probes.
-- Which Station features may disappear before replacements exist? Recommendation:
+- Which host application features may disappear before replacements exist? Recommendation:
   only explicitly named experiments; keep user-facing tools and saved data working.
 - For portable docking, should Loop own split/tab/floating placement mechanics,
-  while Station owns desks, defaults, persistence and permissions? Recommendation:
+  while host application owns desks, defaults, persistence and permissions? Recommendation:
   yes; prove a second host before moving the implementation.
 - Which data feature should follow the runtime: theme variables, asset references,
   or synchronized collections? Recommendation: typed variables/references with an
@@ -61,7 +61,7 @@ required; disposable proof does not complete production acceptance.
   Recommendation: only through an explicit preapproved provider/cost policy;
   otherwise offer it as a choice.
 - Which identity domain/product name should appear in the first Loop login?
-  Recommendation: one Loop issuer, separate product clients, Station “Connect Loop.”
+  Recommendation: one Loop issuer, separate product clients, host application “Connect Loop.”
 - What should the first registry distribute: source templates, Components,
   authored widgets or all three? Recommendation: one tool package containing
   pinned source, Component artifact and a small semantic widget definition.

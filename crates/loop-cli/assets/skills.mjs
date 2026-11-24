@@ -85,7 +85,7 @@ Read the matching routes before editing; combine routes when the change spans th
 | Host kit/plugin factories, registration, bootstrap or stop/restart | \`specs/host-kits.md\` sections 3, 4 and 6; \`packages/host/README.md\` and \`packages/host/LIFECYCLE.md\` for implemented ownership APIs. |
 | Renderer adapter, semantic elements, events or UI bindings | Read [renderer guidance](references/renderers.md); \`packages/ui/README.md\` and its public exports. For guest bindings also read \`packages/scripting/README.md\`. |
 | Package/layer, cross-realm or trust boundary | \`ARCHITECTURE.md\` (Enforced package ownership); \`specs/host-kits.md\` sections 5 and 6. Read \`packages/AGENTS.md\` and the target package README for package edits. |
-| Station adoption, placement, saved state or grants | Locate the selected Station checkout and read its instructions; read Loop's \`specs/station-adoption.md\`. Keep consumer policy and persistence there. |
+| Host application adoption, placement, saved state or grants | Locate the selected host-application checkout and read its instructions. Keep consumer policy and persistence in that application. |
 | Skill catalog or optional management | \`specs/host-kits.md\` section 8; \`docs/reference/skills.md\` for source-built \`loop skills\` commands, explicit write intent and recovery limits. Release/client-discovery gates remain separate; skill use grants no installation authority. |
 
 ## Keep the portable seam
@@ -151,7 +151,7 @@ Use React only if the selected host already chooses it. Adapt existing controlle
 snapshots/subscriptions and keep effects/listeners under component or surface
 ownership; do not move hooks, DOM globals or React types into portable contracts.
 A React component is a renderer implementation, not a semantic element registration
-or a Station widget definition. Station owns its product rendering and placement.
+or a product-specific widget definition. The host application owns its product rendering and placement.
 
 For a proposed standalone kit/DOM adapter, read \`specs/host-kits.md\` sections 3, 6
 and 7 before choosing package names or claiming runtime support. Verify a real

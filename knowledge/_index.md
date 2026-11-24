@@ -53,7 +53,6 @@ The rules this vault follows: run `kb schema`.
 | [[reference/knowledge-system\|Living knowledge operations and DSH skills]] | stable | knowledge-system | Knowledge-wiki setup, authoritative homes, deterministic maintenance and DSH invocation. |
 | [[reference/release\|Release operations and distribution authority]] | stable | release | Release preparation, verification and explicit publication authorization; not a task tracker. |
 | [[reference/specifications\|Proposed specifications and acceptance gates]] | stable | specifications | Proposed obligations, gate ordering and owner specifications; not proof of current support. |
-| [[reference/station\|Station product and portable mechanism boundary]] | stable | station | Consumer product responsibilities, publication ownership and dated distribution inventory. |
 | [[reference/ui\|Semantic UI and renderer contracts]] | stable | ui | Portable surfaces and events; concrete renderer support stays with each adapter. |
 | [[reference/workspace\|Portable authored workspaces and Git changes]] | stable | workspace | Immutable snapshots, build receipts and checked change-request contracts, without product persistence. |
 
