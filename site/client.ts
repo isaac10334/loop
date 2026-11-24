@@ -3,8 +3,10 @@ import { mountMechanism } from './mechanism';
 import { icon } from './icons';
 import { mountDocsNavigation } from './docs-navigation';
 import { mountCapabilityExplorers } from './capability-explorer-client';
+import { mountPromptWizard } from './prompt-wizard';
 const mechanism = document.querySelector<HTMLElement>('.mechanism');
 if (mechanism) mountMechanism(mechanism);
+for (const wizard of document.querySelectorAll<HTMLElement>('[data-prompt-wizard]')) mountPromptWizard(wizard);
 for (const widget of document.querySelectorAll<HTMLElement>('[data-install-widget]')) {
   const tabs = [...widget.querySelectorAll<HTMLButtonElement>('[data-install-tab]')];
   const panels = [...widget.querySelectorAll<HTMLElement>('[data-install-panel]')];
