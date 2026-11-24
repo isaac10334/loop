@@ -12,6 +12,7 @@ import { buildDemo } from './demo-build';
 import { verifyPublication } from './publication';
 import { renderCapabilityExplorer } from './capability-explorer';
 import { renderProductStories, renderLandingCapabilities } from './landing-content';
+import { renderPromptWizard } from './prompt-wizard';
 const base = siteBase(process.env.DOCS_BASE_URL);
 
 const root = resolve(import.meta.dir, "..");
@@ -24,7 +25,7 @@ if (existsSync(publication)) {
   await rm(publication, { recursive: true, force: true });
 }
 await mkdir(join(output, "_assets"), { recursive: true });
-const landing = (await Bun.file(join(root,'site/index.html')).text()).replace('<!-- PRODUCT_STORIES -->', renderProductStories()).replace('<!-- CAPABILITY_SHOWCASE -->',renderLandingCapabilities());
+const landing = (await Bun.file(join(root,'site/index.html')).text()).replace('<!-- PRODUCT_STORIES -->', renderProductStories()).replace('<!-- CAPABILITY_SHOWCASE -->',renderLandingCapabilities()).replace('<!-- AGENT_PROMPT_WIZARD -->', renderPromptWizard());
 await writeFile(join(publication,'index.html'),landing);
 await writeFile(join(publication,'favicon.svg'),new Uint8Array(await Bun.file(join(root,'site/favicon.svg')).arrayBuffer()));
 await mkdir(join(publication, 'assets'), { recursive: true });
