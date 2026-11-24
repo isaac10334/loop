@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Loop Kit: composable software beyond the backend. Explore the Component Model foundation for interactive tools, games, and programs that can evolve.">
-  <title>Loop Kit — Build worlds. Not silos.</title>
+  <meta name="description" content="Loop Kit is a WebAssembly Component framework for interactive tools, games, and host-controlled applications.">
+  <title>Loop Kit — Composable software with WebAssembly Components</title>
   <script>try{document.documentElement.dataset.theme=localStorage.getItem('loop-docs-theme')==='light'?'light':'dark'}catch{}</script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/loop-display.ttf" as="font" type="font/ttf" crossorigin>
@@ -21,46 +21,96 @@
   <main id="main" class="workbench">
     <section class="intro-section" aria-labelledby="hero-title">
       <div class="intro-grid">
-        <div class="intro-copy"><h1 id="hero-title">Build worlds.<br><span>Not silos.</span></h1><p>Composable software, beyond the backend. A WebAssembly Component framework in the making—for interactive tools, games, and programs that can evolve.</p><div class="intro-actions"><a class="cta-primary" href="docs/quickstart.html">Start building <span aria-hidden="true">↗</span></a><a class="cta-text" href="#playground">Try the live demo <span aria-hidden="true">↓</span></a></div></div>
-        <div class="mechanism" data-state="idle" aria-label="Interactive vector mechanism">
-          <svg class="mechanism-scene" viewBox="0 0 600 400" role="img" aria-labelledby="mechanism-title mechanism-description">
-            <title id="mechanism-title">A small machine, connected</title><desc id="mechanism-description">Two counter-rotating vector gears drive a reciprocating slider. Use the controls below to run, reverse, step or turn the mechanism.</desc>
-            <defs><linearGradient id="rail-finish" x2="0" y2="1"><stop stop-color="#38516a"/><stop offset=".5" stop-color="#142131"/><stop offset="1" stop-color="#42627e"/></linearGradient><linearGradient id="link-finish" x2="0" y2="1"><stop stop-color="#a1c6df"/><stop offset="1" stop-color="#42627e"/></linearGradient></defs>
-            <path class="machine-wire" d="M60 185H105M415 185H555"/>
-            <path class="machine-base" d="M64 280H536L558 302H42Z"/>
-            <path class="machine-bracket" d="M134 280L157 185H201L224 280M264 280L287 185H331L354 280"/>
-            <rect class="machine-rail" x="390" y="167" width="155" height="35" rx="2" fill="url(#rail-finish)"/>
-            <path class="rail-groove" d="M395 178H539M395 191H539"/>
-            <g class="gear-shadow"><ellipse cx="180" cy="284" rx="84" ry="10"/><ellipse cx="310" cy="284" rx="75" ry="8"/></g>
-            <g id="drive-gear" transform="rotate(0 180 185)"><image href="assets/kinetic-gear.svg" x="100" y="105" width="160" height="160"/><path class="gear-index" d="M180 124V132"/></g>
-            <g id="driven-gear" transform="rotate(10 310 185)"><image href="assets/kinetic-gear.svg" x="230" y="105" width="160" height="160"/><path class="gear-index" d="M310 124V132"/></g>
-            <circle class="axle" cx="180" cy="185" r="9"/><path class="axle-slot" d="M175 185H185"/>
-            <g id="slider" transform="translate(465 185)"><rect class="slider-body" x="-20" y="-25" width="40" height="50" rx="3"/><path class="slider-cut" d="M-12 -16H12M-12 16H12"/><circle class="slider-bolt" r="6"/></g>
-            <path id="connecting-rod" d="M345 185L465 185" fill="none" stroke="url(#link-finish)" stroke-width="12" stroke-linecap="round"/>
-            <path id="rod-highlight" d="M345 182L465 182" fill="none" stroke="#c3deef" stroke-opacity=".4" stroke-width="1"/>
-            <circle id="crank-pin" class="crank-pin" cx="345" cy="185" r="7"/>
-            <circle class="axle" cx="310" cy="185" r="9"/><path class="axle-slot" d="M305 185H315"/>
-            <g class="mount-bolts"><circle cx="76" cy="290" r="3"/><circle cx="524" cy="290" r="3"/></g>
+        <div class="intro-copy">
+          <h1 id="hero-title">Build software<br><span>from swappable parts.</span></h1>
+          <p>A WebAssembly Component framework for interactive tools, games, and long-lived apps. Swap providers, isolate resources, and run the same components in a browser, desktop host, or headless service.</p>
+          <div class="intro-actions"><a class="cta-primary" href="docs/quickstart.html">Start building <span aria-hidden="true">↗</span></a><a class="cta-text" href="#playground">Try the live demo <span aria-hidden="true">↓</span></a></div>
+          <div class="hero-install" data-install-widget aria-label="Install Loop Kit CLI">
+            <div class="install-tabs" role="tablist" aria-label="Install method">
+              <button type="button" role="tab" aria-selected="true" data-install-tab="windows">Windows (PowerShell)</button>
+              <button type="button" role="tab" aria-selected="false" data-install-tab="source">From source (main)</button>
+              <a class="install-doc-link" href="docs/installation.html">All options ↗</a>
+            </div>
+            <div class="install-panel" data-install-panel="windows">
+              <div class="install-command"><span class="install-prompt" aria-hidden="true">&gt;</span><code>irm https://isaac10334.github.io/loop/install.ps1 | iex</code><button type="button" class="install-copy" data-copy-text="irm https://isaac10334.github.io/loop/install.ps1 | iex" aria-label="Copy Windows install command">Copy</button></div>
+              <p class="install-meta">Installs the published Windows x64 CLI (<code>v0.1.0</code>). Pass <code>-SkipRust</code> to skip toolchain setup. <a href="install.ps1">Read script</a></p>
+            </div>
+            <div class="install-panel" data-install-panel="source" hidden>
+              <div class="install-command"><span class="install-prompt" aria-hidden="true">&gt;</span><code>git clone https://github.com/isaac10334/loop &amp;&amp; cd loop &amp;&amp; .\scripts\install-dev.ps1</code><button type="button" class="install-copy" data-copy-text="git clone https://github.com/isaac10334/loop &amp;&amp; cd loop &amp;&amp; .\scripts\install-dev.ps1" aria-label="Copy source build install command">Copy</button></div>
+              <p class="install-meta">Builds <code>loop-dev</code> from <code>main</code> with host kits (<code>--kit</code>) and bundled <code>loop skills</code>. Requires Rust + Bun.</p>
+            </div>
+          </div>
+        </div>
+        <div class="mechanism" data-state="idle" data-direction="1" aria-label="Interactive loop gear mark">
+          <svg class="mechanism-scene" viewBox="0 0 640 360" role="img" aria-labelledby="mechanism-title mechanism-description">
+            <title id="mechanism-title">Loop kinetic wordmark</title><desc id="mechanism-description">The letters L and P frame two meshing gears that form the O's in loop. Drag the gears or use the mechanical switches on the base to run, reverse, or step.</desc>
+            <defs>
+              <linearGradient id="letter-face" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#223449"/><stop offset=".55" stop-color="#142131"/><stop offset="1" stop-color="#0e1824"/></linearGradient>
+              <linearGradient id="letter-rim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#91cfff"/><stop offset="1" stop-color="#3e5c78"/></linearGradient>
+              <linearGradient id="plinth-top" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#1b2b3d"/><stop offset="1" stop-color="#0f1925"/></linearGradient>
+              <linearGradient id="plinth-front" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#131f2e"/><stop offset="1" stop-color="#0a111a"/></linearGradient>
+            </defs>
+            <!-- Machined plinth base -->
+            <path class="machine-plinth-top" d="M46 270H594L612 288H28Z" fill="url(#plinth-top)"/>
+            <rect class="machine-plinth-front" x="28" y="288" width="584" height="44" rx="4" fill="url(#plinth-front)"/>
+            <path class="machine-wire" d="M62 178H146M436 178H452"/>
+            <path class="machine-bracket" d="M184 270L204 178H248L268 270M316 270L336 178H380L400 270"/>
+            <g class="gear-shadow"><ellipse cx="226" cy="274" rx="76" ry="9"/><ellipse cx="358" cy="274" rx="76" ry="9"/></g>
+            <!-- Letter L -->
+            <g class="wordmark-letter" aria-hidden="true">
+              <path class="letter-body" d="M68 62H106V222H142V256H68Z" fill="url(#letter-face)" stroke="url(#letter-rim)" stroke-width="2" stroke-linejoin="round"/>
+              <path class="letter-chamfer" d="M78 72V246H132"/>
+              <circle class="letter-bolt" cx="87" cy="82" r="3.5"/><circle class="letter-bolt" cx="87" cy="238" r="3.5"/>
+            </g>
+            <!-- Two meshing O gears -->
+            <g class="gear-hit" id="gear-drag-surface" tabindex="0" role="slider" aria-label="Turn the loop gears" aria-valuemin="0" aria-valuemax="360" aria-valuenow="0">
+              <g id="drive-gear" transform="rotate(0 226 178)"><image href="assets/kinetic-gear.svg" x="149" y="101" width="154" height="154"/><path class="gear-index" d="M226 120V128"/></g>
+              <g id="driven-gear" transform="rotate(10 358 178)"><image href="assets/kinetic-gear.svg" x="281" y="101" width="154" height="154"/><path class="gear-index" d="M358 120V128"/></g>
+              <circle class="axle" cx="226" cy="178" r="9"/><path class="axle-slot" d="M221 178H231"/>
+              <circle class="axle" cx="358" cy="178" r="9"/><path class="axle-slot" d="M353 178H363"/>
+            </g>
+            <!-- Letter P -->
+            <g class="wordmark-letter" aria-hidden="true">
+              <path class="letter-body" fill-rule="evenodd" d="M446 106H512C549 106 574 130 574 164C574 198 549 222 512 222H484V256H446ZM484 138V190H508C526 190 538 179 538 164C538 149 526 138 508 138Z" fill="url(#letter-face)" stroke="url(#letter-rim)" stroke-width="2" stroke-linejoin="round"/>
+              <circle class="letter-bolt" cx="465" cy="124" r="3.5"/><circle class="letter-bolt" cx="465" cy="238" r="3.5"/>
+            </g>
+            <!-- Plinth mounting bolts -->
+            <g class="mount-bolts"><circle cx="48" cy="310" r="3.5"/><circle cx="592" cy="310" r="3.5"/></g>
           </svg>
-          <div class="mechanism-controls"><div class="machine-feedback"><span class="machine-light" aria-hidden="true"></span><output id="machine-status" aria-live="polite">Give it a turn.</output><output id="machine-phase" aria-label="Mechanism phase">0°</output></div><label class="scrub-label" for="machine-scrub">Turn the mechanism</label><input id="machine-scrub" type="range" min="0" max="360" step="1" value="0" disabled><div class="machine-buttons"><button id="machine-run" type="button" disabled><span class="run-icon" aria-hidden="true">▶</span><span class="run-label">Run</span></button><button id="machine-reverse" type="button" aria-pressed="false" disabled>Reverse <span aria-hidden="true">↔</span></button><button id="machine-step" type="button" disabled>Step <span aria-hidden="true">↦</span></button></div></div>
-          <noscript><p>Enable JavaScript to turn the mechanism. The live example below runs independently.</p></noscript>
+          <div class="plinth-deck" role="group" aria-label="Mechanism controls">
+            <button id="machine-run" class="mech-toggle" type="button" aria-pressed="false" disabled title="Run or pause">
+              <span class="toggle-housing" aria-hidden="true"><span class="toggle-lever"></span></span>
+              <span class="mech-led" aria-hidden="true"></span>
+              <span class="run-label">Run</span>
+            </button>
+            <button id="machine-reverse" class="mech-rocker" type="button" aria-pressed="false" disabled title="Reverse direction">
+              <span class="rocker-cap" aria-hidden="true"><span class="rocker-arrow">⇄</span></span>
+              <span class="mech-caption">Rev</span>
+            </button>
+            <button id="machine-step" class="mech-plunger" type="button" disabled title="Step one tooth">
+              <span class="plunger-cap" aria-hidden="true"></span>
+              <span class="mech-caption">Step</span>
+            </button>
+            <output id="machine-phase" class="mech-dial" aria-label="Mechanism phase">0°</output>
+          </div>
+          <noscript><p class="mech-noscript">Enable JavaScript to turn the gears. The live browser app below runs independently.</p></noscript>
         </div>
       </div>
     </section>
     <!-- PRODUCT_STORIES -->
     <section id="playground" class="playground-section" aria-labelledby="demo-title">
-      <div class="section-heading reveal"><h2 id="demo-title">Not a screenshot.<br><span>A little application.</span></h2><p>A real Loop Kit host, right here. Change state, stop the app, start fresh. Every interaction has an owner.</p></div>
+      <div class="section-heading reveal"><h2 id="demo-title">Live browser host<br><span>running in this page.</span></h2><p>Change the counter, stop the app, or start a fresh instance. Each run creates its own scoped provider state and cleans it up on stop.</p></div>
       <div class="demo-stage reveal">
-        <div class="demo-layout"><aside class="inspector-card"><div class="surface-heading">What makes it work</div><ol class="composition-list"><li><span class="part-symbol" aria-hidden="true">◇</span><div><strong>Application</strong><span>What it does</span></div></li><li><span class="part-symbol" aria-hidden="true">◎</span><div><strong>Provider</strong><span>Where state lives</span></div></li><li><span class="part-symbol" aria-hidden="true">▧</span><div><strong>Host + renderer</strong><span>How it comes to life</span></div></li></ol><p class="inspector-foot">Separate parts.<br>One owned lifetime.</p></aside>
+        <div class="demo-layout"><aside class="inspector-card"><div class="surface-heading">What makes it work</div><ol class="composition-list"><li><span class="part-symbol" aria-hidden="true">◇</span><div><strong>Application</strong><span>What it does</span></div></li><li><span class="part-symbol" aria-hidden="true">◎</span><div><strong>Provider</strong><span>Where state lives</span></div></li><li><span class="part-symbol" aria-hidden="true">▧</span><div><strong>Host + renderer</strong><span>How it renders</span></div></li></ol><p class="inspector-foot">Wired at the host boundary and disposed together.</p></aside>
           <div class="app-window"><div class="window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>counter.application</span><a href="docs/_demo/index.html" target="_blank" rel="noopener" aria-label="Open live demo in a new tab">↗</a></div><iframe title="Live Loop Kit browser counter" src="docs/_demo/index.html" loading="lazy"></iframe></div>
-        </div><div class="stage-caption"><p>This is the official browser kit, running real provider state.</p><a href="docs/quickstart.html">Make it your own <span aria-hidden="true">↗</span></a></div>
+        </div><div class="stage-caption"><p>This is the official browser kit running real provider state.</p><a href="docs/quickstart.html">Build your own <span aria-hidden="true">↗</span></a></div>
       </div>
     </section>
-    <section class="principles-section" aria-labelledby="principles-title"><div class="section-heading reveal"><h2 id="principles-title">Everything connects.<br><span>Nothing disappears.</span></h2><a class="cta-text" href="docs/concepts.html">Meet the concepts <span aria-hidden="true">↗</span></a></div>
-      <div class="principle-cards"><article class="principle-card reveal"><div class="card-diagram contract-diagram" aria-hidden="true"><span>{</span><div><i></i><i></i><i></i></div><span>}</span><b>✓</b></div><h3>A shared language.</h3><p>Typed capabilities say what a service does. Swap its implementation without rewriting the application.</p><a href="docs/guides/providers.html">Connect a provider <span aria-hidden="true">↗</span></a></article><article class="principle-card reveal"><div class="card-diagram lifetime-diagram" aria-hidden="true"><span></span><i></i><b>acquire → release</b></div><h3>A place for everything.</h3><p>Every acquired resource belongs to a scope. Clear lifetimes, explicit cleanup, no mystery leftovers.</p><a href="docs/reference/host.html">Follow the lifetime <span aria-hidden="true">↗</span></a></article><article class="principle-card reveal"><div class="card-diagram host-diagram" aria-hidden="true"><span>APP</span><i></i><div><b>WEB</b><b>NATIVE</b><b>HEADLESS</b></div></div><h3>Your host. Your rules.</h3><p>Choose providers and presentation at the host boundary. Check support separately for each runtime.</p><a href="docs/reference/compatibility.html">Explore the runtimes <span aria-hidden="true">↗</span></a></article></div>
+    <section class="principles-section" aria-labelledby="principles-title"><div class="section-heading reveal"><h2 id="principles-title">How the runtime<br><span>stays predictable.</span></h2><a class="cta-text" href="docs/concepts.html">Read the concepts <span aria-hidden="true">↗</span></a></div>
+      <div class="principle-cards"><article class="principle-card reveal"><div class="card-diagram contract-diagram" aria-hidden="true"><span>{</span><div><i></i><i></i><i></i></div><span>}</span><b>✓</b></div><h3>Typed capability contracts</h3><p>Capabilities describe what a service does through a typed interface, so you can swap providers without rewriting application code.</p><a href="docs/guides/providers.html">Connect a provider <span aria-hidden="true">↗</span></a></article><article class="principle-card reveal"><div class="card-diagram lifetime-diagram" aria-hidden="true"><span></span><i></i><b>acquire → release</b></div><h3>Scoped resource lifetimes</h3><p>Every acquired resource belongs to a host scope. When a scope stops, its resources are released explicitly.</p><a href="docs/reference/host.html">Follow the lifetime <span aria-hidden="true">↗</span></a></article><article class="principle-card reveal"><div class="card-diagram host-diagram" aria-hidden="true"><span>APP</span><i></i><div><b>WEB</b><b>NATIVE</b><b>HEADLESS</b></div></div><h3>Host-controlled boundaries</h3><p>Each host chooses which providers and renderers to expose. Check the support matrix to see what each runtime implements.</p><a href="docs/reference/compatibility.html">Explore the runtimes <span aria-hidden="true">↗</span></a></article></div>
     </section>
     <!-- CAPABILITY_SHOWCASE -->
-    <section class="source-section reveal" aria-labelledby="source-title"><div class="source-copy"><h2 id="source-title">A small surface.<br><span>A lot of possibility.</span></h2><p>Browser tools or headless services. Start with a reviewed kit, then compose what your application needs.</p><a class="cta-text" href="docs/index.html">Read the documentation <span aria-hidden="true">↗</span></a></div><aside class="hero-console" aria-label="Source preview CLI workflow"><div class="console-bar"><span>~/your-next-application</span><span>source preview</span></div><pre><code><span class="console-comment"># Choose your host.</span>
+    <section class="source-section reveal" aria-labelledby="source-title"><div class="source-copy"><h2 id="source-title">Scaffold and run<br><span>from one CLI.</span></h2><p>Start with a browser, desktop, or headless host kit, then wire in the providers your application needs.</p><a class="cta-text" href="docs/index.html">Read the documentation <span aria-hidden="true">↗</span></a></div><aside class="hero-console" aria-label="Source preview CLI workflow"><div class="console-bar"><span>~/your-next-application</span><span>source preview</span></div><pre><code><span class="console-comment"># Choose your host.</span>
 <span class="console-prompt">$</span> loop create my-service --kit headless --yes
 
 <span class="console-comment"># Prepare reviewed SDK packages, then run.</span>
@@ -70,9 +120,9 @@
 
 <span class="console-success">●</span> service active
 <span class="console-comment">  independent host · owned resources</span></code></pre><a href="docs/installation.html">Source-built CLI required <span aria-hidden="true">↗</span></a></aside></section>
-    <section class="closing-section reveal"><h2>Your next idea.<br><span>In the loop.</span></h2><div class="closing-bottom"><a class="cta-primary" href="docs/quickstart.html">Build a browser application <span aria-hidden="true">↗</span></a><p>Still early. Intentionally explicit.<br>Explore what works today—and what comes next.</p></div></section>
-    <aside class="preview-note"><p><strong>Developer preview.</strong> Browser and Windows host kits use source builds and reviewed package artifacts. npm publication is pending; the public Windows v0.1.0 CLI is older. <a href="docs/installation.html">Choose an installation route ↗</a></p></aside>
-    <footer class="landing-footer"><a class="brand" href="./" aria-label="Loop home">loop</a><span>Small contracts. Real applications.<br>MIT / Apache-2.0 · Built in the open.</span><div><a href="docs/examples.html">Examples</a><a href="docs/reference/support.html">Capability support</a><a href="docs/roadmap.html">Roadmap &amp; limits</a><a href="llms.txt">llms.txt</a><a href="https://github.com/isaac10334/loop/releases/latest/download/loop-windows-x64.zip">Windows ZIP</a><a href="install.ps1">Read the installer</a></div></footer>
+    <section class="closing-section reveal"><h2>Ready to try<br><span>Loop Kit?</span></h2><div class="closing-bottom"><a class="cta-primary" href="docs/quickstart.html">Build a browser application <span aria-hidden="true">↗</span></a><p>Loop Kit is in developer preview.<br>Start with the browser quickstart or check the capability matrix to see what ships today.</p></div></section>
+    <aside class="preview-note"><p><strong>Developer preview.</strong> Browser and Windows host kits use source builds and reviewed package artifacts. npm publication is pending; the published Windows v0.1.0 CLI is older than <code>main</code>. <a href="docs/installation.html">Choose an installation route ↗</a></p></aside>
+    <footer class="landing-footer"><a class="brand" href="./" aria-label="Loop home">loop</a><span>MIT / Apache-2.0 · Open source WebAssembly Component toolkit.</span><div><a href="docs/examples.html">Examples</a><a href="docs/reference/support.html">Capability support</a><a href="docs/roadmap.html">Roadmap &amp; limits</a><a href="llms.txt">llms.txt</a><a href="https://github.com/isaac10334/loop/releases/latest/download/loop-windows-x64.zip">Windows ZIP</a><a href="install.ps1">Read the installer</a></div></footer>
   </main>
   <dialog class="search-dialog" aria-label="Search documentation"><div class="search-head"><input type="search" aria-label="Search documentation pages" placeholder="Search guides, contracts, packages…"><button class="search-close" type="button">Close</button></div><div class="search-results" aria-live="polite"></div><div class="search-footer">Local search · guide and reference content · Escape to close</div></dialog>
 </body>

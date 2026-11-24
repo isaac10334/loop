@@ -5,6 +5,29 @@ import { mountDocsNavigation } from './docs-navigation';
 import { mountCapabilityExplorers } from './capability-explorer-client';
 const mechanism = document.querySelector<HTMLElement>('.mechanism');
 if (mechanism) mountMechanism(mechanism);
+for (const widget of document.querySelectorAll<HTMLElement>('[data-install-widget]')) {
+  const tabs = [...widget.querySelectorAll<HTMLButtonElement>('[data-install-tab]')];
+  const panels = [...widget.querySelectorAll<HTMLElement>('[data-install-panel]')];
+  for (const tab of tabs) {
+    tab.addEventListener('click', () => {
+      const active = tab.dataset.installTab;
+      for (const item of tabs) item.setAttribute('aria-selected', String(item.dataset.installTab === active));
+      for (const panel of panels) panel.hidden = panel.dataset.installPanel !== active;
+    });
+  }
+  for (const copyButton of widget.querySelectorAll<HTMLButtonElement>('[data-copy-text]')) {
+    copyButton.addEventListener('click', async () => {
+      const text = copyButton.dataset.copyText ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+        copyButton.textContent = 'Copied';
+        setTimeout(() => { copyButton.textContent = 'Copy'; }, 1600);
+      } catch {
+        copyButton.textContent = 'Select';
+      }
+    });
+  }
+}
 if ('IntersectionObserver' in window) {
   const logo = document.querySelector('.loop-mark');
   if (logo) {
