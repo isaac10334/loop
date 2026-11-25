@@ -157,7 +157,7 @@ See [Windows development setup](crates/loop-cli/WINDOWS.md#development-checkout-
 
 ### Releases and packaging
 
-Packaging, version-bump policy, dry-run checks, and publishing workflows live in [RELEASING.md](RELEASING.md) and [`.github/README.md`](.github/README.md).
+Packaging, version-bump policy, dry-run checks, and publishing workflows live in [RELEASING.md](RELEASING.md) and [`.github/WORKFLOWS.md`](.github/WORKFLOWS.md).
 
 ## Community and draft prompts
 

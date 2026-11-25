@@ -46,7 +46,7 @@ Stop here: no publication, tags, deployment, registry/settings changes, external
 
 ## Ranked follow-ups
 
-1. **Distribution:** maintainer confirms npm scope/crate ownership, configures protected `npm`/`crates` trusted publishers, reviews versions/artifacts, and explicitly publishes host before registry-only CLI checks and the Windows release. See `RELEASING.md` and `.github/README.md`.
+1. **Distribution:** maintainer confirms npm scope/crate ownership, configures protected `npm`/`crates` trusted publishers, reviews versions/artifacts, and explicitly publishes host before registry-only CLI checks and the Windows release. See `RELEASING.md` and `.github/WORKFLOWS.md`.
 2. **Native acceptance:** with human consent, rerun real Tao/Wry input/close/independent-instance behavior on the final release candidate. Headless tests do not close this gap.
 3. **Guest budgeting:** establish a public browser pre-lift allocation limit before claiming hostile canonical-budget parity. Do not expand into a general runtime campaign in this task.
 4. **Wizard Tower specification:** define a small application session/start-pause/status/input-focus shell with replaceable state operations and finite cleanup acceptance. Voxel rendering/ECS/multiplayer/GPU work remains excluded.

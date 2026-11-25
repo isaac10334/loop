@@ -18,7 +18,7 @@ changed. Load only the material needed for the task:
 | What is proposed or still undecided? | [Spec index](../../specs/README.md), [questions](../../QUESTIONS.md) |
 | Where are usage and current limits documented? | [Documentation index](../README.md), package README and API comments |
 | What evidence exists for an engineering gate? | [Engineering plan](../../ENGINEERING_PLAN.md) and its linked receipts; dates limit the claims |
-| How are releases and external settings handled? | [Releasing](../../RELEASING.md), [GitHub setup](../../.github/README.md) |
+| How are releases and external settings handled? | [Releasing](../../RELEASING.md), [GitHub setup](../../.github/WORKFLOWS.md) |
 
 If sources disagree, inspect implementation and tests, report the mismatch and
 correct the owning document within scope. Do not silently turn a proposal into a

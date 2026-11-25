@@ -102,7 +102,7 @@ Publish the new host crate first, verify the extracted CLI against that actual
 registry crate without a local patch, then run checkout-free create/run/build and
 relocation tests before releasing the matching Windows CLI. Paired local archives,
 local `--host-source` tests and a passing workspace build do not prove this gate.
-See [workflow setup](.github/README.md) for human account and GitHub configuration.
+See [workflow setup](.github/WORKFLOWS.md) for human account and GitHub configuration.
 
 ## CLI bootstrap and development channel
 
@@ -116,7 +116,7 @@ Read-only checks on November 18, 2026 reconfirmed GitHub latest CLI v0.1.0 and
 crates.io host 0.1.0 at the endpoints above. A prebuilt stable CLI remains useful
 for its legacy application path, but cannot bootstrap current host-kit development.
 Publishing current support still requires the host-first release gate above and
-the human registry/GitHub setup in [workflow setup](.github/README.md).
+the human registry/GitHub setup in [workflow setup](.github/WORKFLOWS.md).
 No publishing or external configuration is performed by the development scripts.
 
 ## Inspect a release
