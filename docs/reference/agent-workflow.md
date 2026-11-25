@@ -74,7 +74,7 @@ Use the smallest relevant checks first. Package work uses
 `bun run verify`; automation types use `bun run typecheck:tooling`; Markdown lint
 and link validation use `bun run docs:check`. Rust formatting and lint checks use
 `bun run rust:fmt` and `bun run rust:clippy`, with full workspace tests documented
-in the [root README](../../README.md#rust-status). Documentation-only changes need
+in the [root README](../../README.md#rust-host-and-cli). Documentation-only changes need
 affected-link and source-claim checks, not an automatic full build.
 The [TypeScript CI workflow](../../.github/workflows/typescript.yml) and
 [knowledge CI workflow](../../.github/workflows/knowledge.yml) run on pushes to

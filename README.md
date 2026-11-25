@@ -1,16 +1,67 @@
-# loop-kit
+# Loop Kit
 
-Loop-kit is becoming a TypeScript-first SDK for typed capabilities and local providers. Ordinary JavaScript can define a contract, register an implementation, acquire it in a scope, and clean it up. WebAssembly is optional.
+[![TypeScript CI](https://github.com/isaac10334/loop/actions/workflows/typescript.yml/badge.svg)](https://github.com/isaac10334/loop/actions/workflows/typescript.yml)
+[![Knowledge Checks](https://github.com/isaac10334/loop/actions/workflows/knowledge.yml/badge.svg)](https://github.com/isaac10334/loop/actions/workflows/knowledge.yml)
+[![Status: Pre-alpha](https://img.shields.io/badge/status-pre--alpha-d97706)](docs/public/support.md)
+[![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-2563eb)](LICENSE-MIT)
+[![Docs](https://img.shields.io/badge/docs-reference-0f766e)](https://isaac10334.github.io/loop/docs/)
+[![Discord](https://img.shields.io/badge/Discord-Join%20community-5865F2?logo=discord&logoColor=white)](https://discord.gg/pbrqMSXbWM)
 
-The current TypeScript runtime is deliberately in-process. The existing Rust CLI and Wasmtime host remain available for native/component applications, but are a separate implementation path.
+Loop Kit is an experimental SDK and runtime architecture for building software out of swappable, typed parts.
 
-Start with the [browser application quick start](docs/public/quickstart.md),
-[installation and release status](docs/public/installation.md), and
-[runnable examples](docs/public/examples.md). The current host-kit implementation
-is a source-build/reviewed-pack preview; npm publication is pending. Contributor
-plans live separately under `specs/` and `docs/development-alpha/`.
+The core idea is straightforward: define capabilities as explicit typed contracts, wire concrete providers at the host boundary, acquire resources inside a scope with deterministic cleanup, and keep UI semantics decoupled from whatever renderer draws them. The same contracts are meant to span ordinary in-process TypeScript and WebAssembly Component Model guests without locking your application into one host, one renderer, or a pile of ambient global singletons.
 
-## Start
+> **Honest status:** Loop Kit is pre-alpha and **not quite usable yet** as a drop-in library. The TypeScript packages are not published to npm (source builds only for now), the TypeScript runtime and the Rust Wasmtime host/CLI are still two separate implementation paths rather than one unified bridge, and much of the broader vision (full polyglot component composition, renderer ecosystem, engine adapters) is still in progress. Check the [capability support matrix](docs/public/support.md) for what actually works and is tested today versus what is still proposed.
+
+---
+
+## Why this exists
+
+Most interactive tools, editors, and games end up tightly coupled to their host environment, their UI framework, and hidden global state. Swapping a storage backend, isolating an untrusted script, or running the same logic in a browser, a desktop window, and a headless test harness turns into a rewrite.
+
+Loop Kit approaches this from a few narrow, composable primitives:
+
+- **Typed capability contracts** (`@loop-kit/capabilities`) — stable contract identities paired with TypeScript service shapes, independent of package versions.
+- **Explicit resource ownership and scopes** (`@loop-kit/host`) — capabilities are acquired as handles inside a scope; revoking a scope or disposing a host deterministically tears down everything it owns.
+- **Host-controlled authority** — guests and scripts only get the bindings a host explicitly grants them. Plain metadata objects never grant authority on their own.
+- **Renderer-independent UI** (`@loop-kit/ui`, `@loop-kit/renderer-dom`) — portable semantic surface trees and interaction events, with concrete renderers plugged in at the host layer.
+- **Bounded authored execution and portable workspaces** (`@loop-kit/scripting`, `@loop-kit/workspace`) — explicit guest bindings, immutable source snapshots, build receipts, and checked change requests.
+- **Optional WebAssembly Component Model path** (`crates/loop-host`, `crates/loop-cli`) — a Rust Wasmtime host and Windows authoring CLI for native/component apps, currently maintained alongside the TypeScript-first SDK.
+
+## A quick look at the API
+
+Ordinary TypeScript can define a capability, register a provider, acquire a handle inside a scope, and tear everything down cleanly — no WebAssembly required:
+
+```ts
+import { defineCapability } from "@loop-kit/capabilities";
+import { createHost } from "@loop-kit/host";
+
+interface Greeting {
+  greet(name: string): string;
+}
+
+const greeting = defineCapability<Greeting>({
+  id: "unit:hello/greeting",
+  version: "1.0.0",
+});
+
+const host = createHost();
+host.provide(greeting, {
+  create: () => ({ greet: (name) => `Hello, ${name}` }),
+});
+
+const scope = host.scope();
+const handle = await scope.acquire(greeting);
+console.log(handle.value.greet("world"));
+
+await handle.release();
+await scope.revoke();
+await host.dispose();
+```
+
+## Trying it from source
+
+Since packages are not published to npm yet, running from a local checkout with [Bun](https://bun.sh/) is the best way to kick the tires:
 
 ```powershell
 bun install
@@ -19,58 +70,100 @@ bun run typecheck
 bun test
 ```
 
-```ts
-import { defineCapability } from "@loop-kit/capabilities";
-import { createHost } from "@loop-kit/host";
+From there, see the [browser application quick start](docs/public/quickstart.md) and [runnable examples](docs/public/examples.md).
 
-interface Greeting { greet(name: string): string }
-const greeting = defineCapability<Greeting>({ id: "unit:hello/greeting", version: "1.0.0" });
-const host = createHost();
-host.provide(greeting, { create: () => ({ greet: name => `Hello, ${name}` }) });
-const scope = host.scope();
-const handle = await scope.acquire(greeting);
-console.log(handle.value.greet("world"));
-await handle.release();
-await scope.revoke();
-await host.dispose();
+You can also inspect portable workspace snapshots without executing any project code:
+
+```powershell
+bun run workspace snapshot <directory> <output.json>
 ```
 
-## Repository
+See [workspace contracts](packages/workspace/README.md), the [WIT/content mapper proof](tooling/fixtures/wit/README.md), and [portable development](docs/portable-development.md) for how that fits together.
+
+## Repository layout
+
+### TypeScript packages
+
+| Package | Path | Purpose |
+| --- | --- | --- |
+| `@loop-kit/capabilities` | [`packages/capabilities`](packages/capabilities/README.md) | Typed runtime identities for capability contracts |
+| `@loop-kit/host` | [`packages/host`](packages/host/README.md) | In-process provider registration, scopes, handles, and lifecycle |
+| `@loop-kit/ui` | [`packages/ui`](packages/ui/README.md) | Portable semantic surfaces and guest interaction contracts |
+| `@loop-kit/scripting` | [`packages/scripting`](packages/scripting/README.md) | Bounded scripting execution contracts and guest SDK |
+| `@loop-kit/workspace` | [`packages/workspace`](packages/workspace/README.md) | Immutable source snapshots, build receipts, and checked change requests |
+| `@loop-kit/host-browser` | [`packages/host-browser`](packages/host-browser/README.md) | Browser host adapter |
+| `@loop-kit/host-native` | [`packages/host-native`](packages/host-native/README.md) | Native host adapter |
+| `@loop-kit/renderer-dom` | [`packages/renderer-dom`](packages/renderer-dom/README.md) | DOM renderer adapter for `@loop-kit/ui` surfaces |
+| `@loop-kit/component-polyengine` | [`packages/component-polyengine`](packages/component-polyengine/README.md) | Polyengine component adapter |
+
+### Rust crates, tooling, and docs
 
 | Path | Purpose |
 | --- | --- |
-| `packages/capabilities` | Contract identities and TypeScript service association |
-| `packages/host` | In-process provider registration, scopes, handles and lifecycle |
-| `packages/ui` | Portable semantic surfaces and event contracts |
-| `packages/scripting` | Authored execution contracts and explicitly injected guest bindings |
-| `packages/workspace` | Immutable source snapshots, build receipts and checked Git change requests |
-| `crates/loop-host` | Existing Wasmtime Component Model and desktop/headless host |
-| `crates/loop-cli` | Existing Windows component application authoring CLI |
-| `experiments/wasip3` | Isolated async Component Model probe and its current JS limitation |
-| `site`, `scripts`, `.github/workflows` | Existing Windows release, installer and Pages assets |
+| [`crates/loop-host`](crates/loop-host) | Wasmtime Component Model and desktop/headless host |
+| [`crates/loop-cli`](crates/loop-cli) | Windows component application authoring CLI |
+| [`experiments/wasip3`](experiments/wasip3) | Isolated async Component Model probe and current JS limitations |
+| [`docs/`](docs/README.md) | Public guides, reference docs, and alpha execution notes |
+| [`specs/`](specs/README.md) | Proposed specifications and design gates (not promises of current support) |
+| [`skills/`](skills) | Repo-local skills for writing, host kits, and GitHub workflows |
+| [`site/`](site) | Static landing page and generated SDK documentation builder |
 
-See [release and canary instructions](RELEASING.md), the generated [SDK documentation](https://isaac10334.github.io/loop/docs/), [ARCHITECTURE.md](ARCHITECTURE.md), [DECISIONS.md](DECISIONS.md), and each package README. Rust CLI users: [Windows setup](crates/loop-cli/WINDOWS.md).
+## Investigating the architecture
 
-Portable authoring: `bun run workspace snapshot <directory> <output.json>` reads
-an explicit `loop.package.json` file list without executing it. See
-[workspace contracts](packages/workspace/README.md), [WIT/content mapper proof](tooling/fixtures/wit/README.md)
-and [the development proof](docs/portable-development.md). Cloud hosting is optional;
-the initial GitHub adapter prepares draft pull requests, never merges them.
+If you are reading the repo to see how the pieces fit together (or deciding whether the model makes sense for what you build), these are the best starting points:
 
-Contributors can start with the [development workflow](docs/reference/agent-workflow.md).
+- [Public overview](docs/public/overview.md) and [core concepts](docs/public/concepts.md) — high-level mental model and vocabulary
+- [Capability support matrix](docs/public/support.md) — honest breakdown of what is implemented, tested, or still planned
+- [ARCHITECTURE.md](ARCHITECTURE.md) — dual TypeScript/Rust paths, authority boundaries, and host vs. downstream ownership
+- [DECISIONS.md](DECISIONS.md) — settled architectural decisions and rationale
+- [QUESTIONS.md](QUESTIONS.md) — open product and trust questions still being worked out
+- [Generated SDK docs](https://isaac10334.github.io/loop/docs/) — browseable reference built from `site/`
+- [Roadmap](docs/public/roadmap.md) — where this is headed once the foundations settle
 
-## Rust CLI development
+## Contributing
 
-No installed `loop` is needed to develop Loop Kit. After
-`bun install --frozen-lockfile`, use `scripts/build-cli.ps1` to rebuild SDK output,
-embedded tools and the CLI, or `scripts/install-dev.ps1` to install/update the
-separate `loop-dev` command. Stable `loop.exe` is left untouched. Run
-`scripts/test-cli.ps1 -Binary <path-to-built-cli>` for standalone relocated smoke
-checks. See [Windows development setup](crates/loop-cli/WINDOWS.md#development-checkout-no-installed-loop-required)
-for prerequisites, PATH checks and legacy-install migration.
+Contributions, design critiques, and bug reports are welcome — especially around capability ergonomics, lifecycle edge cases, and renderer/host boundaries.
 
-## Rust status
+1. Read the [development workflow](docs/reference/agent-workflow.md) for branch/PR conventions and repo tooling.
+2. Run focused checks while iterating on a package:
+   ```powershell
+   bun run repo context <package>
+   bun run repo check
+   bun run repo verify <package>
+   ```
+3. Before opening a PR that touches packages, tooling, `skills/`, or embedded CLI assets, run the full verification gate:
+   ```powershell
+   bun run verify
+   ```
+4. If you edit docs or knowledge pointers, check links with `bun run knowledge links` (and `bun run knowledge check` for vault edits).
 
-The prepared Rust host and CLI are 0.1.1; published host/Windows CLI 0.1.0 do not provide the new native-kit APIs. Release the host first, then verify the matching CLI against the registry without a local patch; see [release instructions](RELEASING.md). They implement component hosting, scoped notes grants, desktop/headless execution, and Windows release/install workflows. They are not yet adapters for the TypeScript host. Validate them with `cargo fmt --all --check`, `cargo test --locked --workspace --all-features`, and `cargo clippy --locked --workspace --all-features --all-targets -- -D warnings`.
+### Rust host and CLI
 
-Licensed under [MIT](LICENSE-MIT) OR [Apache-2.0](LICENSE-APACHE).
+You do not need an installed `loop` binary to develop the Rust side. After `bun install --frozen-lockfile`:
+
+- `scripts/build-cli.ps1` rebuilds SDK output, embedded tools, and the CLI.
+- `scripts/install-dev.ps1` installs or updates a separate `loop-dev` command without touching any stable `loop.exe`.
+- `scripts/test-cli.ps1 -Binary <path-to-built-cli>` runs relocated smoke checks.
+
+Validate Rust changes with:
+
+```powershell
+cargo fmt --all --check
+cargo test --locked --workspace --all-features
+cargo clippy --locked --workspace --all-features --all-targets -- -D warnings
+```
+
+See [Windows development setup](crates/loop-cli/WINDOWS.md#development-checkout-no-installed-loop-required) for prerequisites and PATH setup.
+
+### Releases and packaging
+
+Packaging, version-bump policy, dry-run checks, and publishing workflows live in [RELEASING.md](RELEASING.md) and [`.github/README.md`](.github/README.md).
+
+## Community and draft prompts
+
+- **Discord:** Join the [Loop Kit Discord](https://discord.gg/pbrqMSXbWM) to ask questions, poke at the architecture, or share feedback.
+- **Draft agent prompts:** We are currently keeping a working scratchpad of Loop Kit agent prompts in [this Affine doc](https://app.affine.pro/workspace/1ceec593-ccac-4ed8-8e28-0e1a3d6b68f9/ZRps4ivnXuQSmVI8y9iaK) while a better prompt-drafting workflow takes shape. Since Affine doesn't easily let outside readers leave comments, drop any suggestions or edits in the Discord.
+
+## License
+
+Dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE).
