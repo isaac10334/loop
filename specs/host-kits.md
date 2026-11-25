@@ -588,7 +588,7 @@ Future gate commands must be added/tested before claiming them: `bun run repo
 check --rust`, `bun test tooling/rust-boundaries.test.ts`; run metadata/tree plus
 compile/test across no-default, all-features and Windows/headless profiles. Current
 Rust required checks remain fmt, locked workspace/all-feature tests and clippy as
-[documented](../README.md#rust-status). Pair those with TS/packed-consumer gates.
+[documented](../README.md#rust-host-and-cli). Pair those with TS/packed-consumer gates.
 
 Release tests must run from a packed crate/CLI archive **without checkout access**:
 all embedded starters plus new evaluator/catalog assets are present, local host

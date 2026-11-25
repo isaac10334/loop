@@ -35,11 +35,13 @@ settings do not yet exist, and configure **each** package's trusted publisher:
 
 | npm GitHub Actions field | Value |
 | --- | --- |
-| Organization or user | `isaac10334` |
-| Repository | `loop` |
+| Organization or user | `<repository-owner>` |
+| Repository | `<repository-name>` |
 | Workflow filename | `npm-publish.yml` |
 | Environment | `npm` |
 | Allowed action | **Allow npm publish** (direct publishing) |
+
+Use the target GitHub owner/org and repository name, e.g. the upstream repository.
 
 In GitHub → repository Settings → Environments, create `npm`, require reviewers and
 restrict release branches/tags. Confirm protection rules are supported by the plan.
@@ -68,10 +70,12 @@ email and confirm crate ownership. Open `loop-host` → Settings → Trusted Pub
 
 | crates.io GitHub field | Value |
 | --- | --- |
-| Repository owner | `isaac10334` |
-| Repository name | `loop` |
+| Repository owner | `<repository-owner>` |
+| Repository name | `<repository-name>` |
 | Workflow filename | `publish-host.yml` |
 | Environment | `crates` |
+
+Use the target GitHub owner/org and repository name, e.g. the upstream repository.
 
 In GitHub → repository Settings → Environments, create `crates`, add required
 reviewers and restrict release branches/tags; verify the repository plan supports

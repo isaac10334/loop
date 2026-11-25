@@ -67,7 +67,7 @@ replace a previously published prerelease: advance its sequence. Use the
    derive their host version from the CLI. Choose the larger bump required by
    either artifact. Regenerate the lockfile with Cargo, review the diff, and run
    the formatting, locked workspace tests and clippy commands in the
-   [README](README.md#rust-status). Rebuild embedded assets and the CLI using the
+   [README](README.md#rust-host-and-cli). Rebuild embedded assets and the CLI using the
    [Bun/Cargo bootstrap](crates/loop-cli/WINDOWS.md#development-checkout-no-installed-loop-required),
    never an installed `loop` to build itself.
 4. Review WIT, capability/source IDs, profiles and protocol schema versions
@@ -158,7 +158,8 @@ Do not store an npm token in GitHub or this repository. Bootstrap is a real publ
 not a dry run: the same versions cannot subsequently be published by OIDC.
 
 For every package, open npm → package → Settings → Trusted publishing → Add trusted
-publisher → GitHub Actions. Set owner `isaac10334`, repository `loop`, workflow filename
+publisher → GitHub Actions. Set the repository owner (for example, `<owner>`), repository
+name (for example, `<repo>`), and workflow filename
 `npm-publish.yml` (not its full path), environment `npm`, and enable **Allow npm publish**
 (the default staged-publish permission alone is insufficient for this workflow).
 In GitHub → repository Settings → Environments, create `npm`, add required reviewers
@@ -196,7 +197,7 @@ overrides. Public dependency declarations remain semver. After npm publication,
 remove those overrides/artifacts and regenerate Station's lockfile.
 
 For CI pinned to Git source, run
-`bun tooling/git-artifacts.ts https://github.com/isaac10334/loop.git <full-sha> <output>`.
+`bun tooling/git-artifacts.ts <repo-git-url> <full-sha> <output>`.
 It fetches that exact revision into an isolated temporary checkout, installs with
 the frozen lockfile, runs release preparation and writes a remote revision receipt.
 It fails if the revision is unavailable remotely or lacks the packaging scripts;
