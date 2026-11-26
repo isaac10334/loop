@@ -29,6 +29,16 @@ test('application-first navigation keeps source release status explicit', () => 
   expect(resolveLink('quickstart.md', page('index'), pages)).toBe('quickstart.html');
   expect(resolveLink('support.md', page('quickstart'), pages)).toBe('reference/support.html');
 });
+test('document shell renders a single stepped rail and mobile navigation', () => {
+  const rendered = renderMarkdown('## Parent\n\n### Child\n\n## Next', page('index'), pages);
+  const html = documentShell(page('index'), pages, rendered.html, rendered.headings, 'test');
+  expect(html).toContain('class="toc-rail"');
+  expect(html).toContain('data-toc-row data-depth="0"');
+  expect(html).toContain('data-toc-row data-depth="1"');
+  expect(html).toContain('padding-left:24px');
+  expect(html).toContain('class="sidebar-backdrop" hidden');
+  expect(html).toContain('class="sidebar-top-links"');
+});
 test('agent routing and Markdown alternatives use the same allowlist and deployment base', () => {
   const base = siteBase('https://example.com/nested/loop/');
   const llms = llmsText(pages, base);
