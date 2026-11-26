@@ -12,6 +12,7 @@ service have not passed their gates. Existing behavior belongs to
 | 2 | [Foreground development](foreground-development.md) | File edit/build/replace loop preserves its editor and rejects stale output. |
 | 3 | [Cloud build](cloud-build.md) | One authenticated build survives worker restart, returns verified bytes and preserves tenant boundaries. |
 | Supporting boundary | [Machine access and references](machine-access-and-references.md) | Scoped roots and reference resolution preserve identity, visibility and revocation. Implement only the operations the selected slice consumes. |
+| Architecture RFC | [Multilingual architecture and layout](multilingual-architecture-and-layout.md) | Pre-publish decision on cross-language core sharing (`contracts/`, `conformance/`, `loop-core`) and symmetric Rust/TypeScript crate and package layout. |
 
 Each implementation starts with a reviewed baseline and assigns exact files after
 `repo context`. Keep public WIT under `contracts/`, generated bindings under their
