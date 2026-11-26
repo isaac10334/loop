@@ -26,45 +26,53 @@ supported promise or a passing unit test into installed-runtime evidence.
 
 ## GitHub issues, worktrees and pull requests
 
-1. Establish the outcome, owned paths, acceptance checks and non-goals. Inspect
-   `git status --short`, the current branch and `git worktree list` before Git
-   changes. Preserve all existing tracked and untracked work; do not reset, clean,
-   stash, rebase or overwrite someone else's changes to obtain a clean baseline.
-2. An existing GitHub issue supplies scope, not authority to publish or merge.
-   Read its acceptance and relevant discussion when assigned. Use the issue ID in
-   branch/PR descriptions when one exists; do not invent an issue number or require
-   a new issue for every local edit. Before an authorized issue creation, look for
-   duplicates. Include outcome, scope, acceptance and unresolved decisions; link
-   the owning spec rather than copying it. Issue creation, comments, edits and
-   closure require an explicit request covering those external writes.
-3. For a new non-trivial implementation task, create a separate branch and isolated
-   Git worktree from an identified local baseline, such as `lk-<id>-<short-topic>`
-   (or `<short-topic>` without an ID), rather than piling unrelated edits onto a
-   dirty checkout. Record branch, baseline revision and path. A worktree does not
-   include dirty source changes: if those are required, stop and agree on their
-   integration rather than copying them or committing them silently. A task
-   explicitly scoped to the current checkout may stay there when ownership is
-   clear. Changing cwd alone is not isolation. No automatic fetch or tool install
-   is required to create a local worktree.
-4. Keep one integration owner. Independent workers use separate worktrees or
-   explicitly disjoint owned paths; shared contracts and lockfiles need an assigned
-   owner. Review the complete composed diff before handoff. Do not remove another
-   task's branch/worktree; remove your own only after confirmed integration and
-   authorization, checking for untracked work first.
-5. Use `git` and GitHub CLI (`gh`) actively for clean version control:
-   - **Local commits:** Making scoped local commits of your own verified changes on
-     a dedicated task branch (or when cleanly isolated from unrelated dirty files)
-     is encouraged so work does not accumulate as uncommitted churn. Stage only
-     owned files — never `git add -A` on a dirty worktree.
-   - **GitHub CLI (`gh`):** Read-only inspection (`gh issue view`, `gh pr view`,
-     `gh run list`) is always permitted. Pushing your task branch and opening a
-     draft PR (`gh pr create --draft`) is permitted for scoped tasks or when
-     requested. State outcome, linked issue/spec, compatibility effects, checks
-     actually run, skipped checks and blockers.
-   - **Explicit approval required:** Never merge, force-push, rewrite shared
-     history, bypass branch protection, close issues or publish releases without
-     explicit approval for that action. Use closing keywords only when closure is
-     intended and authorized.
+1. **Session-start sync and triage:** Establish the outcome, owned paths, acceptance
+   checks and non-goals. Inspect `git status --short`, `git branch -vv` and
+   `git worktree list`; preserve tracked and untracked work. When `origin` exists,
+   run `git fetch --prune origin` to update refs without resetting, cleaning, stashing,
+   rebasing or overwriting local changes or another session's branches. Before
+   non-trivial work, inspect open work with `gh pr list` and `gh issue list`; use
+   `issue-graph` when installed to understand linked dependencies. Read-only GitHub
+   queries are permitted.
+2. **Autonomous work selection:** For open-ended prompts such as “choose issues/PRs
+   and get to work” or “pick something useful,” perform the full loop without
+   requiring the user to restate it: first unblock high-leverage open PR follow-ups
+   (CI failures and review feedback); next choose an unblocked open issue. If no
+   suitable PR or issue exists, or investigation reveals a concrete high-value gap,
+   create a concise issue after checking for duplicates, then isolate the task in a
+   fresh worktree from up-to-date `origin/main`, implement, verify, commit, push and
+   open a draft PR. File separate concise follow-up issues for concrete adjacent or
+   deferred work and link them from the PR. An issue provides scope, not authority
+   to merge or release; use existing acceptance and discussion, and link the owning
+   spec rather than copying it.
+3. **Worktrees and multi-stream sessions:** Create each non-trivial task's branch or
+   worktree from the up-to-date default branch (for example, `origin/main`) at the
+   repository root; never nest worktrees. Record branch, baseline revision and path.
+   A worktree excludes dirty changes: if those changes are needed, stop and agree on
+   integration rather than copying or committing them silently. Keep one coherent
+   scope per branch/PR. A session may run independent streams in separate
+   worktrees/branches with separate commits or draft PRs; use one integration owner
+   for shared contracts and review the composed diff. Never remove another task's
+   branch/worktree; check for untracked work before authorized removal of your own.
+4. **Commits, PRs and follow-ups:** Make clean, scoped commits of verified changes;
+   stage only owned files, never `git add -A` on a dirty worktree. Push task branches
+   and open draft PRs with `gh pr create --draft` for scoped work. Describe outcome,
+   linked issue/spec, compatibility effects, checks actually run, skipped checks and
+   blockers; include screenshots for UI changes. Capture concrete deferred scope as
+   concise issues with `gh issue create`, after checking duplicates, and link them
+   from the PR instead of silently dropping them or bloating the PR.
+5. **Optional local verification and review tools:** When installed, `agent-browser`
+   can automate `site/` browser examples and capture screenshots; `portless` can
+   provide stable named localhost URLs across worktrees. Use `before-and-after` for
+   structured visual PR evidence when available. Apply `web-interface-guidelines`
+   selectively to UI accessibility and responsive checks, excluding Vercel-specific
+   copy rules. Never assume these tools or install them as part of the workflow.
+6. **Approval boundaries:** Draft PRs and concise follow-up issue creation are
+   allowed for scoped tasks. Merging, force-pushing, rewriting shared history,
+   bypassing branch protection, closing issues, releasing/publishing, deployment,
+   workflow dispatch, installing global tools/dependencies or changing global or
+   account/repository settings require an explicit user request. Use closing
+   keywords only when issue/PR closure is intended and authorized.
 
 ## Validation and review
 
