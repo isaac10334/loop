@@ -7,8 +7,9 @@ Keep credentials and unrelated personal tasks out of reports.
 
 ## Find authoritative knowledge
 
-Read root [AGENTS](../../AGENTS.md), then the instructions for the paths being
-changed. Load only the material needed for the task:
+Root [AGENTS](../../AGENTS.md) is the always-loaded entry point; this document
+holds the detailed workflow playbook. Load only the scoped `AGENTS.md` files and
+owners needed for the paths being changed:
 
 | Question | Owner |
 | --- | --- |
@@ -54,16 +55,23 @@ supported promise or a passing unit test into installed-runtime evidence.
    worktrees/branches with separate commits or draft PRs; use one integration owner
    for shared contracts and review the composed diff. Never remove another task's
    branch/worktree; check for untracked work before authorized removal of your own.
-4. **Commits, PRs and follow-ups:** Make clean, scoped commits of verified changes;
-   stage only owned files, never `git add -A` on a dirty worktree. Push task branches
-   and open draft PRs with `gh pr create --draft` for scoped work. Describe outcome,
-   linked issue/spec, compatibility effects, checks actually run, skipped checks and
-   blockers; include screenshots for UI changes. Capture concrete deferred scope as
-   concise issues with `gh issue create`, after checking duplicates, and link them
-   from the PR instead of silently dropping them or bloating the PR. On Windows
-   PowerShell, always pipe a single-quoted here-string (`@' ... '@`) into
-   `gh ... --body-file -` rather than double-quoted `@" ... "@`, so backticks
-   never get interpreted as PowerShell escape sequences.
+4. **Backbone issue threads, commits and draft PRs:** Treat long-lived GitHub
+   issues as collaborative backbone threads. Before working on an issue or PR,
+   read its full comment history and linked issues/PRs. Make clean, scoped
+   commits of verified changes; stage only owned files, never `git add -A` on a
+   dirty worktree. Push task branches and open draft PRs with
+   `gh pr create --draft` for scoped work, linking incremental slices with
+   `Part of #N` (reserve `Closes #N` for work that actually completes the whole
+   issue). Describe outcome, linked issue/spec, compatibility effects, checks
+   actually run, skipped checks and blockers; include screenshots for UI
+   changes. Prefer commenting on and extending an existing backbone issue—posting
+   a brief progress/handoff comment when pausing or opening a PR—over spawning
+   fragmented micro-issues. Open a new concise issue with `gh issue create` only
+   for a genuinely distinct deferred area (after checking duplicates), and
+   cross-reference related `#issues`/`#PRs` so `issue-graph` stays connected. On
+   Windows PowerShell, always pipe a single-quoted here-string (`@' ... '@`)
+   into `gh ... --body-file -` rather than double-quoted `@" ... "@`, so
+   backticks never get interpreted as PowerShell escape sequences.
 5. **Optional local verification and review tools:** When installed, `agent-browser`
    can automate `site/` browser examples and capture screenshots; `portless` can
    provide stable named localhost URLs across worktrees. Use `before-and-after` for
