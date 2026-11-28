@@ -60,7 +60,10 @@ supported promise or a passing unit test into installed-runtime evidence.
    linked issue/spec, compatibility effects, checks actually run, skipped checks and
    blockers; include screenshots for UI changes. Capture concrete deferred scope as
    concise issues with `gh issue create`, after checking duplicates, and link them
-   from the PR instead of silently dropping them or bloating the PR.
+   from the PR instead of silently dropping them or bloating the PR. On Windows
+   PowerShell, always pipe a single-quoted here-string (`@' ... '@`) into
+   `gh ... --body-file -` rather than double-quoted `@" ... "@`, so backticks
+   never get interpreted as PowerShell escape sequences.
 5. **Optional local verification and review tools:** When installed, `agent-browser`
    can automate `site/` browser examples and capture screenshots; `portless` can
    provide stable named localhost URLs across worktrees. Use `before-and-after` for
