@@ -10,7 +10,7 @@ export function mountDocsNavigation(onNavigate: () => void): void {
   if (!layout || !sidebar || !main || !toc) return;
   const docsRoot = new URL(document.body.dataset.docsRoot ?? './', location.href);
   document.body.dataset.docsRoot = docsRoot.href;
-  const allowed = new Set([...sidebar.querySelectorAll<HTMLAnchorElement>('a[href]')].map(a => new URL(a.href).pathname));
+  const allowed = new Set([...sidebar.querySelectorAll<HTMLAnchorElement>('.nav-group a[href]')].map(a => new URL(a.href).pathname));
   const build = main.querySelector('.build-info')?.textContent;
   const chrome = document.querySelector<HTMLElement>('.topbar');
   const normalize = (node: ParentNode, base: URL) => {
@@ -91,6 +91,7 @@ export function mountDocsNavigation(onNavigate: () => void): void {
       activeUrl=new URL(url.href);
       document.querySelector<HTMLDialogElement>('.search-dialog')?.close();
       sidebar!.classList.remove('open'); document.querySelector('.menu-toggle')?.setAttribute('aria-expanded','false');
+      document.body.classList.remove('sidebar-open'); const backdrop=document.querySelector<HTMLElement>('.sidebar-backdrop'); if (backdrop) backdrop.hidden=true;
       onNavigate(); pending=undefined; main.removeAttribute('aria-busy'); document.body.classList.remove('docs-loading');
       if (status) status.textContent=`${parsed.title.replace(' · Loop Kit','')} loaded`;
       const saved=pop?scrolls.get(url.href):undefined, target=url.hash?fragmentTarget(url.hash):null;
