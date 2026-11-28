@@ -85,6 +85,65 @@ supported promise or a passing unit test into installed-runtime evidence.
    account/repository settings require an explicit user request. Use closing
    keywords only when issue/PR closure is intended and authorized.
 
+## Optional triage and verification recipes
+
+For a linked backlog, run the graph on demand with existing GitHub authentication:
+
+```sh
+npx -y issue-graph@latest open isaac10334/loop --format json --no-open --no-save
+npx -y issue-graph@latest graph 'isaac10334/loop#12' 'isaac10334/loop#14' --format json --no-open --no-save
+```
+
+The `open` command emitted JSON in the evaluation; `graph` emitted human/Markdown
+output despite `--format json`. Inspect the output before parsing it. A user-local
+skill is optional; do not bundle it in `skills/catalog.json` for this recipe.
+
+Keep the [knowledge vault](knowledge.md) as the discovery map to authoritative
+owners. Do not add a duplicate `lat.md` graph. Defer `trackcn` until at least two
+actively updated external skill or UI overlays across repositories warrant upstream
+tracking; the current skill catalog already checks vendored content digests.
+
+For site changes, with optional tools already installed, build and serve from each
+worktree (the server honors `PORT`):
+
+```sh
+bun run docs:build
+portless run bun run docs:serve
+```
+
+Open the named URL printed by portless in another terminal. Its proxy may require
+local setup or trust changes; those require separate authorization. For example:
+
+```sh
+agent-browser open <named-url>
+agent-browser snapshot -i
+agent-browser set viewport 375 812
+agent-browser screenshot <screenshot-path>
+agent-browser close
+```
+
+Exercise the affected interaction, compare matching viewport screenshots before and
+after, and inspect errors as needed. `before-and-after` is an optional skill for
+structured PR media, not a capture CLI; its attachment workflow needs `gh >= 2.99`
+for `gh --attach`. Apply `web-interface-guidelines` selectively: accessibility,
+keyboard/focus, responsive layout, forms, reduced motion and interaction states.
+Exclude Vercel-specific copywriting, brand and font assumptions.
+
+For Windows clean-room verification, use three tiers:
+
+1. Prefer ephemeral GitHub Actions `windows-latest` VMs for automated clean-room
+   runs of `scripts/test-cli.ps1 -Binary <path>`, `scripts/test-install.ps1` and
+   `scripts/test-bootstrap.ps1`, as applicable. Configure those jobs explicitly;
+   this recommendation does not assert they already run.
+2. For daily local iteration, run relocated, PATH-isolated `scripts/test-cli.ps1`
+   and `scripts/test-install.ps1`. For rare pre-release full-OS or virgin-profile
+   checks, optionally use `dockur/windows` under WSL2 with `/dev/kvm`, Docker or
+   Podman, `/dev/net/tun` and `NET_ADMIN`; allow at least 32 GB free disk, an ISO
+   download and a slow VM boot. Windows 11 Home WSL2 exposed `/dev/kvm` in the
+   evaluated environment; this is not a guarantee for every host.
+3. Avoid `dockur/windows` on standard GitHub-hosted runners: `/dev/kvm` is not
+   guaranteed. A local relocated smoke test is not a fresh OS installation.
+
 ## Validation and review
 
 Use the smallest relevant checks first. Package work uses
