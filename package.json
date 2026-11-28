@@ -19,6 +19,8 @@
     "pack:check": "bun run build && bun run check:packages",
     "release:prepare": "bun tooling/release.ts",
     "docs:build": "bun tooling/docs.ts",
+    "docs:serve": "bun site/serve.ts",
+    "site": "bun run docs:build && bun site/serve.ts",
     "docs:lint": "bun node_modules/markdownlint-cli2/markdownlint-cli2.mjs",
     "docs:links": "bun run knowledge links",
     "docs:check": "bun run docs:links && bun run docs:lint",
