@@ -1,5 +1,14 @@
 name: Deploy website
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'site/**'
+      - 'docs/public/**'
+      - 'tooling/docs.ts'
+      - 'package.json'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 permissions:
   contents: read
